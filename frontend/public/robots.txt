@@ -1,0 +1,10 @@
+# robots.txt for SkładaMy
+# Allow all crawlers but disallow internal/private paths
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+
+# Sitemap (adjust if your SITE_URL env differs in production)
+Sitemap: https://skladamy.pl/sitemap.xml

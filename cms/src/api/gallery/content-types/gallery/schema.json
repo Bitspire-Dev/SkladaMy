@@ -1,0 +1,32 @@
+{
+  "kind": "singleType",
+  "collectionName": "gallery",
+  "info": {
+    "singularName": "gallery",
+    "pluralName": "galleries",
+    "displayName": "Galeria",
+    "description": "Galeria zdjęć portfolio - pojedyncza kolekcja wszystkich zdjęć"
+  },
+  "options": {
+    "draftAndPublish": true,
+    "timestamps": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"],
+      "description": "Wszystkie zdjęcia galerii"
+    },
+    "featuredImages": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": ["images"],
+      "description": "Zdjęcia wyróżnione (pokazywane na głównej)"
+    }
+  }
+
+}
