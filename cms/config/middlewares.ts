@@ -1,10 +1,4 @@
-const path = require('path');
-
-const middlewares = ({ env }: any) => {
-  const root = path.resolve(__dirname, '..');
-  const healthz = path.join(root, 'src', 'middlewares', 'healthz');
-  const securityHeaders = path.join(root, 'src', 'middlewares', 'security-headers');
-
+export = ({ env }: any) => {
   // Build CORS origin list from env
   const dev = env('NODE_ENV') === 'development';
   const csv = env('CORS_ORIGIN', '');
@@ -20,16 +14,20 @@ const middlewares = ({ env }: any) => {
   const corsOrigin = dev ? '*' : Array.from(new Set([...defaults, ...list]));
 
   return [
-    // Health endpoint early so it works even if later middleware fails
-    { resolve: healthz },
-
-    // Strapi core middleware (keep typical order)
     'strapi::logger',
     'strapi::errors',
     {
       name: 'strapi::security',
       config: {
-        ...(env('NODE_ENV') === 'development' ? { contentSecurityPolicy: false } : {}),
+        contentSecurityPolicy: dev ? false : {
+          useDefaults: true,
+          directives: {
+            'connect-src': ["'self'", 'https:'],
+            'img-src': ["'self'", 'data:', 'blob:', 'https:'],
+            'media-src': ["'self'", 'data:', 'blob:', 'https:'],
+            upgradeInsecureRequests: null,
+          },
+        },
       },
     },
     {
@@ -52,9 +50,6 @@ const middlewares = ({ env }: any) => {
       },
     },
 
-    // Custom security headers after CORS
-    { resolve: securityHeaders },
-
     'strapi::poweredBy',
     'strapi::query',
     'strapi::body',
@@ -63,5 +58,3 @@ const middlewares = ({ env }: any) => {
     'strapi::public',
   ];
 };
-
-export = middlewares;

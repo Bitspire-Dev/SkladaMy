@@ -61,30 +61,6 @@ export async function generateMetadata(
   }
 }
 
-export async function generateStaticParams() {
-  // For static export, we MUST return at least one item for dynamic routes
-  // Otherwise Next.js will fail the build with output: 'export'
-  try {
-    const posts = await getBlogPosts({ limit: 100 });
-    const slugs = posts.data
-      .filter((post) => Boolean(post.slug))
-      .map((post) => ({ slug: post.slug }));
-    
-    // If we got data, return it
-    if (slugs.length > 0) {
-      console.log(`✓ Pre-generating ${slugs.length} blog post pages`);
-      return slugs;
-    }
-  } catch (error) {
-    console.error("CMS not available during build - generating placeholder:", error);
-  }
-
-  // CRITICAL: With output: 'export', Next.js requires at least one param
-  // Return a placeholder that will 404 gracefully if accessed
-  console.warn("⚠ No blog posts available - generating placeholder page");
-  return [{ slug: '_placeholder' }];
-}
-
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const { slug } = await params;
 

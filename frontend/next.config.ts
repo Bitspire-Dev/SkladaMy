@@ -19,9 +19,6 @@ const nextConfig: NextConfig = {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Static export requires disabling Next.js image optimization
-    // so images are treated as regular <img> without a runtime optimizer.
-    unoptimized: true,
   },
   // Ensure server-side build has UTF-8-safe btoa/atob so libraries that
   // assume browser globals can base64 encode/decode UTF-8 strings safely.
@@ -41,20 +38,9 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react', '@tanstack/react-query'],
-    // Inline critical CSS in exported HTML to minimize render‑blocking
-    optimizeCss: true,
   },
   // Performance optimizations
   compress: true,
-  // Use Next's static export mode so `next build` produces a static `out/` directory.
-  // IMPORTANT: when exporting statically, any dynamic route like /blog/[slug]
-  // must implement `generateStaticParams()` (or be removed) or the build will fail.
-  // If you need server rendering for some pages, change this back to an appropriate
-  // value and use server deployment instead.
-  output: 'export',
-  // For static hosting it's often better to use trailing slash URLs
-  // (ensures folders resolve to index.html consistently on many hosts)
-  trailingSlash: true,
   // Disable x-powered-by header for security
   poweredByHeader: false,
   // Enable React strict mode

@@ -1,11 +1,34 @@
-// Bootstrap module: only configures public permissions. Sample seeding removed.
+// Bootstrap module: configures public permissions and registers middleware
 
 export default {
-  register() {},
+  register() {
+    // Empty register
+  },
 
   async bootstrap({ strapi }: { strapi: any }) {
     console.log('Bootstrap starting...');
 
+    // Register health check middleware
+    try {
+      strapi.server.use(async (ctx: any, next: any) => {
+        const isHealthRequest = (ctx.method === 'GET' || ctx.method === 'HEAD') && 
+                                (ctx.path === '/healthz' || ctx.path === '/_health');
+        if (isHealthRequest) {
+          ctx.set('Content-Type', 'application/json; charset=utf-8');
+          ctx.status = 200;
+          if (ctx.method === 'GET') {
+            ctx.body = { status: 'ok' };
+          }
+          return;
+        }
+        await next();
+      });
+      console.log('✅ Health check middleware registered');
+    } catch (error) {
+      console.log('⚠️  Health check middleware registration skipped');
+    }
+
+    // Configure public permissions
     try {
       // Get the Public role
       const publicRole = await strapi.query('plugin::users-permissions.role').findOne({

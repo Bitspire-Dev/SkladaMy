@@ -44,7 +44,7 @@ const services = [
 
 export default function ServicesSection() {
   return (
-    <section id="uslugi" className="py-16 bg-muted relative overflow-hidden">
+    <section id="uslugi" className="py-20 bg-gradient-to-b from-white via-neutral-50 to-white relative overflow-hidden">
       {/* decorative grid background (non-interactive) */}
       {(designFlags.services.fineGrid || designFlags.services.coarseGrid) && (
         <svg
@@ -69,11 +69,11 @@ export default function ServicesSection() {
       )}
 
   <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Zakres naszych usług montażowych
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-6 text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             <strong>Specjalizujemy się w montażu mebli IKEA</strong>, wieszaniu szafek kuchennych i kotwieniu w każdym typie ściany. 
             Pracujemy głównie z meblami IKEA, ale składamy również inne marki.
           </p>
@@ -82,12 +82,12 @@ export default function ServicesSection() {
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {services.map((service) => (
             <article key={service.title} className="h-full">
-              <Card className="h-full transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+              <Card className="h-full transition-smooth hover:-translate-y-3 hover:shadow-premium-hover shadow-premium cursor-pointer border-neutral-200">
                 <CardHeader>
-                  <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-4">
-                    <service.icon className="h-6 w-6 text-primary" aria-hidden="true" />
+                  <div className="w-14 h-14 bg-gradient-to-br from-primary/20 to-[#FF8A00]/10 rounded-2xl flex items-center justify-center mb-5">
+                    <service.icon className="h-7 w-7 text-primary" aria-hidden="true" />
                   </div>
-                  <CardTitle className="text-xl">{service.title}</CardTitle>
+                  <CardTitle className="text-xl font-bold">{service.title}</CardTitle>
                   <CardDescription className="text-base">
                     {service.description}
                   </CardDescription>

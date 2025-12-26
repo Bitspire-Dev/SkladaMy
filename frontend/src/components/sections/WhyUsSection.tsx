@@ -29,15 +29,15 @@ const benefits = [
 
 // Memoized benefit card component
 const BenefitCard = memo(({ benefit }: { benefit: typeof benefits[0] }) => (
-  <Card className="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm text-center h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
+  <Card className="bg-card text-card-foreground flex flex-col gap-6 rounded-2xl border border-neutral-200 py-8 shadow-premium text-center h-full transition-smooth hover:-translate-y-3 hover:shadow-premium-hover cursor-pointer">
     <CardContent className="px-6 pt-6">
-      <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+      <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-[#FF8A00]/10 rounded-3xl flex items-center justify-center mx-auto mb-5">
         <benefit.icon className="h-8 w-8 text-primary" aria-hidden="true" />
       </div>
-      <h3 className="text-lg font-semibold text-foreground mb-3">
+      <h3 className="text-xl font-bold text-foreground mb-3">
         {benefit.title}
       </h3>
-      <p className="text-muted-foreground text-sm leading-relaxed">
+      <p className="text-muted-foreground text-base leading-relaxed">
         {benefit.description}
       </p>
     </CardContent>
@@ -55,7 +55,7 @@ const WhyUsSection = memo(() => {
   );
 
   return (
-    <section className="relative py-16 bg-white overflow-hidden" aria-labelledby="benefits-heading">
+    <section className="relative py-20 bg-gradient-to-b from-neutral-50 to-white overflow-hidden" aria-labelledby="benefits-heading">
       {/* Industrial dotted + grid background */}
       {designFlags.whyUs.dottedGridTexture && (
         <div
@@ -74,11 +74,11 @@ const WhyUsSection = memo(() => {
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 mix-blend-multiply opacity-6 bg-[linear-gradient(135deg,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0)_45%)]" />
       )}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-20">
-        <header className="text-center mb-12">
-          <h2 id="benefits-heading" className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+        <header className="text-center mb-16">
+          <h2 id="benefits-heading" className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             Dlaczego warto nas wybrać?
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+          <p className="mt-6 text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
             W Słupsku działa wielu monterów, ale my stawiamy na jakość, terminowość i spokój klienta.
           </p>
         </header>
@@ -92,11 +92,11 @@ const WhyUsSection = memo(() => {
         </ul>
 
         {/* Additional trust signals */}
-        <footer className="mt-12 text-center">
-          <div className="inline-flex items-center justify-center space-x-8 text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>
-              <span className="text-sm">Doświadczenie od 2020</span>
+        <footer className="mt-16 text-center">
+          <div className="inline-flex items-center justify-center gap-8 text-muted-foreground">
+            <div className="flex items-center gap-2">
+              <div className="w-2.5 h-2.5 bg-green-500 rounded-full shadow-sm" aria-hidden="true"></div>
+              <span className="text-sm font-semibold">Doświadczenie od 2020</span>
             </div>
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>

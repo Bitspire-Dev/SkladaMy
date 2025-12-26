@@ -5,11 +5,13 @@
   "description": "A Strapi application",
   "scripts": {
     "prebuild": "node ./scripts/compile-configs.js",
-    "build": "cross-env NODE_OPTIONS=--max-old-space-size=1536 node ./node_modules/@strapi/strapi/bin/strapi.js build",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=1536 strapi build",
     "prestart": "node ./scripts/compile-configs.js",
-    "start": "node ./node_modules/@strapi/strapi/bin/strapi.js start",
-    "develop": "cross-env NODE_ENV=development HOST=127.0.0.1 PORT=1337 PUBLIC_URL=http://localhost:1337 TRUST_PROXY=false node ./node_modules/@strapi/strapi/bin/strapi.js develop",
-    "generate-keys": "node ./generate-keys.js"
+    "start": "strapi start",
+    "develop": "strapi develop",
+    "generate-keys": "node ./generate-keys.js",
+    "seed": "node ./scripts/seed-database.js",
+    "strapi": "strapi"
   },
   "dependencies": {
     "@strapi/plugin-users-permissions": "^5.23.3",
@@ -24,6 +26,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.19.13",
+    "axios": "^1.13.2",
+    "form-data": "^4.0.5",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },

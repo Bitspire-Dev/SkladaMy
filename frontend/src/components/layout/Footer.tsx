@@ -37,21 +37,21 @@ const footerSections = [
 
 export default function Footer() {
   return (
-    <footer className="bg-muted mt-auto">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <footer className="bg-gradient-to-b from-neutral-100 to-neutral-50 mt-auto border-t border-neutral-200">
+      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         {/* Main footer content */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
           {/* Company info */}
           <div className="lg:col-span-1">
-            <div className="flex items-center space-x-3 mb-4">
-              <Image src="/SkładaMy.svg" alt="SkładaMy" width={40} height={40} className="w-auto" />
+            <div className="flex items-center space-x-3 mb-5">
+              <Image src="/SkładaMy.svg" alt="SkładaMy" width={45} height={45} className="w-auto" />
               <span className="sr-only">SkładaMy</span>
             </div>
-            <p className="text-muted-foreground mb-4">
+            <p className="text-muted-foreground mb-5 leading-relaxed">
               Profesjonalny montaż mebli w Słupsku i okolicach. 
               Szybkie terminy, gwarancja jakości, porządek po montażu.
             </p>
-            <div className="space-y-2">
+            <div className="space-y-3">
               <div className="flex items-center space-x-2 text-muted-foreground">
                 <MapPin className="h-4 w-4" />
                 <span>Słupsk i okolice</span>
@@ -74,10 +74,10 @@ export default function Footer() {
           {/* Footer sections */}
           {footerSections.map((section) => (
             <div key={section.title}>
-              <h3 className="text-sm font-semibold text-foreground uppercase tracking-wider mb-4">
+              <h3 className="text-sm font-bold text-foreground uppercase tracking-wider mb-5">
                 {section.title}
               </h3>
-              <ul className="space-y-2">
+              <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.name}>
                     <Link

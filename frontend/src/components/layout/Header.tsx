@@ -28,9 +28,9 @@ const Header = memo(() => {
   }, []);
 
   return (
-    <header className="bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-neutral-200 sticky top-0 z-50">
+    <header className="glass-effect border-b border-neutral-200/50 sticky top-0 z-50 shadow-sm">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
-        <div className="flex w-full items-center justify-between py-4">
+        <div className="flex w-full items-center justify-between py-5">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3">
@@ -51,9 +51,10 @@ const Header = memo(() => {
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-base font-medium text-neutral-700 hover:text-neutral-900 transition-colors"
+                className="text-sm font-semibold text-neutral-600 hover:text-neutral-900 transition-smooth relative group"
               >
                 {item.name}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
           </div>
@@ -61,13 +62,13 @@ const Header = memo(() => {
           {/* Contact CTAs */}
           <div className="flex items-center space-x-3">
             <div className="hidden sm:flex items-center space-x-2">
-              <Button asChild variant="outline" size="sm" className="bg-white text-neutral-900 border-neutral-200 hover:bg-neutral-50">
+              <Button asChild variant="outline" size="sm" className="bg-white/80 text-neutral-900 border-neutral-300 hover:bg-white hover:shadow-md transition-smooth">
                 <a href={`tel:${formatPhoneForTel()}`}>
                   <Phone className="h-4 w-4 mr-2 text-neutral-900" />
                   Zadzwoń
                 </a>
               </Button>
-              <Button asChild size="sm" className="bg-[#FFC400] hover:bg-[#f2b800] text-neutral-900">
+              <Button asChild size="sm" className="bg-gradient-to-r from-primary to-[#FF8A00] hover:shadow-premium-hover text-neutral-900 font-semibold transition-smooth">
                 <Link href="/kontakt">
                   <Mail className="h-4 w-4 mr-2 text-neutral-900" />
                   Zapytanie

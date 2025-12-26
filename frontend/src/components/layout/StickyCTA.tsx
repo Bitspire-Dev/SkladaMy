@@ -34,11 +34,11 @@ export default function StickyCTA() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 md:hidden">
+    <div className="fixed bottom-6 right-6 z-50 md:hidden">
       <Button
         asChild
         size="lg"
-        className="rounded-full shadow-lg bg-[#FFC400] hover:bg-[#f2b800] text-neutral-900 px-6"
+        className="rounded-full shadow-premium-hover hover:shadow-premium bg-gradient-to-r from-primary to-[#FF8A00] text-neutral-900 px-8 py-6 font-bold transition-smooth hover:scale-105"
         onClick={handleCall}
       >
         <a href={`tel:${formatPhoneForTel()}`}>
