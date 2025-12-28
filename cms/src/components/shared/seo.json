@@ -2,29 +2,72 @@
   "collectionName": "components_shared_seos",
   "info": {
     "displayName": "SEO",
-    "description": "Ustawienia SEO"
+    "description": "Rozszerzone ustawienia SEO"
   },
   "options": {},
   "attributes": {
     "metaTitle": {
       "type": "string",
-      "maxLength": 60
+      "maxLength": 60,
+      "description": "Tytuł meta (60 znaków)"
     },
     "metaDescription": {
       "type": "text",
-      "maxLength": 160
+      "maxLength": 160,
+      "description": "Opis meta (160 znaków)"
     },
     "keywords": {
-      "type": "text"
+      "type": "text",
+      "description": "Słowa kluczowe (rozdzielone przecinkami)"
+    },
+    "canonicalUrl": {
+      "type": "string",
+      "description": "URL kanoniczny (dla duplicate content)"
+    },
+    "ogTitle": {
+      "type": "string",
+      "maxLength": 70,
+      "description": "Tytuł Open Graph (Facebook/LinkedIn)"
+    },
+    "ogDescription": {
+      "type": "text",
+      "maxLength": 200,
+      "description": "Opis Open Graph"
     },
     "ogImage": {
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": ["images"],
+      "description": "Obraz Open Graph (1200x630px)"
+    },
+    "ogType": {
+      "type": "enumeration",
+      "enum": ["website", "article", "product"],
+      "default": "article"
+    },
+    "twitterCard": {
+      "type": "enumeration",
+      "enum": ["summary", "summary_large_image"],
+      "default": "summary_large_image"
+    },
+    "noindex": {
+      "type": "boolean",
+      "default": false,
+      "description": "Blokuj indeksowanie przez wyszukiwarki"
+    },
+    "nofollow": {
+      "type": "boolean",
+      "default": false,
+      "description": "Nie śledź linków na stronie"
     },
     "structuredData": {
-      "type": "json"
+      "type": "json",
+      "description": "Dane strukturalne Schema.org (JSON-LD)"
+    },
+    "lastmod": {
+      "type": "datetime",
+      "description": "Data ostatniej modyfikacji (dla sitemap)"
     }
   }
 }

@@ -1,0 +1,60 @@
+{
+  "kind": "collectionType",
+  "collectionName": "categories",
+  "info": {
+    "singularName": "category",
+    "pluralName": "categories",
+    "displayName": "Category",
+    "description": "Kategorie artykułów blogowych"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "timestamps": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true,
+      "maxLength": 100
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
+    },
+    "description": {
+      "type": "text",
+      "maxLength": 300,
+      "description": "Opis kategorii (SEO)"
+    },
+    "color": {
+      "type": "string",
+      "maxLength": 7,
+      "default": "#3b82f6",
+      "description": "Kolor kategorii w formacie hex"
+    },
+    "icon": {
+      "type": "string",
+      "maxLength": 50,
+      "description": "Nazwa ikony (opcjonalnie)"
+    },
+    "order": {
+      "type": "integer",
+      "default": 0,
+      "description": "Kolejność wyświetlania"
+    },
+    "blog_posts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::blog-post.blog-post",
+      "mappedBy": "category"
+    },
+    "seo": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.seo"
+    }
+  }
+}

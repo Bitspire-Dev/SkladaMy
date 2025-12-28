@@ -28,4 +28,40 @@ export default factories.createCoreController('api::blog-post.blog-post', ({ str
     // Default behavior for numeric IDs
     return await super.findOne(ctx);
   },
+  
+  // Override create to validate featured image has alt text
+  async create(ctx: any) {
+    const { data } = ctx.request.body;
+    
+    // Validate featuredImage has alternativeText for SEO
+    if (data?.featuredImage) {
+      // If it's an ID, fetch the image to check alt text
+      if (typeof data.featuredImage === 'number') {
+        const image = await strapi.plugins.upload.services.upload.findOne(data.featuredImage);
+        if (image && !image.alternativeText) {
+          return ctx.badRequest('Featured image must have alternative text (alt text) for SEO purposes.');
+        }
+      }
+    }
+    
+    return await super.create(ctx);
+  },
+  
+  // Override update to validate featured image has alt text
+  async update(ctx: any) {
+    const { data } = ctx.request.body;
+    
+    // Validate featuredImage has alternativeText for SEO
+    if (data?.featuredImage) {
+      // If it's an ID, fetch the image to check alt text
+      if (typeof data.featuredImage === 'number') {
+        const image = await strapi.plugins.upload.services.upload.findOne(data.featuredImage);
+        if (image && !image.alternativeText) {
+          return ctx.badRequest('Featured image must have alternative text (alt text) for SEO purposes.');
+        }
+      }
+    }
+    
+    return await super.update(ctx);
+  },
 }));

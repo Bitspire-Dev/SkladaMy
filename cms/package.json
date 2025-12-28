@@ -9,23 +9,26 @@
     "prestart": "node ./scripts/compile-configs.js",
     "start": "node ./node_modules/@strapi/strapi/bin/strapi.js start",
     "develop": "cross-env NODE_ENV=development HOST=127.0.0.1 PORT=1337 PUBLIC_URL=http://localhost:1337 TRUST_PROXY=false node ./node_modules/@strapi/strapi/bin/strapi.js develop",
-    "generate-keys": "node ./generate-keys.js"
+    "generate-keys": "node ./generate-keys.js",
+    "backup": "node ./scripts/backup-database.js",
+    "backup:help": "echo 'Usage: npm run backup - Creates a MySQL backup in cms/backups/ directory'"
   },
   "dependencies": {
-    "@strapi/plugin-users-permissions": "^5.23.3",
-    "@strapi/strapi": "^5.23.3",
-    "better-sqlite3": "11.3.0",
-    "cross-env": "^7.0.3",
+    "@strapi/strapi": "^5.33.0",
+    "better-sqlite3": "^12.5.0",
+    "cross-env": "^10.1.0",
+    "mysql2": "^3.16.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.1",
+    "react-router-dom": "^6.30.2",
     "strapi-5-plugin-responsive-backend": "^0.0.4",
-    "styled-components": "^6.1.19"
+    "styled-components": "^6.1.19",
+    "zod": "^4.2.1"
   },
   "devDependencies": {
-    "@types/node": "^20.19.13",
+    "@types/node": "^25.0.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "engines": {
     "node": ">=18 <=22",

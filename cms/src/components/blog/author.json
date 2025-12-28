@@ -1,0 +1,49 @@
+{
+  "collectionName": "components_blog_authors",
+  "info": {
+    "displayName": "Author",
+    "description": "Informacje o autorze artykułu"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100,
+      "default": "SkładaMy Team"
+    },
+    "role": {
+      "type": "string",
+      "maxLength": 100,
+      "description": "Rola/stanowisko autora"
+    },
+    "bio": {
+      "type": "text",
+      "maxLength": 300,
+      "description": "Krótka biografia autora"
+    },
+    "avatar": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images"],
+      "description": "Zdjęcie profilowe autora"
+    },
+    "email": {
+      "type": "email",
+      "description": "Email kontaktowy (nie wyświetlany publicznie)"
+    },
+    "website": {
+      "type": "string",
+      "description": "Strona www autora"
+    },
+    "linkedin": {
+      "type": "string",
+      "description": "Profil LinkedIn"
+    },
+    "twitter": {
+      "type": "string",
+      "description": "Handle Twitter/X"
+    }
+  }
+}

@@ -4,7 +4,7 @@
   "info": {
     "singularName": "blog-post",
     "pluralName": "blog-posts",
-    "displayName": "Blog Posts",
+    "displayName": "Blog Post",
     "description": "Artykuły na blogu"
   },
   "options": {
@@ -27,29 +27,17 @@
       "type": "text",
       "required": true,
       "maxLength": 300,
-      "description": "Krótki opis artykułu"
+      "description": "Krótki opis artykułu (wyświetlany na liście)"
     },
     "content": {
       "type": "richtext",
-      "required": true
+      "required": true,
+      "description": "Główna treść artykułu"
     },
-    "category": {
-      "type": "enumeration",
-      "enum": [
-        "poradniki",
-        "inspiracje", 
-        "trendy",
-        "narzedzia",
-        "bezpieczenstwo",
-        "ikea-tips",
-        "cennik"
-      ],
-      "required": true
-    },
-    "author": {
-      "type": "string",
-      "default": "SkładaMy Team",
-      "maxLength": 100
+    "publishDate": {
+      "type": "datetime",
+      "required": true,
+      "description": "Data publikacji (widoczna dla użytkowników)"
     },
     "readTime": {
       "type": "integer",
@@ -57,41 +45,67 @@
       "min": 1,
       "description": "Szacowany czas czytania w minutach"
     },
-    "tags": {
-      "type": "component",
-      "repeatable": true,
-      "component": "blog.tag"
+    "views": {
+      "type": "integer",
+      "default": 0,
+      "description": "Liczba wyświetleń artykułu"
+    },
+    "featured": {
+      "type": "boolean",
+      "default": false,
+      "description": "Artykuł wyróżniony (wyświetlany na górze)"
     },
     "featuredImage": {
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": ["images"],
+      "description": "Główny obraz artykułu"
     },
     "gallery": {
       "type": "media",
       "multiple": true,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": ["images"],
+      "description": "Dodatkowe zdjęcia w galerii"
     },
-    "featured": {
-      "type": "boolean",
-      "default": false,
-      "description": "Artykuł wyróżniony"
+    "category": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::category.category",
+      "inversedBy": "blog_posts"
     },
-    "views": {
-      "type": "integer",
-      "default": 0
+    "tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "inversedBy": "blog_posts"
+    },
+    "author": {
+      "type": "component",
+      "repeatable": false,
+      "component": "blog.author",
+      "required": true
     },
     "relatedPosts": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::blog-post.blog-post"
     },
     "seo": {
       "type": "component",
       "repeatable": false,
       "component": "shared.seo"
+    },
+    "breadcrumbs": {
+      "type": "json",
+      "description": "Auto-generated breadcrumb structured data"
+    },
+    "faq": {
+      "type": "component",
+      "repeatable": true,
+      "component": "blog.faq-item",
+      "description": "FAQ items for FAQPage schema.org"
     }
   }
 }

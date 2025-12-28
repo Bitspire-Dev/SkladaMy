@@ -1,0 +1,22 @@
+{
+  "collectionName": "components_blog_faq_items",
+  "info": {
+    "displayName": "FAQ Item",
+    "description": "Element FAQ dla Schema.org FAQPage"
+  },
+  "options": {},
+  "attributes": {
+    "question": {
+      "type": "string",
+      "required": true,
+      "maxLength": 200,
+      "description": "Pytanie FAQ"
+    },
+    "answer": {
+      "type": "text",
+      "required": true,
+      "maxLength": 500,
+      "description": "Odpowiedź na pytanie"
+    }
+  }
+}
