@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
@@ -46,7 +45,7 @@ export const metadata: Metadata = {
   }
 };
 
-export default function DeklaracjaDostepnosciPage() {
+export default function AccessibilityPage() {
   const sections = [
     { id: "status-zgodnosci", title: "Status zgodności", keywords: "WCAG 2.1 AA, testy, ocena" },
     { id: "elementy-ulatwiajace", title: "Elementy ułatwiające dostępność", keywords: "nawigacja klawiaturą, kontrast, focus" },

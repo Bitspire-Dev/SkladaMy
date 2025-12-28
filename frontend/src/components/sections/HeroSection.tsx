@@ -2,11 +2,10 @@ import { Button } from "@/components/ui/button";
 import { Phone, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { formatPhoneForTel } from "@/lib/company-data";
-import { designFlags } from "@/lib/design-flags";
 
 export default function HeroSection() {
   return (
-  <section className={`relative isolate overflow-hidden bg-neutral-900 ${designFlags.hero.minHeights ? 'min-h-[680px] sm:min-h-[720px]' : ''} flex items-center`}>
+  <section className="relative isolate overflow-hidden bg-neutral-900 min-h-[680px] sm:min-h-[720px] flex items-center">
       {/* Background image + overlays */}
       <div className="absolute inset-0 -z-10">
         {/* LCP background image: AVIF first, fallback do WEBP. Nie używamy <Image> wewnątrz <picture>, aby zachować poprawną strukturę (tylko <source> + <img>). */}
@@ -23,29 +22,23 @@ export default function HeroSection() {
           />
         </picture>
 
-        {designFlags.hero.whiteGradient && (
-          <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/64 to-white/40" />
-        )}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/64 to-white/40" />
 
-        {designFlags.hero.vignette && (
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_60%,rgba(0,0,0,0.25)_100%)] mix-blend-multiply pointer-events-none" />
-        )}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_60%,rgba(0,0,0,0.25)_100%)] mix-blend-multiply pointer-events-none" />
 
-        {designFlags.hero.gridOverlay && (
-          <svg
-            aria-hidden="true"
-            className="absolute inset-0 w-full h-full pointer-events-none mix-blend-overlay opacity-12"
-            xmlns="http://www.w3.org/2000/svg"
-            preserveAspectRatio="none"
-          >
-            <defs>
-              <pattern id="grid-hero" width="32" height="32" patternUnits="userSpaceOnUse">
-                <path d="M32 0H0V32" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="1" />
-              </pattern>
-            </defs>
-            <rect width="100%" height="100%" fill="url(#grid-hero)" />
-          </svg>
-        )}
+        <svg
+          aria-hidden="true"
+          className="absolute inset-0 w-full h-full pointer-events-none mix-blend-overlay opacity-12"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <pattern id="grid-hero" width="32" height="32" patternUnits="userSpaceOnUse">
+              <path d="M32 0H0V32" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#grid-hero)" />
+        </svg>
       </div>
 
   <div className="mx-auto max-w-7xl px-4 pt-24 pb-20 sm:px-6 lg:px-8 w-full">

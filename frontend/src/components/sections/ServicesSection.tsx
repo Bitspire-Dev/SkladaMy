@@ -1,7 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Wrench, Home, Anchor } from "lucide-react";
 import BulletList from "@/components/ui/BulletList";
-import { designFlags } from "@/lib/design-flags";
 
 const services = [
   {
@@ -46,27 +45,21 @@ export default function ServicesSection() {
   return (
     <section id="uslugi" className="py-16 bg-muted relative overflow-hidden">
       {/* decorative grid background (non-interactive) */}
-      {(designFlags.services.fineGrid || designFlags.services.coarseGrid) && (
-        <svg
-          className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-70"
-          aria-hidden="true"
-        >
-          <defs>
-            {designFlags.services.fineGrid && (
-              <pattern id="grid-services-fine" width="5mm" height="5mm" patternUnits="userSpaceOnUse">
-                <path d="M5 0 L5 5 M0 5 L5 5" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="1" />
-              </pattern>
-            )}
-            {designFlags.services.coarseGrid && (
-              <pattern id="grid-services-coarse" width="128" height="128" patternUnits="userSpaceOnUse">
-                <path d="M128 0 L128 128 M0 128 L128 128" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="1.5" />
-              </pattern>
-            )}
-          </defs>
-          {designFlags.services.coarseGrid && <rect width="100%" height="100%" fill="url(#grid-services-coarse)" />}
-          {designFlags.services.fineGrid && <rect width="100%" height="100%" fill="url(#grid-services-fine)" />}
-        </svg>
-      )}
+      <svg
+        className="absolute inset-0 w-full h-full z-0 pointer-events-none opacity-70"
+        aria-hidden="true"
+      >
+        <defs>
+          <pattern id="grid-services-fine" width="5mm" height="5mm" patternUnits="userSpaceOnUse">
+            <path d="M5 0 L5 5 M0 5 L5 5" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="1" />
+          </pattern>
+          <pattern id="grid-services-coarse" width="128" height="128" patternUnits="userSpaceOnUse">
+            <path d="M128 0 L128 128 M0 128 L128 128" fill="none" stroke="rgba(0,0,0,0.06)" strokeWidth="1.5" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid-services-coarse)" />
+        <rect width="100%" height="100%" fill="url(#grid-services-fine)" />
+      </svg>
 
   <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">

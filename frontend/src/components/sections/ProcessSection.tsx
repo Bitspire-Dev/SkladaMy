@@ -1,6 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
 import BulletList from "@/components/ui/BulletList";
-import { designFlags } from "@/lib/design-flags";
 import { MessageCircle, Calendar, CheckCircle } from "lucide-react";
 import { memo, useMemo } from "react";
 import Image from "next/image";
@@ -108,24 +107,20 @@ const ProcessSection = memo(() => {
   return (
     <section className="py-16 bg-muted relative overflow-hidden" aria-labelledby="process-heading">
       {/* Decorative dotted background */}
-      {designFlags.process.dottedBg && (
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 opacity-45">
-          <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1200 600">
-            <defs>
-              <pattern id="dotsProcess" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
-                <circle cx="2" cy="2" r="2" fill="rgba(0,0,0,0.05)" />
-              </pattern>
-            </defs>
-            <rect width="1200" height="600" fill="url(#dotsProcess)" />
-          </svg>
-        </div>
-      )}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 opacity-45">
+        <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" viewBox="0 0 1200 600">
+          <defs>
+            <pattern id="dotsProcess" x="0" y="0" width="28" height="28" patternUnits="userSpaceOnUse">
+              <circle cx="2" cy="2" r="2" fill="rgba(0,0,0,0.05)" />
+            </pattern>
+          </defs>
+          <rect width="1200" height="600" fill="url(#dotsProcess)" />
+        </svg>
+      </div>
       {/* Decorative młotek (moved inward, full opacity) */}
-      {designFlags.process.hammerImage && (
-        <div className="hidden lg:block pointer-events-none absolute left-[2%] top-24 w-[380px] -rotate-6 z-10 select-none opacity-40">
-          <Image src="/młotek.svg" alt="" aria-hidden="true" width={380} height={380} />
-        </div>
-      )}
+      <div className="hidden lg:block pointer-events-none absolute left-[2%] top-24 w-[380px] -rotate-6 z-10 select-none opacity-40">
+        <Image src="/młotek.svg" alt="" aria-hidden="true" width={380} height={380} />
+      </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <header className="text-center mb-12">
           <h2 id="process-heading" className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   }
 };
 
-export default function RegulaminPage() {
+export default function TermsPage() {
   const sections = [
     { id: "postanowienia-ogolne", title: "§1 Postanowienia ogólne", keywords: "zakres usług, kontakt, Słupsk" },
     { id: "zakres-uslug", title: "§2 Zakres usług montażowych", keywords: "IKEA, PAX, montaż mebli" },

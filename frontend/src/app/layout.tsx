@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { QueryProvider } from "@/components/providers/QueryProvider";
 import StructuredData from "@/components/StructuredData";
 import CookieConsentBanner from "@/components/layout/CookieConsentBanner";
 import Script from "next/script";
@@ -138,12 +137,10 @@ export default function RootLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           ></iframe>
         </noscript>
-        <QueryProvider>
-          <div className="min-h-screen bg-background">
-            {children}
-          </div>
-          <CookieConsentBanner />
-        </QueryProvider>
+        <div className="min-h-screen bg-background">
+          {children}
+        </div>
+        <CookieConsentBanner />
       </body>
     </html>
   );

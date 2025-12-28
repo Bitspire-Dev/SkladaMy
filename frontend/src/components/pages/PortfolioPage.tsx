@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { GalleryContent } from '@/components/GalleryContent';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { getGallery } from '@/lib/strapi-client';
+import { getGallery } from '@/lib/strapi';
 import type { StrapiImage } from '@/types/strapi';
 
 export const metadata: Metadata = {

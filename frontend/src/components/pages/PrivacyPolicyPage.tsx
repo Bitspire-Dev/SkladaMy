@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   }
 };
 
-export default function PolitykaPrywatnosciPage() {
+export default function PrivacyPolicyPage() {
   const sections = [
     { id: "administrator-danych", title: "§1 Administrator danych osobowych", keywords: "administrator RODO, kontakt" },
     { id: "cele-podstawy", title: "§2 Cele i podstawy prawne przetwarzania", keywords: "art. 6 RODO, podstawy" },

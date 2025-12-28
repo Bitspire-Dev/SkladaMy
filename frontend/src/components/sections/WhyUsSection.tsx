@@ -2,7 +2,6 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Clock, Shield, Sparkles, Wrench } from "lucide-react";
 import { memo, useMemo } from "react";
 import Image from "next/image";
-import { designFlags } from "@/lib/design-flags";
 
 const benefits = [
   {
@@ -57,22 +56,16 @@ const WhyUsSection = memo(() => {
   return (
     <section className="relative py-16 bg-white overflow-hidden" aria-labelledby="benefits-heading">
       {/* Industrial dotted + grid background */}
-      {designFlags.whyUs.dottedGridTexture && (
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 z-0 opacity-100 [background:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.32)_1px,transparent_0),linear-gradient(rgba(0,0,0,0.12)_1px,transparent_0),linear-gradient(90deg,rgba(0,0,0,0.12)_1px,transparent_0)] [background-size:14px_14px,14px_14px,14px_14px] [background-position:0_0,0_0,0_0]"
-        />
-      )}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 opacity-100 [background:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.32)_1px,transparent_0),linear-gradient(rgba(0,0,0,0.12)_1px,transparent_0),linear-gradient(90deg,rgba(0,0,0,0.12)_1px,transparent_0)] [background-size:14px_14px,14px_14px,14px_14px] [background-position:0_0,0_0,0_0]"
+      />
       {/* Decorative wkrętarka (moved inward, full opacity) */}
-      {designFlags.whyUs.drillImage && (
-        <div className="hidden lg:block pointer-events-none absolute top-8 right-[5%] w-[360px] rotate-6 z-10 select-none opacity-40">
-          <Image src="/wkrętarka.svg" alt="" aria-hidden="true" width={360} height={360} />
-        </div>
-      )}
+      <div className="hidden lg:block pointer-events-none absolute top-8 right-[5%] w-[360px] rotate-6 z-10 select-none opacity-40">
+        <Image src="/wkrętarka.svg" alt="" aria-hidden="true" width={360} height={360} />
+      </div>
       {/* Very subtle metallic sheen kept minimal */}
-      {designFlags.whyUs.sheen && (
-        <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 mix-blend-multiply opacity-6 bg-[linear-gradient(135deg,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0)_45%)]" />
-      )}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 mix-blend-multiply opacity-6 bg-[linear-gradient(135deg,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0)_45%)]" />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-20">
         <header className="text-center mb-12">
           <h2 id="benefits-heading" className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">

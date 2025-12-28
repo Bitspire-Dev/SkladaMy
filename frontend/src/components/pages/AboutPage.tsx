@@ -74,7 +74,7 @@ const guaranteeDetails = [
   }
 ];
 
-export default function ONasPage() {
+export default function AboutPage() {
   return (
     <>
       <Header />

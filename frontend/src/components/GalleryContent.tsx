@@ -2,9 +2,9 @@
 
 import { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { getMediaURL } from '@/lib/axios-client';
-import { MasonryGrid } from './portfolio/MasonryGrid';
-import { Lightbox } from './portfolio/Lightbox';
+import { getMediaURL } from '@/lib/strapi';
+import { MasonryGrid } from './sections/portfolio/MasonryGrid';
+import { Lightbox } from './sections/portfolio/Lightbox';
 import type { StrapiImage } from '@/types/strapi';
 
 interface GalleryContentProps {

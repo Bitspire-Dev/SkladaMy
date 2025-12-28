@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CheckCircle, AlertCircle } from "lucide-react";
-import { submitContactForm } from "@/lib/strapi-client";
+import { submitContactForm } from "@/lib/strapi";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Imię i nazwisko musi mieć przynajmniej 2 znaki"),

@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ShieldCheck, LineChart, Megaphone } from "lucide-react";
-import nextCookies from "next-cookies";
 
 type ConsentState = {
   necessary: true; // always true
@@ -16,11 +15,16 @@ const CONSENT_MAX_AGE_DAYS = 180; // 6 months
 
 function readConsent(): ConsentState | null {
   try {
-    // Use next-cookies on the client (reads from document.cookie without ctx)
-    const all = nextCookies();
-    const value = all?.[CONSENT_COOKIE];
+    // Parse cookies from document.cookie
+    const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+      const [key, value] = cookie.trim().split('=');
+      if (key) acc[key] = value;
+      return acc;
+    }, {} as Record<string, string>);
+    
+    const value = cookies[CONSENT_COOKIE];
     if (!value) return null;
-    return JSON.parse(value as string);
+    return JSON.parse(decodeURIComponent(value));
   } catch {
     return null;
   }

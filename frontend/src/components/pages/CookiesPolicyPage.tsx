@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   }
 };
 
-export default function CookiePolicyPage() {
+export default function CookiesPolicyPage() {
   const sections = [
     { id: "wstep", title: "§1 Wstęp i zakres" },
     { id: "rodzaje", title: "§2 Rodzaje wykorzystywanych plików cookies" },
