@@ -120,9 +120,8 @@ cms/
 │       └── security-headers/ # Cache + security headers
 │
 ├── scripts/
-│   ├── backup-database.js      # Database backup (NOWY!)
-│   ├── seed-premium-blog.js    # Seed z structured data
-│   └── compile-configs.js
+│   ├── backup-database.js      # Database backup utility
+│   └── seed-premium-blog.js    # Seed blog with structured data
 │
 ├── public/
 │   ├── robots.txt

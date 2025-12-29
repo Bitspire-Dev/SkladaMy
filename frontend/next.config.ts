@@ -18,15 +18,15 @@ const nextConfig: NextConfig = {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Disable optimization for localhost in development (allows private IPs)
-    unoptimized: process.env.NODE_ENV === 'development',
+    // Disable optimization completely - DirectAdmin doesn't support Image Optimization API
+    unoptimized: true,
   },
-  // Empty turbopack config to silence Next.js 16 warning
-  turbopack: {},
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
     // Inline critical CSS in exported HTML to minimize render‑blocking
     optimizeCss: true,
+    // Limit workers for low-resource hosting environments
+    cpus: 1,
   },
   // Performance optimizations
   compress: true,
