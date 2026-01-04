@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import { ChevronDown, ChevronUp, Phone, Mail } from "lucide-react";
 import { useState, memo, useMemo, useCallback } from "react";
@@ -28,9 +29,9 @@ const FAQItem = memo(({
             {faq.question}
           </h3>
           {isOpen ? (
-            <ChevronUp className="h-5 w-5 text-muted-foreground flex-shrink-0" aria-hidden="true" />
+            <ChevronUp className="h-5 w-5 text-muted-foreground shrink-0" aria-hidden="true" />
           ) : (
-            <ChevronDown className="h-5 w-5 text-muted-foreground flex-shrink-0" aria-hidden="true" />
+            <ChevronDown className="h-5 w-5 text-muted-foreground shrink-0" aria-hidden="true" />
           )}
         </div>
       </button>
@@ -165,20 +166,20 @@ const FAQSection = memo(() => {
               <Phone className="h-5 w-5" aria-hidden="true" />
               Zadzwoń: +48 123 456 789
             </a>
-            <a
+            <Link
               href="/kontakt"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-md bg-transparent text-neutral-900 font-medium shadow-sm border border-neutral-900/30 hover:bg-neutral-900/5 transition-all focus:outline-none focus:ring-2 focus:ring-[#FFC400] focus:ring-offset-2"
               aria-label="Przejdź do strony kontaktowej"
             >
               <Mail className="h-5 w-5" aria-hidden="true" />
               Wyślij wiadomość
-            </a>
+            </Link>
           </div>
         </footer>
       </div>
       {/* Decorative yellow semicircle at bottom */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 z-10 flex justify-center translate-y-12">
-        <svg className="w-[200vw] h-[320px] lg:h-[420px]" viewBox="0 0 1200 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <svg className="w-[200vw] h-80 lg:h-105" viewBox="0 0 1200 400" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <clipPath id="faqArcClip">
               <path d="M0,0 C300,200 900,200 1200,0 L1200,400 L0,400 Z" />

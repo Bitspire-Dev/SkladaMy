@@ -42,10 +42,16 @@ export async function generateStaticParams() {
   try {
     const blogPostsResponse = await getBlogPosts();
     const blogPosts = blogPostsResponse.data || [];
-    for (const post of blogPosts) {
-      params.push({
-        slug: ['blog', post.slug], // każdy post jako ['blog', 'slug-posta']
-      });
+    
+    // Only add blog posts if CMS is available and has data
+    if (blogPosts.length > 0) {
+      for (const post of blogPosts) {
+        params.push({
+          slug: ['blog', post.slug], // każdy post jako ['blog', 'slug-posta']
+        });
+      }
+    } else {
+      console.log('No blog posts found in CMS - skipping blog post generation');
     }
   } catch (error) {
     console.warn('Warning: Could not fetch blog posts for static generation:', error);

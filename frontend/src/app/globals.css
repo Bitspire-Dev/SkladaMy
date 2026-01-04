@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 /* Usunięto niestandardowe at-rules Tailwind (@custom-variant, @theme) aby uniknąć ostrzeżeń analizatora CSS. */
 

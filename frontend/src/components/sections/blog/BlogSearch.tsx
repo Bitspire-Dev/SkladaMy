@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Search, X } from 'lucide-react';
-import { Category } from '@/types/strapi';
+import type { Category } from '@/types/strapi';
 import { cn } from '@/lib/utils';
 
 interface BlogSearchProps {
@@ -131,15 +131,12 @@ export default function BlogSearch({
       {totalResults !== undefined && (
         <div className="flex items-center justify-between py-2 border-t border-border">
           <p className="text-sm text-muted-foreground">
-            {totalResults === 0 ? (
-              'Nie znaleziono artykułów'
-            ) : totalResults === 1 ? (
-              '1 artykuł'
-            ) : totalResults < 5 ? (
-              `${totalResults} artykuły`
-            ) : (
-              `${totalResults} artykułów`
-            )}
+            {(() => {
+              if (totalResults === 0) return 'Nie znaleziono artykułów';
+              if (totalResults === 1) return '1 artykuł';
+              if (totalResults < 5) return `${totalResults} artykuły`;
+              return `${totalResults} artykułów`;
+            })()}
             {hasActiveFilters && ' spełniających kryteria'}
           </p>
 

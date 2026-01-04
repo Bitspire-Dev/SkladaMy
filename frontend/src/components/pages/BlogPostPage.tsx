@@ -5,12 +5,16 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { BlogPostContent } from "@/components/sections/blog/BlogPostContent";
 import { getBlogPost, getBlogPosts, getMediaURL } from "@/lib/strapi";
+import { getSiteUrl } from "@/lib/env";
 
 interface BlogPostPageProps {
   slug: string;
 }
 
+/* eslint-disable complexity */
 export async function generateBlogPostMetadata(slug: string): Promise<Metadata> {
+  const siteUrl = getSiteUrl();
+  
   try {
     const response = await getBlogPost(slug);
     const post = response.data;
@@ -22,11 +26,11 @@ export async function generateBlogPostMetadata(slug: string): Promise<Metadata> 
     }
 
     // Use SEO component data if available, fallback to post data
-    const seo = post.seo;
+    const {seo} = post;
     const title = seo?.metaTitle || `${post.title} | Blog SkładaMy`;
     const description = seo?.metaDescription || post.excerpt || post.content?.slice(0, 155);
     const keywords = seo?.keywords || undefined;
-    const canonicalUrl = seo?.canonicalUrl || `https://skladamy.pl/blog/${post.slug}`;
+    const canonicalUrl = seo?.canonicalUrl || `${siteUrl}/blog/${post.slug}`;
     
     const ogImage = (seo?.ogImage || post.featuredImage)
       ? {

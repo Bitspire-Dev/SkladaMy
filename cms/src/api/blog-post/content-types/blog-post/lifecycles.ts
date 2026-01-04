@@ -2,6 +2,7 @@
  * Blog Post Lifecycle Hooks
  * Auto-calculate readTime, excerpt, breadcrumbs, and structured data
  */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 interface BlogPostData {
   title?: string;
@@ -56,8 +57,9 @@ function generateExcerpt(content: string, maxLength: number = 297): string {
 
 /**
  * Generate breadcrumbs structured data
+ * Uses PUBLIC_URL from Strapi config - no hardcoded URLs!
  */
-function generateBreadcrumbs(data: BlogPostData, baseUrl: string = 'https://skladamy.pl'): any {
+function generateBreadcrumbs(data: BlogPostData, baseUrl: string): any {
   if (!data.category || !data.title) return null;
   
   return {
@@ -73,8 +75,8 @@ function generateBreadcrumbs(data: BlogPostData, baseUrl: string = 'https://skla
       {
         '@type': 'ListItem',
         position: 2,
-        name: data.category.name || 'Kategoria',
-        item: `${baseUrl}/blog?category=${data.category.slug || ''}`
+        name: data.category.name ?? 'Kategoria',
+        item: `${baseUrl}/blog?category=${data.category.slug ?? ''}`
       },
       {
         '@type': 'ListItem',
@@ -87,20 +89,21 @@ function generateBreadcrumbs(data: BlogPostData, baseUrl: string = 'https://skla
 
 /**
  * Generate Article structured data for SEO
+ * Uses PUBLIC_URL from Strapi config - no hardcoded URLs!
  */
-function generateArticleStructuredData(data: BlogPostData, baseUrl: string = 'https://skladamy.pl'): any {
+function generateArticleStructuredData(data: BlogPostData, baseUrl: string): any {
   if (!data.title) return null;
   
   const structuredData: any = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: data.title,
-    description: data.excerpt || '',
-    datePublished: data.publishDate || new Date().toISOString(),
-    dateModified: data.publishDate || new Date().toISOString(),
+    description: data.excerpt ?? '',
+    datePublished: data.publishDate ?? new Date().toISOString(),
+    dateModified: data.publishDate ?? new Date().toISOString(),
     author: {
       '@type': 'Person',
-      name: data.author?.name || 'SkładaMy Team',
+      name: data.author?.name ?? 'SkładaMy Team',
       ...(data.author?.website && { url: data.author.website })
     },
     publisher: {
@@ -133,7 +136,13 @@ function generateArticleStructuredData(data: BlogPostData, baseUrl: string = 'ht
  * Process blog post data before create/update
  */
 async function processData(event: any) {
-  const { data } = event.params;
+  const { data } = event;
+  
+  // Get base URL from Strapi config - REQUIRED, no fallback
+  const baseUrl = strapi.config.get('server.url');
+  if (!baseUrl || typeof baseUrl !== 'string') {
+    throw new Error('PUBLIC_URL is not configured in server config!');
+  }
   
   // Auto-calculate reading time from content
   if (data.content) {
@@ -160,7 +169,7 @@ async function processData(event: any) {
     data.breadcrumbs = generateBreadcrumbs({
       ...data,
       category
-    });
+    }, baseUrl);
   }
   
   // Auto-generate structured data for SEO if not manually set
@@ -168,7 +177,7 @@ async function processData(event: any) {
     data.seo.structuredData = generateArticleStructuredData({
       ...data,
       category
-    });
+    }, baseUrl);
   }
   
   // Set lastmod in SEO component

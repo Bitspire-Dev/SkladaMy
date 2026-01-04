@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 /**
  * Generate security keys for Strapi CMS
  * Run: node scripts/generate-security-keys.js

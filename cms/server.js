@@ -1,18 +1,22 @@
 // Production-ready Strapi starter for DirectAdmin Node.js App
 // Requires: npm run build (locally) before deployment
 // This starts Strapi in production mode (no admin panel rebuild, no file watching)
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 'use strict';
 
 console.log('[server.js] Starting Strapi...');
 console.log('[server.js] Node version:', process.version);
 console.log('[server.js] Working directory:', process.cwd());
-console.log('[server.js] NODE_ENV:', process.env.NODE_ENV || 'production');
 
-// Validate environment
-if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'production';
-  console.log('[server.js] Setting NODE_ENV=production');
+// Validate environment variables
+if (!process.env.NODE_ENV || (process.env.NODE_ENV !== 'production' && process.env.NODE_ENV !== 'development')) {
+  console.error('[server.js] ERROR: NODE_ENV must be set to "production" or "development"');
+  console.error('[server.js] Add NODE_ENV=production to your environment variables');
+  process.exit(1);
 }
+
+console.log('[server.js] NODE_ENV:', process.env.NODE_ENV);
 
 // Check if Strapi is installed
 try {
@@ -24,9 +28,9 @@ try {
 }
 
 // Start Strapi
-const strapi = require('@strapi/strapi');
+const { createStrapi } = require('@strapi/strapi');
 
-strapi({ distDir: './dist' })
+createStrapi()
   .start()
   .then(() => {
     console.log('[server.js] ✅ Strapi started successfully');

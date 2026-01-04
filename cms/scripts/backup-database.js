@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 /**
  * Database Backup Script for Strapi CMS
  * 
@@ -29,12 +31,27 @@ if (!fs.existsSync(BACKUP_DIR)) {
   console.log(`📁 Created backup directory: ${BACKUP_DIR}`);
 }
 
-// Database credentials from environment
-const dbHost = process.env.DATABASE_HOST || 'localhost';
-const dbPort = process.env.DATABASE_PORT || '3306';
-const dbName = process.env.DATABASE_NAME || 'strapi';
-const dbUser = process.env.DATABASE_USERNAME || 'strapi';
-const dbPassword = process.env.DATABASE_PASSWORD || 'strapi';
+// Database credentials from environment - no fallbacks, fail fast if not configured
+const dbHost = process.env.DATABASE_HOST;
+const dbPort = process.env.DATABASE_PORT;
+const dbName = process.env.DATABASE_NAME;
+const dbUser = process.env.DATABASE_USERNAME;
+const dbPassword = process.env.DATABASE_PASSWORD;
+
+// Validate all required environment variables
+const missingVars = [];
+if (!dbHost) missingVars.push('DATABASE_HOST');
+if (!dbPort) missingVars.push('DATABASE_PORT');
+if (!dbName) missingVars.push('DATABASE_NAME');
+if (!dbUser) missingVars.push('DATABASE_USERNAME');
+if (!dbPassword) missingVars.push('DATABASE_PASSWORD');
+
+if (missingVars.length > 0) {
+  console.error('❌ Error: Required environment variables are not set:');
+  missingVars.forEach(varName => console.error(`   - ${varName}`));
+  console.error('\nPlease set these variables in your .env file.');
+  process.exit(1);
+}
 
 // Generate backup filename with timestamp
 const timestamp = new Date().toISOString().split('T')[0]; // YYYY-MM-DD

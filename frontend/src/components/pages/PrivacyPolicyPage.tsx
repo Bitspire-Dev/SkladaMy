@@ -5,6 +5,10 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BackToTop from "@/components/ui/BackToTop";
+import { getSiteUrl } from "@/lib/env";
+import { COMPANY_DATA } from "@/lib/company-data";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "Polityka prywatności RODO 2025 | SkładaMy Montaż Mebli Słupsk - Pełna ochrona danych",
@@ -20,12 +24,12 @@ export const metadata: Metadata = {
     "cookies montaż mebli"
   ],
   authors: [{ name: "SkładaMy" }],
-  alternates: { canonical: "https://skladamy.pl/polityka-prywatnosci" },
+  alternates: { canonical: `${siteUrl}/polityka-prywatnosci` },
   openGraph: {
     title: "Polityka prywatności RODO 2025 | SkładaMy - Bezpieczny montaż mebli Słupsk",
     description: "🔒 Jak chronimy Twoje dane w procesie montażu mebli. Transparentność, minimalizacja, bezpieczeństwo i prawa użytkownika.",
     type: "website",
-    url: "https://skladamy.pl/polityka-prywatnosci",
+    url: `${siteUrl}/polityka-prywatnosci`,
     siteName: "SkładaMy"
   },
   robots: {
@@ -47,6 +51,7 @@ export const metadata: Metadata = {
   }
 };
 
+/* eslint-disable max-lines-per-function */
 export default function PrivacyPolicyPage() {
   const sections = [
     { id: "administrator-danych", title: "§1 Administrator danych osobowych", keywords: "administrator RODO, kontakt" },
@@ -63,7 +68,7 @@ export default function PrivacyPolicyPage() {
     "@type": "WebPage",
     name: "Polityka prywatności RODO 2025 - SkładaMy Słupsk",
     description: "Aktualna polityka prywatności SkładaMy (Słupsk i okolice) – zasady gromadzenia, przetwarzania i ochrony danych osobowych przy usługach montażu mebli.",
-    url: "https://skladamy.pl/polityka-prywatnosci",
+    url: `${siteUrl}/polityka-prywatnosci`,
     inLanguage: "pl-PL",
     dateModified: new Date().toISOString(),
     mainEntity: {
@@ -73,28 +78,28 @@ export default function PrivacyPolicyPage() {
       dateModified: new Date().toISOString(),
       author: {
         "@type": "Organization",
-        name: "SkładaMy",
-        url: "https://skladamy.pl",
-        address: { "@type": "PostalAddress", addressLocality: "Słupsk", addressCountry: "PL" }
+        name: COMPANY_DATA.name,
+        url: COMPANY_DATA.website,
+        address: { "@type": "PostalAddress", addressLocality: COMPANY_DATA.address.city, addressCountry: "PL" }
       },
-      publisher: { "@type": "Organization", name: "SkładaMy", url: "https://skladamy.pl" },
+      publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
       about: [
-        { "@type": "Service", name: "Montaż mebli IKEA", provider: { "@type": "Organization", name: "SkładaMy" } },
-        { "@type": "Service", name: "Montaż szaf PAX", provider: { "@type": "Organization", name: "SkładaMy" } }
+        { "@type": "Service", name: "Montaż mebli IKEA", provider: { "@type": "Organization", name: COMPANY_DATA.name } },
+        { "@type": "Service", name: "Montaż szaf PAX", provider: { "@type": "Organization", name: COMPANY_DATA.name } }
       ],
       legislationApplies: "RODO; Ustawa o świadczeniu usług drogą elektroniczną; Ustawa o prawach konsumenta"
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Strona główna", item: "https://skladamy.pl" },
-        { "@type": "ListItem", position: 2, name: "Polityka prywatności", item: "https://skladamy.pl/polityka-prywatnosci" }
+        { "@type": "ListItem", position: 1, name: "Strona główna", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: "Polityka prywatności", item: `${siteUrl}/polityka-prywatnosci` }
       ]
     },
-    hasPart: sections.map((s, i) => ({ "@type": "WebPageElement", position: i + 1, name: s.title, url: `https://skladamy.pl/polityka-prywatnosci#${s.id}` })),
-    significantLink: sections.map(section => `https://skladamy.pl/polityka-prywatnosci#${section.id}`),
-    publisher: { "@type": "Organization", name: "SkładaMy", url: "https://skladamy.pl" },
-    contactPoint: [{ "@type": "ContactPoint", contactType: "customer support", email: "kontakt@skladamy.pl", telephone: "+48 884 938 490", areaServed: "PL", availableLanguage: ["pl"] }],
+    hasPart: sections.map((s, i) => ({ "@type": "WebPageElement", position: i + 1, name: s.title, url: `${siteUrl}/polityka-prywatnosci#${s.id}` })),
+    significantLink: sections.map(section => `${siteUrl}/polityka-prywatnosci#${section.id}`),
+    publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
+    contactPoint: [{ "@type": "ContactPoint", contactType: "customer support", email: COMPANY_DATA.email, telephone: COMPANY_DATA.phone, areaServed: "PL", availableLanguage: ["pl"] }],
     keywords: (Array.isArray(metadata.keywords) ? metadata.keywords : (metadata.keywords || "")).toString()
   };
 
@@ -159,10 +164,10 @@ export default function PrivacyPolicyPage() {
                   <h4 className="font-semibold text-foreground mb-3">📞 Dane kontaktowe Administratora RODO:</h4>
                   <div className="grid md:grid-cols-2 gap-4">
                     <ul className="text-muted-foreground text-sm space-y-2">
-                      <li>• <strong>Nazwa firmy:</strong> SkładaMy - Montaż Mebli IKEA</li>
-                      <li>• <strong>E-mail RODO:</strong> <a href="mailto:kontakt@skladamy.pl" className="text-primary hover:underline">kontakt@skladamy.pl</a></li>
-                      <li>• <strong>Telefon:</strong> <a href="tel:+48884938490" className="text-primary hover:underline">+48 884 938 490</a> (pn-nd 8:00-20:00)</li>
-                      <li>• <strong>Strona WWW:</strong> <a href="https://skladamy.pl" className="text-primary hover:underline">https://skladamy.pl</a></li>
+                      <li>• <strong>Nazwa firmy:</strong> {COMPANY_DATA.fullName}</li>
+                      <li>• <strong>E-mail RODO:</strong> <a href={`mailto:${COMPANY_DATA.email}`} className="text-primary hover:underline">{COMPANY_DATA.email}</a></li>
+                      <li>• <strong>Telefon:</strong> <a href={`tel:${COMPANY_DATA.phone.replace(/\s/g, '')}`} className="text-primary hover:underline">{COMPANY_DATA.phone}</a> (pn-nd 8:00-20:00)</li>
+                      <li>• <strong>Strona WWW:</strong> <a href={COMPANY_DATA.website} className="text-primary hover:underline">{COMPANY_DATA.website}</a></li>
                     </ul>
                     <ul className="text-muted-foreground text-sm space-y-2">
                       <li>• <strong>Główny obszar:</strong> Słupsk (miasto i powiat)</li>
@@ -246,7 +251,7 @@ export default function PrivacyPolicyPage() {
                 <p><strong>7. Prawo cofnięcia zgody</strong> – w dowolnym momencie (nie wpływa to na zgodność wcześniejszego przetwarzania).</p>
                 <p><strong>8. Prawo skargi do UODO</strong> – Prezes Urzędu Ochrony Danych Osobowych, ul. Stawki 2, 00-193 Warszawa.</p>
                 <div className="bg-primary/10 p-4 rounded">
-                  <p><strong>Jak złożyć wniosek?</strong> Wyślij e‑mail na: <a href="mailto:kontakt@skladamy.pl" className="text-primary hover:underline">kontakt@skladamy.pl</a>. Odpowiadamy maksymalnie w 30 dni.</p>
+                  <p><strong>Jak złożyć wniosek?</strong> Wyślij e‑mail na: <a href={`mailto:${COMPANY_DATA.email}`} className="text-primary hover:underline">{COMPANY_DATA.email}</a>. Odpowiadamy maksymalnie w 30 dni.</p>
                 </div>
               </CardContent>
             </Card>
@@ -298,7 +303,7 @@ export default function PrivacyPolicyPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm text-muted-foreground">
-                <p><strong>1. Kontakt podstawowy:</strong> e‑mail: <a href="mailto:kontakt@skladamy.pl" className="text-primary hover:underline">kontakt@skladamy.pl</a>, tel.: <a href="tel:+48884938490" className="text-primary hover:underline">+48 884 938 490</a>.</p>
+                <p><strong>1. Kontakt podstawowy:</strong> e‑mail: <a href={`mailto:${COMPANY_DATA.email}`} className="text-primary hover:underline">{COMPANY_DATA.email}</a>, tel.: <a href={`tel:${COMPANY_DATA.phone.replace(/\s/g, '')}`} className="text-primary hover:underline">{COMPANY_DATA.phone}</a>.</p>
                 <p><strong>2. Forma zgłoszeń:</strong> Wnioski dotyczące praw RODO prosimy kierować w tytule wiadomości wpisując: &quot;RODO – [prawo]&quot; (np. RODO – dostęp).</p>
                 <p><strong>3. Skarga do organu nadzorczego:</strong> Prezes UODO, ul. Stawki 2, 00-193 Warszawa, <a href="https://uodo.gov.pl" className="text-primary hover:underline" rel="nofollow">uodo.gov.pl</a>.</p>
                 <p><strong>4. Inne dokumenty:</strong> Zobacz również <Link href="/regulamin" className="text-primary hover:underline">Regulamin świadczenia usług</Link> (warunki montażu) aby poznać zasady wykonania usługi.</p>

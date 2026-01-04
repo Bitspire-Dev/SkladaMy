@@ -5,6 +5,10 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BackToTop from "@/components/ui/BackToTop";
+import { getSiteUrl } from "@/lib/env";
+import { COMPANY_DATA } from "@/lib/company-data";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "Regulamin usług montażu mebli 2025 | SkładaMy Słupsk – IKEA, PAX, kuchnie",
@@ -20,12 +24,12 @@ export const metadata: Metadata = {
     "montaż kuchni IKEA Słupsk"
   ],
   authors: [{ name: "SkładaMy" }],
-  alternates: { canonical: "https://skladamy.pl/regulamin" },
+  alternates: { canonical: `${siteUrl}/regulamin` },
   openGraph: {
     title: "Regulamin usług montażu mebli 2025 | SkładaMy Słupsk",
     description: "Warunki współpracy z firmą montażową SkładaMy: zakres usług, gwarancja 12 miesięcy, reklamacje, RODO, odpowiedzialność – aktualizacja 2025.",
     type: "website",
-    url: "https://skladamy.pl/regulamin",
+    url: `${siteUrl}/regulamin`,
     siteName: "SkładaMy"
   },
   robots: {
@@ -47,6 +51,7 @@ export const metadata: Metadata = {
   }
 };
 
+/* eslint-disable max-lines-per-function */
 export default function TermsPage() {
   const sections = [
     { id: "postanowienia-ogolne", title: "§1 Postanowienia ogólne", keywords: "zakres usług, kontakt, Słupsk" },
@@ -67,10 +72,10 @@ export default function TermsPage() {
     "@type": "WebPage",
     name: "Regulamin usług montażu mebli – SkładaMy Słupsk (2025)",
     description: "Aktualny regulamin świadczenia usług montażu mebli (IKEA, PAX, kuchnie) – warunki współpracy, gwarancja, reklamacje, odpowiedzialność, RODO.",
-    url: "https://skladamy.pl/regulamin",
+    url: `${siteUrl}/regulamin`,
     inLanguage: "pl-PL",
     dateModified: new Date().toISOString(),
-    isPartOf: { "@type": "WebSite", name: "SkładaMy", url: "https://skladamy.pl" },
+    isPartOf: { "@type": "WebSite", name: COMPANY_DATA.name, url: siteUrl },
     mainEntity: {
       "@type": "LegalDocument",
       name: "Regulamin świadczenia usług montażu mebli SkładaMy",
@@ -78,29 +83,29 @@ export default function TermsPage() {
       dateModified: new Date().toISOString(),
       author: {
         "@type": "Organization",
-        name: "SkładaMy",
-        url: "https://skladamy.pl",
-        address: { "@type": "PostalAddress", addressLocality: "Słupsk", addressCountry: "PL" }
+        name: COMPANY_DATA.name,
+        url: COMPANY_DATA.website,
+        address: { "@type": "PostalAddress", addressLocality: COMPANY_DATA.address.city, addressCountry: "PL" }
       },
-      publisher: { "@type": "Organization", name: "SkładaMy", url: "https://skladamy.pl" },
+      publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
       about: [
-        { "@type": "Service", name: "Montaż mebli IKEA", provider: { "@type": "Organization", name: "SkładaMy" } },
-        { "@type": "Service", name: "Montaż szaf PAX", provider: { "@type": "Organization", name: "SkładaMy" } },
-        { "@type": "Service", name: "Montaż kuchni IKEA", provider: { "@type": "Organization", name: "SkładaMy" } }
+        { "@type": "Service", name: "Montaż mebli IKEA", provider: { "@type": "Organization", name: COMPANY_DATA.name } },
+        { "@type": "Service", name: "Montaż szaf PAX", provider: { "@type": "Organization", name: COMPANY_DATA.name } },
+        { "@type": "Service", name: "Montaż kuchni IKEA", provider: { "@type": "Organization", name: COMPANY_DATA.name } }
       ],
       legislationApplies: "Kodeks cywilny; Ustawa o prawach konsumenta; Ustawa o świadczeniu usług drogą elektroniczną; RODO"
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Strona główna", item: "https://skladamy.pl" },
-        { "@type": "ListItem", position: 2, name: "Regulamin", item: "https://skladamy.pl/regulamin" }
+        { "@type": "ListItem", position: 1, name: "Strona główna", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: "Regulamin", item: `${siteUrl}/regulamin` }
       ]
     },
-    hasPart: sections.map((s, i) => ({ "@type": "WebPageElement", position: i + 1, name: s.title, url: `https://skladamy.pl/regulamin#${s.id}` })),
-    significantLink: sections.map(section => `https://skladamy.pl/regulamin#${section.id}`),
-    contactPoint: [{ "@type": "ContactPoint", contactType: "customer support", email: "kontakt@skladamy.pl", telephone: "+48 884 938 490", areaServed: "PL", availableLanguage: ["pl"] }],
-    publisher: { "@type": "Organization", name: "SkładaMy", url: "https://skladamy.pl" },
+    hasPart: sections.map((s, i) => ({ "@type": "WebPageElement", position: i + 1, name: s.title, url: `${siteUrl}/regulamin#${s.id}` })),
+    significantLink: sections.map(section => `${siteUrl}/regulamin#${section.id}`),
+    contactPoint: [{ "@type": "ContactPoint", contactType: "customer support", email: COMPANY_DATA.email, telephone: COMPANY_DATA.phone, areaServed: "PL", availableLanguage: ["pl"] }],
+    publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
     keywords: (Array.isArray(metadata.keywords) ? metadata.keywords : (metadata.keywords || "")).toString()
   };
 
@@ -167,9 +172,9 @@ export default function TermsPage() {
                   3. Kontakt z Usługodawcą możliwy jest poprzez:
                 </p>
                 <ul className="text-muted-foreground text-sm space-y-1 ml-4">
-                  <li>• <strong>E-mail:</strong> kontakt@skladamy.pl</li>
-                  <li>• <strong>Telefon:</strong> +48 884 938 490 (codziennie 8:00-20:00)</li>
-                  <li>• <strong>Formularz kontaktowy:</strong> www.skladamy.pl</li>
+                  <li>• <strong>E-mail:</strong> {COMPANY_DATA.email}</li>
+                  <li>• <strong>Telefon:</strong> {COMPANY_DATA.phone} (codziennie 8:00-20:00)</li>
+                  <li>• <strong>Formularz kontaktowy:</strong> {COMPANY_DATA.website}</li>
                   <li>• <strong>Obszar działania:</strong> Słupsk i okolice (promień 50 km)</li>
                 </ul>
                 <p className="text-muted-foreground text-sm">
@@ -236,9 +241,9 @@ export default function TermsPage() {
                   1. Zamówienia na montaż mebli przyjmowane są:
                 </p>
                 <ul className="text-muted-foreground text-sm space-y-1 ml-4">
-                  <li>• <strong>Telefonicznie:</strong> +48 884 938 490 (8:00-20:00, 7 dni w tygodniu)</li>
-                  <li>• <strong>Online:</strong> formularz kontaktowy na skladamy.pl</li>
-                  <li>• <strong>E-mail:</strong> kontakt@skladamy.pl (odpowiedź do 24h)</li>
+                  <li>• <strong>Telefonicznie:</strong> {COMPANY_DATA.phone} (8:00-20:00, 7 dni w tygodniu)</li>
+                  <li>• <strong>Online:</strong> formularz kontaktowy na {COMPANY_DATA.website}</li>
+                  <li>• <strong>E-mail:</strong> {COMPANY_DATA.email} (odpowiedź do 24h)</li>
                   <li>• <strong>Wizyta w domu:</strong> wycena na miejscu (Słupsk i okolice)</li>
                 </ul>
                 <p className="text-muted-foreground text-sm">
@@ -414,8 +419,8 @@ export default function TermsPage() {
                   1. Reklamacje można zgłaszać:
                 </p>
                 <ul className="text-muted-foreground text-sm space-y-1 ml-4">
-                  <li>• Telefonicznie: +48 884 938 490</li>
-                  <li>• E-mail: kontakt@skladamy.pl</li>
+                  <li>• Telefonicznie: {COMPANY_DATA.phone}</li>
+                  <li>• E-mail: {COMPANY_DATA.email}</li>
                   <li>• Listownie na adres siedziby</li>
                 </ul>
                 <p className="text-muted-foreground text-sm">
@@ -445,7 +450,7 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground text-sm">
-                  1. <strong>Administrator danych:</strong> SkładaMy, kontakt: kontakt@skladamy.pl
+                  1. <strong>Administrator danych:</strong> {COMPANY_DATA.fullName}, kontakt: {COMPANY_DATA.email}
                 </p>
                 <p className="text-muted-foreground text-sm">
                   2. <strong>Cel przetwarzania:</strong> realizacja usług montażu mebli, kontakt z klientem, 
@@ -490,7 +495,7 @@ export default function TermsPage() {
                 </p>
                 <p className="text-muted-foreground text-sm">
                   3. <strong>Zmiany regulaminu:</strong> Usługodawca może zmieniać regulamin 
-                  z 14-dniowym wyprzedzeniem. Zmiany publikowane są na stronie skladamy.pl.
+                  z 14-dniowym wyprzedzeniem. Zmiany publikowane są na stronie {COMPANY_DATA.website}.
                 </p>
                 <p className="text-muted-foreground text-sm">
                   4. <strong>Klauzula salvatoria:</strong> w przypadku nieważności któregokolwiek 
@@ -516,16 +521,16 @@ export default function TermsPage() {
                     Wszelkie pytania dotyczące regulaminu i usług kieruj na:
                   </p>
                   <ul className="text-muted-foreground text-sm space-y-1">
-                    <li>• <strong>Telefon:</strong> +48 884 938 490</li>
-                    <li>• <strong>E-mail:</strong> kontakt@skladamy.pl</li>
-                    <li>• <strong>Strona WWW:</strong> https://skladamy.pl</li>
+                    <li>• <strong>Telefon:</strong> {COMPANY_DATA.phone}</li>
+                    <li>• <strong>E-mail:</strong> {COMPANY_DATA.email}</li>
+                    <li>• <strong>Strona WWW:</strong> {COMPANY_DATA.website}</li>
                     <li>• <strong>Obszar działania:</strong> Słupsk i okolice</li>
                   </ul>
                 </div>
                 <p className="text-muted-foreground text-sm">
                   Aktualny regulamin dostępny jest pod adresem: 
-                  <Link href="https://skladamy.pl/regulamin" className="text-primary hover:underline ml-1">
-                    https://skladamy.pl/regulamin
+                  <Link href={`${siteUrl}/regulamin`} className="text-primary hover:underline ml-1">
+                    {siteUrl}/regulamin
                   </Link>
                 </p>
                 <div className="text-center mt-6">

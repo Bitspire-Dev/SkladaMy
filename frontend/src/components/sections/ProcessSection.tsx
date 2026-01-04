@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import BulletList from "@/components/ui/BulletList";
 import { MessageCircle, Calendar, CheckCircle } from "lucide-react";
@@ -118,8 +119,8 @@ const ProcessSection = memo(() => {
         </svg>
       </div>
       {/* Decorative młotek (moved inward, full opacity) */}
-      <div className="hidden lg:block pointer-events-none absolute left-[2%] top-24 w-[380px] -rotate-6 z-10 select-none opacity-40">
-        <Image src="/młotek.svg" alt="" aria-hidden="true" width={380} height={380} />
+      <div className="hidden lg:block pointer-events-none absolute left-[2%] top-24 w-95 -rotate-6 z-10 select-none opacity-40">
+        <Image src="/młotek.svg" alt="" aria-hidden="true" width={95 * 4} height={95 * 4} />
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <header className="text-center mb-12">
@@ -154,13 +155,13 @@ const ProcessSection = memo(() => {
               <MessageCircle className="mr-2 h-5 w-5" aria-hidden="true" />
               Zadzwoń teraz
             </a>
-            <a
+            <Link
               href="/kontakt"
               className="inline-flex items-center px-6 py-3 border border-input text-base font-medium rounded-xl text-foreground bg-background hover:bg-accent transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               aria-label="Przejdź do formularza kontaktowego"
             >
               Wyślij zapytanie
-            </a>
+            </Link>
           </div>
         </footer>
       </div>

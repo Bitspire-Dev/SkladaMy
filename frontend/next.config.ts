@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_STRAPI_URL?.replace(/^https?:\/\//, '') || 'cms.skladamy.com.pl',
+        hostname: process.env.NEXT_PUBLIC_STRAPI_URL?.replace(/^https?:\/\//, '') ?? (() => { throw new Error('NEXT_PUBLIC_STRAPI_URL must be set in .env!'); })(),
         pathname: '/uploads/**',
       },
     ],

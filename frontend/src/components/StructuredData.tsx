@@ -1,26 +1,29 @@
 'use client';
 
 import { COMPANY_DATA } from '@/lib/company-data';
+import { getSiteUrl } from '@/lib/env';
 
 export default function StructuredData() {
+  const siteUrl = getSiteUrl();
+  
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": "SkładaMy",
-    "image": "https://skladamy.pl/SkładaMy.svg",
+    "name": COMPANY_DATA.name,
+    "image": `${siteUrl}/SkładaMy.svg`,
     "description": "Profesjonalny montaż mebli IKEA w Słupsku. Szafy PAX, kuchnie, wieszanie szafek. Gwarancja 30 dni, dojazd w 24h.",
     "address": {
       "@type": "PostalAddress",
-      "addressLocality": "Słupsk",
-      "addressRegion": "Pomorskie",
+      "addressLocality": COMPANY_DATA.address.city,
+      "addressRegion": COMPANY_DATA.address.region,
       "addressCountry": "PL"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 54.464,
-      "longitude": 17.029
+      "latitude": COMPANY_DATA.address.coordinates.latitude,
+      "longitude": COMPANY_DATA.address.coordinates.longitude
     },
-    "url": "https://skladamy.pl",
+    "url": siteUrl,
     "telephone": COMPANY_DATA.phone,
     "email": COMPANY_DATA.email,
     "priceRange": "$$",
@@ -28,8 +31,8 @@ export default function StructuredData() {
       "@type": "GeoCircle",
       "geoMidpoint": {
         "@type": "GeoCoordinates",
-        "latitude": 54.464,
-        "longitude": 17.029
+        "latitude": COMPANY_DATA.address.coordinates.latitude,
+        "longitude": COMPANY_DATA.address.coordinates.longitude
       },
       "geoRadius": "50000"
     },

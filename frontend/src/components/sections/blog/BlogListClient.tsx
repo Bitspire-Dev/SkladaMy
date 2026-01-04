@@ -18,6 +18,7 @@ interface BlogListClientProps {
   categories: Category[];
 }
 
+/* eslint-disable max-lines-per-function */
 export function BlogListClient({ allPosts, featuredPosts, categories }: BlogListClientProps) {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);

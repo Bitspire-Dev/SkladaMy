@@ -1,19 +1,24 @@
-import { MetadataRoute } from 'next'
+import type { MetadataRoute } from 'next'
 import { getBlogPosts } from '@/lib/strapi'
 
 // Ensure this route is treated as static during `output: 'export'` builds
 export const dynamic = 'force-static';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://skladamy.pl'
+  // NEXT_PUBLIC_SITE_URL must be set in .env - no fallback!
+  if (!process.env.NEXT_PUBLIC_SITE_URL) {
+    throw new Error('NEXT_PUBLIC_SITE_URL must be set in .env file!');
+  }
+  
+  const siteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL
   
   // Fetch blog posts for dynamic sitemap entries
-  let blogUrls: MetadataRoute.Sitemap = [];
+  let blogPostUrls: MetadataRoute.Sitemap = [];
   
   try {
     const postsResponse = await getBlogPosts({ limit: 100 });
-    blogUrls = postsResponse.data.map(post => ({
-      url: `${baseUrl}/blog/${post.slug}`,
+    blogPostUrls = postsResponse.data.map(post => ({
+      url: `${siteBaseUrl}/blog/${post.slug}`,
       // Use seo.lastmod if available, fallback to updatedAt, then publishedAt
       lastModified: post.seo?.lastmod 
         ? new Date(post.seo.lastmod)
@@ -27,56 +32,56 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   
   return [
     {
-      url: baseUrl,
+      url: siteBaseUrl,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 1,
     },
     {
-      url: `${baseUrl}/o-nas`,
+      url: `${siteBaseUrl}/o-nas`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/portfolio`,
+      url: `${siteBaseUrl}/portfolio`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/blog`,
+      url: `${siteBaseUrl}/blog`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,
     },
-    ...blogUrls,
+    ...blogPostUrls,
     {
-      url: `${baseUrl}/slupsk`,
+      url: `${siteBaseUrl}/slupsk`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/kontakt`,
+      url: `${siteBaseUrl}/kontakt`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/polityka-prywatnosci`,
+      url: `${siteBaseUrl}/polityka-prywatnosci`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,
     },
     {
-      url: `${baseUrl}/regulamin`,
+      url: `${siteBaseUrl}/regulamin`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.5,
     },
     {
-      url: `${baseUrl}/deklaracja-dostepnosci`,
+      url: `${siteBaseUrl}/deklaracja-dostepnosci`,
       lastModified: new Date(),
       changeFrequency: 'yearly',
       priority: 0.3,

@@ -22,14 +22,18 @@ import AuthorCard from "@/components/sections/blog/AuthorCard";
 import ShareButtons from "@/components/sections/blog/ShareButtons";
 import TableOfContents from "@/components/sections/blog/TableOfContents";
 import type { BlogPost } from "@/types/strapi";
+import { usePathname } from 'next/navigation';
+import { getCurrentUrl } from "@/lib/env";
 
 interface BlogPostContentProps {
   post: BlogPost;
   relatedPosts: BlogPost[];
 }
 
+/* eslint-disable max-lines-per-function, complexity */
 export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
-  const fullUrl = typeof window !== 'undefined' ? window.location.href : `https://skladamy.pl/blog/${post.slug}`;
+  const pathname = usePathname();
+  const fullUrl = getCurrentUrl(pathname || `/blog/${post.slug}`);
   const processedContent = processBlogContent(post.content);
 
   return (

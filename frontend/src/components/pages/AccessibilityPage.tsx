@@ -5,6 +5,9 @@ import StickyCTA from "@/components/layout/StickyCTA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BackToTop from "@/components/ui/BackToTop";
 import { COMPANY_DATA, formatPhoneForDisplay, formatPhoneForTel } from "@/lib/company-data";
+import { getSiteUrl } from "@/lib/env";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "Deklaracja dostępności 2025 | SkładaMy – dostępność usług i strony WWW",
@@ -18,12 +21,12 @@ export const metadata: Metadata = {
     "kontakt alternatywny dostępność"
   ],
   authors: [{ name: "SkładaMy" }],
-  alternates: { canonical: "https://skladamy.pl/deklaracja-dostepnosci" },
+  alternates: { canonical: `${siteUrl}/deklaracja-dostepnosci` },
   openGraph: {
     title: "Deklaracja dostępności – SkładaMy Słupsk",
     description: "Informacje o dostępności serwisu i usług SkładaMy. Jak zgłosić bariery i uzyskać pomoc alternatywnymi kanałami.",
     type: "website",
-    url: "https://skladamy.pl/deklaracja-dostepnosci",
+    url: `${siteUrl}/deklaracja-dostepnosci`,
     siteName: "SkładaMy"
   },
   robots: {
@@ -59,15 +62,15 @@ export default function AccessibilityPage() {
     "@type": "WebPage",
     name: "Deklaracja dostępności – SkładaMy",
     description: "Deklaracja dostępności cyfrowej serwisu SkładaMy i oferowanych usług. Informacje o ułatwieniach, niedostępnościach i zgłaszaniu barier.",
-    url: "https://skladamy.pl/deklaracja-dostepnosci",
+    url: `${siteUrl}/deklaracja-dostepnosci`,
     inLanguage: "pl-PL",
     dateModified: new Date().toISOString(),
-    isPartOf: { "@type": "WebSite", name: "SkładaMy", url: "https://skladamy.pl" },
+    isPartOf: { "@type": "WebSite", name: "SkładaMy", url: siteUrl },
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Strona główna", item: "https://skladamy.pl" },
-        { "@type": "ListItem", position: 2, name: "Deklaracja dostępności", item: "https://skladamy.pl/deklaracja-dostepnosci" }
+        { "@type": "ListItem", position: 1, name: "Strona główna", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: "Deklaracja dostępności", item: `${siteUrl}/deklaracja-dostepnosci` }
       ]
     },
     publisher: { "@type": "Organization", name: COMPANY_DATA.fullName, url: COMPANY_DATA.website },

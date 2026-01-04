@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable no-console */
 // Production-ready Next.js starter for DirectAdmin Node.js App
 // Requires: npm run build (locally or on server) before starting
 // This starts Next.js in production mode (optimized, SSR/SSG ready)
@@ -7,12 +8,22 @@
 console.log('[server.js] Starting Next.js...');
 console.log('[server.js] Node version:', process.version);
 console.log('[server.js] Working directory:', process.cwd());
-console.log('[server.js] NODE_ENV:', process.env.NODE_ENV || 'production');
+console.log('[server.js] NODE_ENV:', process.env.NODE_ENV);
 
-// Validate environment
+// Validate required environment variables - NO FALLBACKS!
 if (!process.env.NODE_ENV) {
-  process.env.NODE_ENV = 'production';
-  console.log('[server.js] Setting NODE_ENV=production');
+  console.error('[server.js] ERROR: NODE_ENV must be set in .env file!');
+  process.exit(1);
+}
+
+if (!process.env.HOSTNAME) {
+  console.error('[server.js] ERROR: HOSTNAME must be set in .env file!');
+  process.exit(1);
+}
+
+if (!process.env.PORT) {
+  console.error('[server.js] ERROR: PORT must be set in .env file!');
+  process.exit(1);
 }
 
 // Check if Next.js is installed
@@ -41,8 +52,8 @@ const { parse } = require('url');
 const next = require('next');
 
 const dev = process.env.NODE_ENV !== 'production';
-const hostname = process.env.HOSTNAME || '0.0.0.0';
-const port = parseInt(process.env.PORT || '3000', 10);
+const hostname = process.env.HOSTNAME;
+const port = parseInt(process.env.PORT, 10);
 
 console.log('[server.js] Initializing Next.js app...');
 const app = next({ dev, hostname, port });

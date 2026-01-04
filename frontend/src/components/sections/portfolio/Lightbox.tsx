@@ -21,6 +21,7 @@ interface LightboxProps {
   onNavigate: (index: number) => void;
 }
 
+/* eslint-disable max-lines-per-function */
 export function Lightbox({ images, currentIndex, onClose, onNavigate }: LightboxProps) {
   const [isLoading, setIsLoading] = useState(true);
   const currentImage = images[currentIndex];

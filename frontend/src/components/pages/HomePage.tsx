@@ -6,6 +6,9 @@ import HeroSection from "@/components/sections/HeroSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import WhyUsSection from "@/components/sections/WhyUsSection";
 import BelowFold from "@/components/sections/BelowFold";
+import { getSiteUrl } from "@/lib/env";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "SkładaMy - Profesjonalny montaż mebli IKEA w Słupsku | Gwarancja 30 dni",
@@ -21,12 +24,12 @@ export const metadata: Metadata = {
     "usługi montażowe Słupsk"
   ],
   alternates: {
-    canonical: "https://skladamy.pl"
+    canonical: siteUrl
   },
   openGraph: {
     title: "SkładaMy - Profesjonalny montaż mebli IKEA w Słupsku",
     description: "⭐ Najlepszy montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Dojazd w 24h",
-    url: "https://skladamy.pl",
+    url: siteUrl,
     siteName: "SkładaMy",
     locale: "pl_PL",
     type: "website",

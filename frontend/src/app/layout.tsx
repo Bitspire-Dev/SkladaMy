@@ -11,7 +11,12 @@ const inter = Inter({
   variable: '--font-inter'
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://skladamy.pl';
+// NEXT_PUBLIC_SITE_URL must be set in .env - no fallback!
+if (!process.env.NEXT_PUBLIC_SITE_URL) {
+  throw new Error('NEXT_PUBLIC_SITE_URL must be set in .env file!');
+}
+
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -31,7 +36,7 @@ export const metadata: Metadata = {
     "usługi montażowe Słupsk",
     "montaż garderoby Słupsk"
   ],
-  authors: [{ name: "SkładaMy", url: "https://skladamy.pl" }],
+  authors: [{ name: "SkładaMy", url: siteUrl }],
   creator: "SkładaMy",
   publisher: "SkładaMy",
   category: "Usługi montażowe",

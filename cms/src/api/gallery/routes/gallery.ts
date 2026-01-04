@@ -1,22 +1,15 @@
-export default {
-  routes: [
-    {
-      method: 'GET',
-      path: '/gallery',
-      handler: 'gallery.find',
-      config: {
-        policies: [],
-        middlewares: [],
-      },
+/**
+ * gallery router
+ * Gallery is a singleType - only find and update
+ */
+import { factories } from '@strapi/strapi';
+
+export default factories.createCoreRouter('api::gallery.gallery', {
+  config: {
+    find: {
+      auth: false,
+      policies: [],
+      middlewares: [],
     },
-    {
-      method: 'PUT',
-      path: '/gallery',
-      handler: 'gallery.update',
-      config: {
-        policies: [],
-        middlewares: [],
-      },
-    },
-  ],
-};
+  },
+});

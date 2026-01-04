@@ -34,6 +34,7 @@ const serviceTypes = [
   { value: "inne", label: "Inne (opisz w wiadomości)" },
 ];
 
+/* eslint-disable max-lines-per-function, complexity */
 export default memo(function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');

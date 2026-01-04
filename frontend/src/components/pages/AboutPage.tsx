@@ -8,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Shield, Clock, Users, Award, Phone, Mail } from "lucide-react";
 import Link from "next/link";
 import { formatPhoneForTel } from "@/lib/company-data";
+import { getSiteUrl } from "@/lib/env";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "O nas - SkładaMy | Doświadczeni Monterzy Mebli IKEA Słupsk",
@@ -21,12 +24,12 @@ export const metadata: Metadata = {
     "zespół SkładaMy"
   ],
   alternates: {
-    canonical: "https://skladamy.pl/o-nas"
+    canonical: `${siteUrl}/o-nas`
   },
   openGraph: {
     title: "O nas - SkładaMy | Doświadczeni Monterzy Mebli IKEA Słupsk",
     description: "⭐ Poznaj zespół SkładaMy ✓ 4 lata doświadczenia ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni",
-    url: "https://skladamy.pl/o-nas",
+    url: `${siteUrl}/o-nas`,
     siteName: "SkładaMy",
     locale: "pl_PL",
     type: "website",
@@ -74,6 +77,7 @@ const guaranteeDetails = [
   }
 ];
 
+/* eslint-disable max-lines-per-function */
 export default function AboutPage() {
   return (
     <>

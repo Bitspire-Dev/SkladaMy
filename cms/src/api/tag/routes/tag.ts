@@ -1,44 +1,19 @@
-export = {
-  routes: [
-    {
-      method: 'GET',
-      path: '/tags',
-      handler: 'tag.find',
-      config: {
-        auth: false,
-      },
+/**
+ * tag router
+ */
+import { factories } from '@strapi/strapi';
+
+export default factories.createCoreRouter('api::tag.tag', {
+  config: {
+    find: {
+      auth: false,
+      policies: [],
+      middlewares: [],
     },
-    {
-      method: 'GET',
-      path: '/tags/:id',
-      handler: 'tag.findOne',
-      config: {
-        auth: false,
-      },
+    findOne: {
+      auth: false,
+      policies: [],
+      middlewares: [],
     },
-    {
-      method: 'POST',
-      path: '/tags',
-      handler: 'tag.create',
-      config: {
-        policies: [],
-      },
-    },
-    {
-      method: 'PUT',
-      path: '/tags/:id',
-      handler: 'tag.update',
-      config: {
-        policies: [],
-      },
-    },
-    {
-      method: 'DELETE',
-      path: '/tags/:id',
-      handler: 'tag.delete',
-      config: {
-        policies: [],
-      },
-    },
-  ],
-};
+  },
+});

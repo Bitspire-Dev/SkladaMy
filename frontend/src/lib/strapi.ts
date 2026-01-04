@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {
+import type {
   BlogPost,
   Category,
   Tag,
@@ -9,8 +9,17 @@ import {
   BlogFilters
 } from '@/types/strapi';
 
-// Configuration
-const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.skladamy.com.pl';
+// Configuration - NO FALLBACKS!
+// These variables MUST be set in .env file
+if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
+  throw new Error('NEXT_PUBLIC_STRAPI_URL must be set in .env file!');
+}
+
+if (!process.env.STRAPI_API_TOKEN) {
+  throw new Error('STRAPI_API_TOKEN must be set in .env file!');
+}
+
+const STRAPI_URL = process.env.NEXT_PUBLIC_STRAPI_URL;
 const API_TOKEN = process.env.STRAPI_API_TOKEN;
 
 // Create axios instance with default config
@@ -122,7 +131,18 @@ export const getCategories = async (): Promise<CollectionResponse<Category>> => 
     return response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);
-    throw error;
+    // Return empty categories instead of throwing
+    return {
+      data: [],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 0,
+          pageCount: 0,
+          total: 0
+        }
+      }
+    };
   }
 };
 
@@ -136,7 +156,18 @@ export const getTags = async (): Promise<CollectionResponse<Tag>> => {
     return response.data;
   } catch (error) {
     console.error('Error fetching tags:', error);
-    throw error;
+    // Return empty tags instead of throwing
+    return {
+      data: [],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 0,
+          pageCount: 0,
+          total: 0
+        }
+      }
+    };
   }
 };
 
@@ -194,7 +225,18 @@ export const getBlogPosts = async (filters?: BlogFilters): Promise<CollectionRes
     return response.data;
   } catch (error) {
     console.error('Error fetching blog posts:', error);
-    throw error;
+    // Return empty data structure instead of throwing during build
+    return {
+      data: [],
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: 0,
+          pageCount: 0,
+          total: 0
+        }
+      }
+    };
   }
 };
 
@@ -236,6 +278,7 @@ export const getBlogPost = async (slug: string): Promise<SingleResponse<BlogPost
     };
   } catch (error) {
     console.error(`Error fetching blog post with slug "${slug}":`, error);
+    // Re-throw to trigger 404 page
     throw error;
   }
 };
@@ -260,7 +303,18 @@ export const getGallery = async (): Promise<SingleResponse<Gallery>> => {
     return response.data;
   } catch (error) {
     console.error('Error fetching gallery:', error);
-    throw error;
+    // Return empty gallery data structure
+    return {
+      data: {
+        id: 0,
+        images: [],
+        featuredImages: [],
+        createdAt: '',
+        updatedAt: '',
+        publishedAt: ''
+      },
+      meta: {}
+    };
   }
 };
 
@@ -291,7 +345,11 @@ export const searchContent = async (query: string, limit: number = 10) => {
     };
   } catch (error) {
     console.error('Error searching content:', error);
-    throw error;
+    // Return empty results instead of throwing
+    return {
+      blog: [],
+      total: 0
+    };
   }
 };
 

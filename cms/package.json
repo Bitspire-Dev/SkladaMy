@@ -4,15 +4,16 @@
   "private": true,
   "description": "A Strapi application",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=--max-old-space-size=1536 node ./node_modules/@strapi/strapi/bin/strapi.js build",
-    "start": "node ./node_modules/@strapi/strapi/bin/strapi.js start",
-    "develop": "cross-env NODE_ENV=development HOST=127.0.0.1 PORT=1337 PUBLIC_URL=http://localhost:1337 TRUST_PROXY=false node ./node_modules/@strapi/strapi/bin/strapi.js develop",
+    "build": "strapi build",
+    "start": "node server.js",
+    "develop": "strapi develop",
     "generate-keys": "node ./generate-keys.js",
     "backup": "node ./scripts/backup-database.js",
     "backup:help": "echo 'Usage: npm run backup - Creates a MySQL backup in cms/backups/ directory'"
   },
   "dependencies": {
-    "@strapi/strapi": "^5.33.0",
+    "@strapi/plugin-users-permissions": "^5.33.1",
+    "@strapi/strapi": "^5.33.1",
     "better-sqlite3": "^12.5.0",
     "cross-env": "^10.1.0",
     "mysql2": "^3.16.0",
@@ -21,7 +22,7 @@
     "react-router-dom": "^6.30.2",
     "strapi-5-plugin-responsive-backend": "^0.0.4",
     "styled-components": "^6.1.19",
-    "zod": "^4.2.1"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@types/node": "^25.0.3",

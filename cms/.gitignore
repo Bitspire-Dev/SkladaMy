@@ -1,4 +1,13 @@
 ############################
+# Cloudlinux NodeJS Selector
+############################
+
+# Cloudlinux creates tmp/restart.txt for app control
+# This folder MUST NOT be committed or it blocks npm install
+tmp/
+tmp
+
+############################
 # OS X
 ############################
 

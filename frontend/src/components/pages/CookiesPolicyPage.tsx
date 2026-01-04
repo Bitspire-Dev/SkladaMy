@@ -5,6 +5,10 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import BackToTop from "@/components/ui/BackToTop";
+import { getSiteUrl } from "@/lib/env";
+import { COMPANY_DATA } from "@/lib/company-data";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "Polityka cookies 2025 | SkładaMy Słupsk – Pliki cookie i preferencje prywatności",
@@ -18,12 +22,12 @@ export const metadata: Metadata = {
     "pliki cookie RODO",
     "SkładaMy cookies"
   ],
-  alternates: { canonical: "https://skladamy.pl/polityka-cookies" },
+  alternates: { canonical: `${siteUrl}/polityka-cookies` },
   openGraph: {
     title: "Polityka cookies 2025 | SkładaMy",
     description: "Poznaj zasady dotyczące plików cookies – rodzaje, cele, zarządzanie zgodą, bezpieczeństwo.",
     type: "website",
-    url: "https://skladamy.pl/polityka-cookies",
+    url: `${siteUrl}/polityka-cookies`,
     siteName: "SkładaMy"
   },
   robots: { index: true, follow: true },
@@ -52,7 +56,7 @@ export default function CookiesPolicyPage() {
     "@type": "WebPage",
     name: "Polityka cookies SkładaMy",
     description: "Zasady dotyczące plików cookies stosowanych na stronie SkładaMy – rodzaje, cele, zarządzanie zgodą użytkownika.",
-    url: "https://skladamy.pl/polityka-cookies",
+    url: `${siteUrl}/polityka-cookies`,
     dateModified: new Date().toISOString(),
     inLanguage: "pl-PL",
     mainEntity: {
@@ -60,14 +64,14 @@ export default function CookiesPolicyPage() {
       name: "Polityka Cookies SkładaMy",
       legislationApplies: "RODO; ePrivacy; Ustawa Prawo telekomunikacyjne",
       dateModified: new Date().toISOString(),
-      publisher: { "@type": "Organization", name: "SkładaMy", url: "https://skladamy.pl" }
+      publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website }
     },
-    hasPart: sections.map((s, i) => ({ "@type": "WebPageElement", position: i + 1, name: s.title, url: `https://skladamy.pl/polityka-cookies#${s.id}` })),
+    hasPart: sections.map((s, i) => ({ "@type": "WebPageElement", position: i + 1, name: s.title, url: `${siteUrl}/polityka-cookies#${s.id}` })),
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Strona główna", item: "https://skladamy.pl" },
-        { "@type": "ListItem", position: 2, name: "Polityka cookies", item: "https://skladamy.pl/polityka-cookies" }
+        { "@type": "ListItem", position: 1, name: "Strona główna", item: siteUrl },
+        { "@type": "ListItem", position: 2, name: "Polityka cookies", item: `${siteUrl}/polityka-cookies` }
       ]
     }
   };
@@ -170,7 +174,7 @@ export default function CookiesPolicyPage() {
             <Card id="kontakt">
               <CardHeader><CardTitle className="group scroll-mt-24">§8 Kontakt<a href="#kontakt" className="ml-2 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-primary text-sm">#</a></CardTitle></CardHeader>
               <CardContent className="space-y-4 text-sm text-muted-foreground">
-                <p>W sprawach dotyczących cookies lub prywatności: <a href="mailto:kontakt@skladamy.pl" className="text-primary hover:underline">kontakt@skladamy.pl</a>, tel. <a href="tel:+48884938490" className="text-primary hover:underline">+48 884 938 490</a>.</p>
+                <p>W sprawach dotyczących cookies lub prywatności: <a href={`mailto:${COMPANY_DATA.email}`} className="text-primary hover:underline">{COMPANY_DATA.email}</a>, tel. <a href={`tel:${COMPANY_DATA.phone}`} className="text-primary hover:underline">{COMPANY_DATA.phone}</a>.</p>
                 <p>Sprawdź także: <Link href="/polityka-prywatnosci" className="text-primary hover:underline">Polityka prywatności</Link> • <Link href="/regulamin" className="text-primary hover:underline">Regulamin</Link></p>
                 <div className="text-center mt-6"><BackToTop /></div>
                 <p className="text-muted-foreground text-xs text-center mt-6 pt-4 border-t border-border">Ostatnia aktualizacja: {new Date().toLocaleDateString('pl-PL')} | SkładaMy</p>

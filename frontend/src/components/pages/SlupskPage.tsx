@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { MapPin, Clock, Star, Phone, Mail, CheckCircle, Users, Award, Shield } from "lucide-react";
 import Link from "next/link";
 import { formatPhoneForTel } from "@/lib/company-data";
+import { getSiteUrl } from "@/lib/env";
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: "Montaż Mebli Słupsk - Profesjonalne Składanie Mebli IKEA | SkładaMy",
@@ -24,13 +27,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Montaż Mebli Słupsk - Profesjonalne Składanie Mebli IKEA",
     description: "⭐ Najlepsi monterzy mebli w Słupsku. 300+ zadowolonych klientów. Gwarancja 30 dni. Bezpłatna wycena w 24h.",
-    url: "https://skladamy.pl/slupsk",
+    url: `${siteUrl}/slupsk`,
     siteName: "SkładaMy",
     locale: "pl_PL",
     type: "website",
   },
   alternates: {
-    canonical: "https://skladamy.pl/slupsk"
+    canonical: `${siteUrl}/slupsk`
   }
 };
 
@@ -104,6 +107,7 @@ const whyUs = [
   }
 ];
 
+/* eslint-disable max-lines-per-function */
 export default function SlupskPage() {
   return (
     <>
@@ -229,7 +233,7 @@ export default function SlupskPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {areas.map((area, index) => (
                 <div key={index} className="flex items-center p-3 bg-white rounded-lg border border-neutral-200 transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
-                  <MapPin className="h-4 w-4 text-[#6a4a00] mr-2 flex-shrink-0" />
+                  <MapPin className="h-4 w-4 text-[#6a4a00] mr-2 shrink-0" />
                   <span className="text-sm text-neutral-800">{area}</span>
                 </div>
               ))}

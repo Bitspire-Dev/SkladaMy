@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import ContactFormClient from "@/components/sections/ContactFormClient";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { COMPANY_DATA } from "@/lib/company-data";
 
 export const metadata: Metadata = {
   title: "Kontakt - SkładaMy",
@@ -39,33 +40,33 @@ export default function KontaktPage() {
 
               <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-neutral-200 shadow-sm">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-md bg-[#FFC400]/20 text-[#6a4a00] flex items-center justify-center">
+                  <div className="shrink-0 w-10 h-10 rounded-md bg-[#FFC400]/20 text-[#6a4a00] flex items-center justify-center">
                     <Phone className="h-5 w-5" />
                   </div>
                   <div>
                     <div className="font-semibold text-neutral-900">Telefon</div>
                     <div className="text-neutral-700">
-                      <a href="tel:+48884938490" className="hover:underline">+48 884 938 490</a>
+                      <a href={`tel:${COMPANY_DATA.phone.replace(/\s/g, '')}`} className="hover:underline">{COMPANY_DATA.phone}</a>
                     </div>
                     <div className="text-sm text-neutral-600 mt-1">Najszybszy kontakt — oddzwaniamy w ciągu godziny</div>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-neutral-200 shadow-sm">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-md bg-[#FFC400]/20 text-[#6a4a00] flex items-center justify-center">
+                  <div className="shrink-0 w-10 h-10 rounded-md bg-[#FFC400]/20 text-[#6a4a00] flex items-center justify-center">
                     <Mail className="h-5 w-5" />
                   </div>
                   <div>
                     <div className="font-semibold text-neutral-900">E-mail</div>
                     <div className="text-neutral-700">
-                      <a href="mailto:kontakt@skladamy.pl" className="hover:underline">kontakt@skladamy.pl</a>
+                      <a href={`mailto:${COMPANY_DATA.email}`} className="hover:underline">{COMPANY_DATA.email}</a>
                     </div>
                     <div className="text-sm text-neutral-600 mt-1">Odpowiadamy w ciągu 24 godzin</div>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-neutral-200 shadow-sm">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-md bg-[#FFC400]/20 text-[#6a4a00] flex items-center justify-center">
+                  <div className="shrink-0 w-10 h-10 rounded-md bg-[#FFC400]/20 text-[#6a4a00] flex items-center justify-center">
                     <MapPin className="h-5 w-5" />
                   </div>
                   <div>
@@ -76,7 +77,7 @@ export default function KontaktPage() {
                 </div>
 
                 <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-neutral-200 shadow-sm">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-md bg-[#FFC400]/20 text-[#6a4a00] flex items-center justify-center">
+                  <div className="shrink-0 w-10 h-10 rounded-md bg-[#FFC400]/20 text-[#6a4a00] flex items-center justify-center">
                     <Clock className="h-5 w-5" />
                   </div>
                   <div>

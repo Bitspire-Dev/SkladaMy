@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { Mail, Twitter, Linkedin, Github } from 'lucide-react';
-import { Author } from '@/types/strapi';
+import type { Author } from '@/types/strapi';
 
 interface AuthorCardProps {
   author: Author;

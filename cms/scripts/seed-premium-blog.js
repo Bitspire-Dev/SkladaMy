@@ -1,8 +1,26 @@
+/* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
 const axios = require('axios');
 require('dotenv').config();
 
-const API_URL = 'http://localhost:1337/api';
+// Get configuration from environment - no hardcoded values
+const PUBLIC_URL = process.env.PUBLIC_URL;
 const API_TOKEN = process.env.STRAPI_ADMIN_TOKEN;
+
+if (!PUBLIC_URL) {
+  console.error('❌ Error: PUBLIC_URL environment variable is not set!');
+  console.error('Please set PUBLIC_URL in your .env file (e.g., PUBLIC_URL=http://localhost:1337)');
+  process.exit(1);
+}
+
+if (!API_TOKEN) {
+  console.error('❌ Error: STRAPI_ADMIN_TOKEN environment variable is not set!');
+  console.error('Generate a token in Strapi Admin → Settings → API Tokens → Create (Full Access)');
+  console.error('Then add it to your .env file: STRAPI_ADMIN_TOKEN=your-token-here');
+  process.exit(1);
+}
+
+const API_URL = `${PUBLIC_URL}/api`;
 
 const axiosInstance = axios.create({
   baseURL: API_URL,

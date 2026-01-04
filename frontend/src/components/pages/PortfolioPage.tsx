@@ -1,9 +1,12 @@
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 import { GalleryContent } from '@/components/GalleryContent';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { getGallery } from '@/lib/strapi';
 import type { StrapiImage } from '@/types/strapi';
+import { getSiteUrl } from '@/lib/env';
+
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   title: 'Portfolio Montażu Mebli IKEA Słupsk | SkładaMy - 300+ Realizacji',
@@ -17,12 +20,12 @@ export const metadata: Metadata = {
     'portfolio monterzy Słupsk'
   ],
   alternates: {
-    canonical: 'https://skladamy.pl/portfolio'
+    canonical: `${siteUrl}/portfolio`
   },
   openGraph: {
     title: 'Portfolio Montażu Mebli IKEA Słupsk | 300+ Realizacji',
     description: '⭐ Zobacz nasze realizacje montażu mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Szafy PAX ✓ Kuchnie',
-    url: 'https://skladamy.pl/portfolio',
+    url: `${siteUrl}/portfolio`,
     siteName: 'SkładaMy',
     locale: 'pl_PL',
     type: 'website',
@@ -41,8 +44,9 @@ export default async function PortfolioPage() {
 
   try {
     const galleryResponse = await getGallery();
-    images = galleryResponse.data.images || [];
-    featuredImages = galleryResponse.data.featuredImages;
+    const { data: { images: fetchedImages, featuredImages: fetchedFeatured } } = galleryResponse;
+    images = fetchedImages || [];
+    featuredImages = fetchedFeatured;
   } catch (error) {
     console.warn("CMS not available during build - portfolio will show empty state:", error);
   }
