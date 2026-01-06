@@ -11,6 +11,7 @@
  * - TRANSFER_TOKEN_SALT (for data transfer tokens)
  * - JWT_SECRET (for general JWT signing)
  * - ENCRYPTION_KEY (for encrypting sensitive data in database)
+ * - SESSION_SECRET (for session cookie signing)
  */
 
 const crypto = require('crypto');
@@ -46,6 +47,7 @@ console.log(`ADMIN_JWT_SECRET="${generateKey(64)}"`);
 console.log(`TRANSFER_TOKEN_SALT="${generateKey(64)}"`);
 console.log(`JWT_SECRET="${generateKey(64)}"`);
 console.log(`ENCRYPTION_KEY="${generateKey(64)}"`);
+console.log(`SESSION_SECRET="${generateKey()}"`);
 
 console.log('\n─────────────────────────────────────────────────────────────────\n');
 console.log('✅ Keys generated successfully!');

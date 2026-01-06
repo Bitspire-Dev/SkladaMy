@@ -1,6 +1,8 @@
-module.exports = ({ env }) => {
+export default ({ env }) => {
   // Get database client from env (mysql2 or mysql use 'mysql' dialect in Knex)
   const dbClient = env('DATABASE_CLIENT');
+  
+  console.log('🔧 [DATABASE] Client:', dbClient);
   
   // Map to Knex dialect (mysql2 driver uses 'mysql' dialect)
   const knexClient = dbClient === 'mysql2' ? 'mysql' : dbClient;
@@ -86,45 +88,18 @@ module.exports = ({ env }) => {
     },
   };
 
+  // Return proper database configuration for Strapi
+  // Strapi expects: { connection: { client, connection: {...}, pool: {...} } }
+  const selectedConfig = connections[dbClient];
+  
+  if (!selectedConfig) {
+    console.error('❌ [DATABASE] Unknown client:', dbClient);
+    throw new Error(`Unknown database client: ${dbClient}. Supported: mysql, mysql2, postgres, sqlite`);
+  }
+
+  console.log('✅ [DATABASE] Config selected:', dbClient);
+
   return {
-    connection: {
-      client: knexClient,
-      ...connections[dbClient],
-    },
+    connection: selectedConfig,
   };
 };
-/**
- * RECOMMENDED DATABASE INDEXES FOR PERFORMANCE
- *
- * Execute these SQL commands in your MySQL database (phpMyAdmin, MySQL Workbench, etc.)
- * to significantly improve query performance:
- *
- * -- Index for blog post slug lookups (most common query)
- * CREATE INDEX idx_blog_post_slug ON blog_posts(slug);
- *
- * -- Index for sorting by publish date
- * CREATE INDEX idx_blog_post_published ON blog_posts(published_at);
- *
- * -- Index for category filtering
- * CREATE INDEX idx_blog_post_category ON blog_posts_category_lnk(blog_post_id, category_id);
- *
- * -- Composite index for featured posts listing
- * CREATE INDEX idx_blog_post_featured ON blog_posts(featured, published_at);
- *
- * -- Full-text search index (for search functionality)
- * CREATE FULLTEXT INDEX idx_blog_post_search ON blog_posts(title, excerpt);
- *
- * -- Index for category slug lookups
- * CREATE INDEX idx_category_slug ON categories(slug);
- *
- * -- Index for tag slug lookups
- * CREATE INDEX idx_tag_slug ON tags(slug);
- *
- * PERFORMANCE BENEFITS:
- * - Slug queries: ~10x faster
- * - Category filtering: ~5x faster
- * - Featured posts: ~3x faster
- * - Full-text search: ~20x faster
- *
- * These indexes are especially important when you have >100 blog posts.
- */

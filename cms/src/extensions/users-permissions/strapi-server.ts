@@ -6,10 +6,10 @@
  * Solution: Override getRoutes method with safe version
  */
 
-const _ = require('lodash');
-const urlJoin = require('url-join');
+import _ from 'lodash';
+import urlJoin from 'url-join';
 
-module.exports = (plugin) => {
+export default (plugin) => {
   console.log('🔧 [Extension] users-permissions extension loading...');
   
   // Store original service factory
@@ -53,24 +53,14 @@ module.exports = (plugin) => {
       });
 
       // Process plugin routes
-      _.forEach(strapi.plugins, (pluginData, pluginName) => {
-        const transformPrefix = (route) => {
-          const prefix = route.config && route.config.prefix;
-          const path = prefix !== undefined ? `${prefix}${route.path}` : `/${pluginName}${route.path}`;
-
-          return {
-            ...route,
-            path,
-          };
-        };
-
-        const routes = _.flatMap(pluginData.routes, (route) => {
+      _.forEach(strapi.plugins, (plugin, pluginName) => {
+        const routes = _.flatMap(plugin.routes, (route) => {
           if (_.has(route, 'routes')) {
-            return route.routes.map(transformPrefix);
+            return route.routes;
           }
-          return transformPrefix(route);
+          return route;
         }).filter((route) => {
-          // FIX: Safely check if route.info exists before accessing type
+          // FIX: Safely check if route.info and route.info.type exist
           return route?.info?.type === 'content-api';
         });
 
@@ -81,17 +71,18 @@ module.exports = (plugin) => {
         const apiPrefix = strapi.config.get('api.rest.prefix');
         routesMap[`plugin::${pluginName}`] = routes.map((route) => ({
           ...route,
-          path: urlJoin(apiPrefix, route.path),
+          path: urlJoin(apiPrefix, plugin.config('routes.prefix') || '', route.path),
         }));
       });
 
-      console.log('🔧 [Extension] Routes processed successfully');
-      return sanitizeRoutesMapForSerialization(routesMap);
+      const sanitizedRoutesMap = sanitizeRoutesMapForSerialization(routesMap);
+      console.log('✅ [Extension] getRoutes completed successfully');
+      return sanitizedRoutesMap;
     };
     
-    console.log('🔧 [Extension] users-permissions service patched');
     return service;
   };
 
+  console.log('✅ [Extension] users-permissions service patched');
   return plugin;
 };

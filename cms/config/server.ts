@@ -1,4 +1,4 @@
-module.exports = ({ env }) => ({
+export default ({ env }) => ({
   host: env('HOST'),
   port: env.int('PORT'),
   url: env('PUBLIC_URL'),
