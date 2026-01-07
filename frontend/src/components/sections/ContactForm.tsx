@@ -11,7 +11,6 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CheckCircle, AlertCircle } from "lucide-react";
-import { submitContactForm } from "@/lib/strapi";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Imię i nazwisko musi mieć przynajmniej 2 znaki"),
@@ -74,14 +73,41 @@ export default memo(function ContactForm() {
     setIsSubmitting(true);
     
     try {
-      await submitContactForm({
-        name: data.name,
-        email: data.email,
-        phone: data.phone,
-        subject: data.subject,
-        message: data.message,
-        files: selectedFiles
-      });
+      const hasFiles = selectedFiles.length > 0;
+
+      const response = await fetch('/api/contact',
+        hasFiles
+          ? (() => {
+              const form = new FormData();
+              form.append('name', data.name);
+              form.append('email', data.email);
+              form.append('phone', data.phone);
+              form.append('subject', data.subject);
+              form.append('message', data.message);
+              selectedFiles.forEach((file) => form.append('files', file));
+              return {
+                method: 'POST',
+                body: form,
+              } as const;
+            })()
+          : {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                subject: data.subject,
+                message: data.message,
+              }),
+            }
+      );
+
+      if (!response.ok) {
+        throw new Error('Contact API error');
+      }
 
       setSubmitStatus('success');
       reset();

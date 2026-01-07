@@ -1,5 +1,3 @@
-'use client';
-
 import { COMPANY_DATA } from '@/lib/company-data';
 import { getSiteUrl } from '@/lib/env';
 
@@ -10,7 +8,7 @@ export default function StructuredData() {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "name": COMPANY_DATA.name,
-    "image": `${siteUrl}/SkładaMy.svg`,
+    "image": `${siteUrl}/skladamy.svg`,
     "description": "Profesjonalny montaż mebli IKEA w Słupsku. Szafy PAX, kuchnie, wieszanie szafek. Gwarancja 30 dni, dojazd w 24h.",
     "address": {
       "@type": "PostalAddress",

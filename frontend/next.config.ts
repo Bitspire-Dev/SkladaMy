@@ -23,8 +23,6 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
-    // Inline critical CSS in exported HTML to minimize render‑blocking
-    optimizeCss: true,
     // Limit workers for low-resource hosting environments
     cpus: 1,
   },

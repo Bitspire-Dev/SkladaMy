@@ -1,16 +1,12 @@
 import type { MetadataRoute } from 'next'
-import { getBlogPosts } from '@/lib/strapi'
+import { getBlogPosts } from '@/lib/strapi.server'
+import { getSiteUrl } from '@/lib/env'
 
 // Ensure this route is treated as static during `output: 'export'` builds
 export const dynamic = 'force-static';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  // NEXT_PUBLIC_SITE_URL must be set in .env - no fallback!
-  if (!process.env.NEXT_PUBLIC_SITE_URL) {
-    throw new Error('NEXT_PUBLIC_SITE_URL must be set in .env file!');
-  }
-  
-  const siteBaseUrl = process.env.NEXT_PUBLIC_SITE_URL
+  const siteBaseUrl = getSiteUrl();
   
   // Fetch blog posts for dynamic sitemap entries
   let blogPostUrls: MetadataRoute.Sitemap = [];

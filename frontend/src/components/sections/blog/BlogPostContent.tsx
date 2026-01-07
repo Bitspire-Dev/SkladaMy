@@ -16,11 +16,12 @@ import {
   Tag as TagIcon
 } from "lucide-react";
 import Link from "next/link";
-import { formatDate, renderTags, processBlogContent } from "@/lib/blog-helpers";
+import { formatDate, processBlogContent } from "@/lib/blog-helpers";
 import { getMediaURL } from "@/lib/strapi";
 import AuthorCard from "@/components/sections/blog/AuthorCard";
 import ShareButtons from "@/components/sections/blog/ShareButtons";
 import TableOfContents from "@/components/sections/blog/TableOfContents";
+import TagBadges from "@/components/sections/blog/TagBadges";
 import type { BlogPost } from "@/types/strapi";
 import { usePathname } from 'next/navigation';
 import { getCurrentUrl } from "@/lib/env";
@@ -120,7 +121,7 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
               {post.tags && post.tags.length > 0 && (
                 <div className="flex flex-wrap items-center gap-2 mb-6">
                   <TagIcon className="h-4 w-4 text-muted-foreground" />
-                  {renderTags(post.tags)}
+                  <TagBadges tags={post.tags} className="flex flex-wrap gap-2" />
                 </div>
               )}
             </header>

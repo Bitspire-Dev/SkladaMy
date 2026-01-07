@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@source "./src/**/*.{js,ts,jsx,tsx,mdx}";
+
 /* Usunięto niestandardowe at-rules Tailwind (@custom-variant, @theme) aby uniknąć ostrzeżeń analizatora CSS. */
 
 /* Zachowujemy również CSS-owe zmienne użytkowe dla miejsc, gdzie odwołujemy się do nich bezpośrednio */

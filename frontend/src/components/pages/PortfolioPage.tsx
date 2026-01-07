@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { GalleryContent } from '@/components/GalleryContent';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { getGallery } from '@/lib/strapi';
+import { getGallery } from '@/lib/strapi.server';
 import type { StrapiImage } from '@/types/strapi';
 import { getSiteUrl } from '@/lib/env';
 

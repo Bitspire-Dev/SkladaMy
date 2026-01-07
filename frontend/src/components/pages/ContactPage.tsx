@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
-import ContactFormClient from "@/components/sections/ContactFormClient";
+import ContactForm from "@/components/sections/ContactForm";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { COMPANY_DATA } from "@/lib/company-data";
 
@@ -106,7 +106,7 @@ export default function KontaktPage() {
                 Formularz kontaktowy
               </h2>
               <div className="bg-white rounded-lg border border-neutral-200 shadow-sm p-4">
-                <ContactFormClient />
+                <ContactForm />
               </div>
             </div>
           </div>

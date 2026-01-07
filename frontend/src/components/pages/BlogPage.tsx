@@ -3,7 +3,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { BlogListClient } from "@/components/sections/blog/BlogListClient";
-import { getBlogPosts, getFeaturedBlogPosts, getCategories } from "@/lib/strapi";
+import { getBlogPosts, getFeaturedBlogPosts, getCategories } from "@/lib/strapi.server";
 import type { BlogPost, Category } from "@/types/strapi";
 
 export const metadata: Metadata = {

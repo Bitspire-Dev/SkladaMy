@@ -4,7 +4,8 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { BlogPostContent } from "@/components/sections/blog/BlogPostContent";
-import { getBlogPost, getBlogPosts, getMediaURL } from "@/lib/strapi";
+import { getMediaURL } from "@/lib/strapi";
+import { getBlogPost, getBlogPosts } from "@/lib/strapi.server";
 import { getSiteUrl } from "@/lib/env";
 
 interface BlogPostPageProps {

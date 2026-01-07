@@ -93,8 +93,8 @@ export default React.memo(function TestimonialsSection() {
         </svg>
       </div>
       {/* Decorative śrubokręt (moved inward, full opacity) */}
-         <div className="hidden xl:block pointer-events-none absolute right-[5%] top-132 w-[340px] rotate-3 z-10 select-none opacity-40">
-        <Image src="/śrubokręt.svg" alt="" aria-hidden="true" width={340} height={340} />
+         <div className="hidden xl:block pointer-events-none absolute right-[5%] top-132 w-85 rotate-3 z-10 select-none opacity-40">
+        <Image src="/srubokret.svg" alt="" aria-hidden="true" width={340} height={340} />
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">

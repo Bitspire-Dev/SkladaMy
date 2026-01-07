@@ -120,7 +120,7 @@ const ProcessSection = memo(() => {
       </div>
       {/* Decorative młotek (moved inward, full opacity) */}
       <div className="hidden lg:block pointer-events-none absolute left-[2%] top-24 w-95 -rotate-6 z-10 select-none opacity-40">
-        <Image src="/młotek.svg" alt="" aria-hidden="true" width={95 * 4} height={95 * 4} />
+        <Image src="/mlotek.svg" alt="" aria-hidden="true" width={95 * 4} height={95 * 4} />
       </div>
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 relative z-10">
         <header className="text-center mb-12">

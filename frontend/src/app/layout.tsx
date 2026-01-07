@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import StructuredData from "@/components/StructuredData";
 import CookieConsentBanner from "@/components/layout/CookieConsentBanner";
 import Script from "next/script";
+import { getSiteUrl } from "@/lib/env";
 import "./globals.css";
 
 const inter = Inter({ 
@@ -11,12 +12,7 @@ const inter = Inter({
   variable: '--font-inter'
 });
 
-// NEXT_PUBLIC_SITE_URL must be set in .env - no fallback!
-if (!process.env.NEXT_PUBLIC_SITE_URL) {
-  throw new Error('NEXT_PUBLIC_SITE_URL must be set in .env file!');
-}
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -52,7 +48,7 @@ export const metadata: Metadata = {
     description: "⭐ Montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Dojazd w 24h ✓ Bezpłatna wycena",
     images: [
       {
-        url: `${siteUrl}/SkładaMy.svg`,
+        url: `${siteUrl}/skladamy.svg`,
         width: 160,
         height: 40,
         alt: "SkładaMy - Montaż mebli Słupsk",
@@ -64,7 +60,7 @@ export const metadata: Metadata = {
     site: "@skladamy_pl",
     title: "SkładaMy - Profesjonalny montaż mebli w Słupsku",
     description: "⭐ Montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni",
-    images: [`${siteUrl}/SkładaMy.svg`],
+    images: [`${siteUrl}/skladamy.svg`],
   },
   robots: {
     index: true,

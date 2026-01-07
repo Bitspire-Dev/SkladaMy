@@ -28,14 +28,14 @@ const Header = memo(() => {
   }, []);
 
   return (
-    <header className="bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/80 border-b border-neutral-200 sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur supports-backdrop-filter:bg-white/80 border-b border-neutral-200 sticky top-0 z-50">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label="Top">
         <div className="flex w-full items-center justify-between py-4">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3">
               <Image
-                src="/SkładaMy.svg"
+                src="/skladamy.svg"
                 alt="SkładaMy"
                 width={160}
                 height={40}

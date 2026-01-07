@@ -58,11 +58,11 @@ const WhyUsSection = memo(() => {
       {/* Industrial dotted + grid background */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0 opacity-100 [background:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.32)_1px,transparent_0),linear-gradient(rgba(0,0,0,0.12)_1px,transparent_0),linear-gradient(90deg,rgba(0,0,0,0.12)_1px,transparent_0)] [background-size:14px_14px,14px_14px,14px_14px] [background-position:0_0,0_0,0_0]"
+        className="pointer-events-none absolute inset-0 z-0 opacity-100 [background:radial-gradient(circle_at_1px_1px,rgba(0,0,0,0.32)_1px,transparent_0),linear-gradient(rgba(0,0,0,0.12)_1px,transparent_0),linear-gradient(90deg,rgba(0,0,0,0.12)_1px,transparent_0)] bg-size-[14px_14px,14px_14px,14px_14px] bg-position-[0_0,0_0,0_0]"
       />
       {/* Decorative wkrętarka (moved inward, full opacity) */}
-      <div className="hidden lg:block pointer-events-none absolute top-8 right-[5%] w-[360px] rotate-6 z-10 select-none opacity-40">
-        <Image src="/wkrętarka.svg" alt="" aria-hidden="true" width={360} height={360} />
+      <div className="hidden lg:block pointer-events-none absolute top-8 right-[5%] w-90 rotate-6 z-10 select-none opacity-40">
+        <Image src="/wkretarka.svg" alt="" aria-hidden="true" width={360} height={360} />
       </div>
       {/* Very subtle metallic sheen kept minimal */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-10 mix-blend-multiply opacity-6 bg-[linear-gradient(135deg,rgba(255,255,255,0.45)_0%,rgba(255,255,255,0)_45%)]" />

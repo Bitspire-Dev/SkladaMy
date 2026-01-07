@@ -44,7 +44,7 @@ export default function Footer() {
           {/* Company info */}
           <div className="lg:col-span-1">
             <div className="flex items-center space-x-3 mb-4">
-              <Image src="/SkładaMy.svg" alt="SkładaMy" width={40} height={40} className="w-auto" />
+              <Image src="/skladamy.svg" alt="SkładaMy" width={40} height={40} className="w-auto" />
               <span className="sr-only">SkładaMy</span>
             </div>
             <p className="text-muted-foreground mb-4">

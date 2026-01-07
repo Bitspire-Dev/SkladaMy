@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/SkładaMy.svg",
+        url: "/skladamy.svg",
         width: 160,
         height: 40,
         alt: "SkładaMy - Montaż mebli Słupsk",

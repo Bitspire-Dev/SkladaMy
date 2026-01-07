@@ -1,6 +1,8 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
+export const runtime = 'nodejs';
+
 interface ContactFormData {
   name: string;
   email: string;
@@ -12,7 +14,35 @@ interface ContactFormData {
 /* eslint-disable max-lines-per-function */
 export async function POST(request: NextRequest) {
   try {
-    const body: ContactFormData = await request.json();
+    const contentType = request.headers.get('content-type') || '';
+
+    let body: ContactFormData;
+    let attachments: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
+
+    if (contentType.includes('multipart/form-data')) {
+      const form = await request.formData();
+      body = {
+        name: String(form.get('name') || ''),
+        email: String(form.get('email') || ''),
+        phone: String(form.get('phone') || ''),
+        subject: String(form.get('subject') || ''),
+        message: String(form.get('message') || ''),
+      };
+
+      const files = form.getAll('files').filter((v): v is File => v instanceof File);
+      attachments = await Promise.all(
+        files.slice(0, 5).map(async (file) => {
+          const arrayBuffer = await file.arrayBuffer();
+          return {
+            filename: file.name || 'zalacznik',
+            content: Buffer.from(arrayBuffer),
+            contentType: file.type || undefined,
+          };
+        })
+      );
+    } else {
+      body = (await request.json()) as ContactFormData;
+    }
 
     // Validate required fields
     if (!body.name || !body.email || !body.message || !body.subject) {
@@ -108,6 +138,7 @@ ${body.message}
 ---
 Data: ${new Date().toLocaleString('pl-PL')}
       `,
+      attachments: attachments.length > 0 ? attachments : undefined,
     };
 
     // Confirmation email to customer

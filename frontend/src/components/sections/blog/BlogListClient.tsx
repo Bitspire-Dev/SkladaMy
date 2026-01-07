@@ -7,9 +7,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
-import { formatDate, renderTags } from "@/lib/blog-helpers";
+import { formatDate } from "@/lib/blog-helpers";
 import { getMediaURL } from "@/lib/strapi";
 import BlogSearch from "@/components/sections/blog/BlogSearch";
+import TagBadges from "@/components/sections/blog/TagBadges";
 import type { BlogPost, Category } from "@/types/strapi";
 
 interface BlogListClientProps {
@@ -134,7 +135,7 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
 
                     <p className="text-muted-foreground mb-4 line-clamp-3">{post.excerpt}</p>
 
-                    <div className="flex flex-wrap gap-2 mb-4">{renderTags(post.tags, 3)}</div>
+                    <TagBadges tags={post.tags} limit={3} className="flex flex-wrap gap-2 mb-4" />
 
                     <Button asChild className="w-full">
                       <Link href={`/blog/${post.slug}`}>
@@ -204,7 +205,7 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
                     {post.excerpt}
                   </p>
 
-                  <div className="flex flex-wrap gap-1 mb-4">{renderTags(post.tags, 2)}</div>
+                  <TagBadges tags={post.tags} limit={2} className="flex flex-wrap gap-1 mb-4" />
 
                   <Button asChild variant="outline" size="sm" className="w-full mt-auto">
                     <Link href={`/blog/${post.slug}`}>

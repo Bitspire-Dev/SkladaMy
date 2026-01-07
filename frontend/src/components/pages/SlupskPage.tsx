@@ -116,9 +116,9 @@ export default function SlupskPage() {
         {/* Hero Section */}
         <section className="relative py-20 border-b border-neutral-200 overflow-hidden">
           <picture className="pointer-events-none absolute inset-0 z-0">
-            <source srcSet="/ratusz słupsk.avif" type="image/avif" />
-            <source srcSet="/ratusz słupsk.webp" type="image/webp" />
-            <img src="/ratusz słupsk.webp" alt="Ratusz w Słupsku - tło" className="w-full h-full object-cover brightness-75" sizes="100vw" loading="eager" decoding="async" />
+            <source srcSet="/ratusz-slupsk.avif" type="image/avif" />
+            <source srcSet="/ratusz-slupsk.webp" type="image/webp" />
+            <img src="/ratusz-slupsk.webp" alt="Ratusz w Słupsku - tło" className="w-full h-full object-cover brightness-75" sizes="100vw" loading="eager" decoding="async" />
           </picture>
           {/* semi-transparent white overlay for readability */}
           <div className="absolute inset-0 z-10 bg-white/50 backdrop-blur-sm pointer-events-none" />
