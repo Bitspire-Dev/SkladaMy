@@ -51,6 +51,4 @@ export function useIntersectionObserver(
       }
     };
   }, [elementRef, threshold, root, rootMargin, onIntersect, onLeave]);
-
-  return observerRef.current;
 }

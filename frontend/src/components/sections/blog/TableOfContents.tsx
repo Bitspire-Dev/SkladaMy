@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { List } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -15,12 +15,9 @@ interface TableOfContentsProps {
 }
 
 export default function TableOfContents({ content }: TableOfContentsProps) {
-  const [tocItems, setTocItems] = useState<TOCItem[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const observerRef = useRef<IntersectionObserver | null>(null);
-
-  // Parse content and extract headings
-  useEffect(() => {
+  const tocItems = useMemo(() => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(content, 'text/html');
     const headings = doc.querySelectorAll('h2, h3');
@@ -34,7 +31,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
       items.push({ id, text, level });
     });
 
-    setTocItems(items);
+    return items;
   }, [content]);
 
   // Setup intersection observer for scroll spy

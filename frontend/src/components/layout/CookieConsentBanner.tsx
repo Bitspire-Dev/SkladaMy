@@ -37,48 +37,12 @@ function writeConsent(consent: ConsentState) {
 }
 
 export default function CookieConsentBanner() {
-  const [open, setOpen] = useState(false);
-  const [analytics, setAnalytics] = useState(false);
-  const [marketing, setMarketing] = useState(false);
-  const [loaded, setLoaded] = useState(false);
+  const [initialConsent] = useState<ConsentState | null>(() => readConsent());
+  const [open, setOpen] = useState(!initialConsent);
+  const [analytics, setAnalytics] = useState(initialConsent?.analytics ?? false);
+  const [marketing, setMarketing] = useState(initialConsent?.marketing ?? false);
   const gtmId = 'GTM-56KC6N53';
   const acceptBtnRef = useRef<HTMLButtonElement | null>(null);
-
-  // Allow external trigger to reopen banner
-  useEffect(() => {
-    window.openCookiePreferences = () => setOpen(true);
-  }, []);
-
-  // Initial load: read consent and possibly load GTM if analytics allowed
-  useEffect(() => {
-    const existing = readConsent();
-    if (!existing) {
-      setOpen(true);
-    } else {
-      setAnalytics(existing.analytics);
-      setMarketing(existing.marketing);
-      if (existing.analytics) {
-        // load GTM lazily if consent already granted
-        loadGTM();
-      }
-    }
-    setLoaded(true);
-  }, []);
-
-  // Focus primary action when banner opens for accessibility
-  useEffect(() => {
-    if (open && loaded) {
-      acceptBtnRef.current?.focus();
-    }
-  }, [open, loaded]);
-
-  const pushConsentEvent = (a: boolean, m: boolean) => {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'consent_update',
-      consent: { analytics: a, marketing: m, necessary: true }
-    });
-  };
 
   const loadGTM = () => {
     if (document.getElementById('gtm-script-loader')) return; // prevent duplicates
@@ -88,6 +52,32 @@ export default function CookieConsentBanner() {
     s.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
     const first = document.getElementsByTagName('script')[0];
     first.parentNode?.insertBefore(s, first);
+  };
+
+  // Allow external trigger to reopen banner
+  useEffect(() => {
+    window.openCookiePreferences = () => setOpen(true);
+  }, []);
+
+  useEffect(() => {
+    if (initialConsent?.analytics) {
+      loadGTM();
+    }
+  }, [initialConsent]);
+
+  // Focus primary action when banner opens for accessibility
+  useEffect(() => {
+    if (open) {
+      acceptBtnRef.current?.focus();
+    }
+  }, [open]);
+
+  const pushConsentEvent = (a: boolean, m: boolean) => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'consent_update',
+      consent: { analytics: a, marketing: m, necessary: true }
+    });
   };
 
   const save = (a: boolean, m: boolean) => {
@@ -112,7 +102,7 @@ export default function CookieConsentBanner() {
     setOpen(false);
   };
 
-  if (!open || !loaded) return null;
+  if (!open) return null;
 
   return (
     <div
