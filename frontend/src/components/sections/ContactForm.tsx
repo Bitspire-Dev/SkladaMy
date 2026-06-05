@@ -1,15 +1,21 @@
-"use client";
+﻿"use client";
 
 import { useState, memo, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/Button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
+import { Input } from "@/components/ui/Input";
+import { Label } from "@/components/ui/Label";
+import { Textarea } from "@/components/ui/Textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Select";
 import { CheckCircle, AlertCircle } from "lucide-react";
 
 const contactSchema = z.object({
@@ -18,7 +24,9 @@ const contactSchema = z.object({
   email: z.string().email("Podaj prawidłowy adres e-mail"),
   subject: z.string().min(1, "Wybierz typ usługi"),
   message: z.string().min(10, "Opis musi mieć przynajmniej 10 znaków"),
-  consent: z.boolean().refine(val => val === true, "Musisz wyrazić zgodę na przetwarzanie danych"),
+  consent: z
+    .boolean()
+    .refine((val) => val === true, "Musisz wyrazić zgodę na przetwarzanie danych"),
   honeypot: z.string().optional(), // Anti-spam field
 });
 
@@ -36,7 +44,7 @@ const serviceTypes = [
 /* eslint-disable max-lines-per-function, complexity */
 export default memo(function ContactForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   const {
@@ -51,17 +59,17 @@ export default memo(function ContactForm() {
 
   const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
-    const validFiles = files.filter(file => {
-      const isValidType = file.type.startsWith('image/');
+    const validFiles = files.filter((file) => {
+      const isValidType = file.type.startsWith("image/");
       const isValidSize = file.size <= 5 * 1024 * 1024; // 5MB
       return isValidType && isValidSize;
     });
-    
-    setSelectedFiles(prev => [...prev, ...validFiles].slice(0, 5)); // Max 5 files
+
+    setSelectedFiles((prev) => [...prev, ...validFiles].slice(0, 5)); // Max 5 files
   }, []);
 
   const removeFile = useCallback((index: number) => {
-    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
   }, []);
 
   const onSubmit = async (data: ContactFormData) => {
@@ -71,29 +79,30 @@ export default memo(function ContactForm() {
     }
 
     setIsSubmitting(true);
-    
+
     try {
       const hasFiles = selectedFiles.length > 0;
 
-      const response = await fetch('/api/contact',
+      const response = await fetch(
+        "/api/contact",
         hasFiles
           ? (() => {
               const form = new FormData();
-              form.append('name', data.name);
-              form.append('email', data.email);
-              form.append('phone', data.phone);
-              form.append('subject', data.subject);
-              form.append('message', data.message);
-              selectedFiles.forEach((file) => form.append('files', file));
+              form.append("name", data.name);
+              form.append("email", data.email);
+              form.append("phone", data.phone);
+              form.append("subject", data.subject);
+              form.append("message", data.message);
+              selectedFiles.forEach((file) => form.append("files", file));
               return {
-                method: 'POST',
+                method: "POST",
                 body: form,
               } as const;
             })()
           : {
-              method: 'POST',
+              method: "POST",
               headers: {
-                'Content-Type': 'application/json',
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
                 name: data.name,
@@ -106,42 +115,40 @@ export default memo(function ContactForm() {
       );
 
       if (!response.ok) {
-        throw new Error('Contact API error');
+        throw new Error("Contact API error");
       }
 
-      setSubmitStatus('success');
+      setSubmitStatus("success");
       reset();
       setSelectedFiles([]);
-      
+
       // Track analytics event
-      if (typeof window !== 'undefined' && window.gtag) {
-        window.gtag('event', 'form_submit', {
-          event_category: 'engagement',
-          event_label: 'contact_form'
+      if (typeof window !== "undefined" && window.gtag) {
+        window.gtag("event", "form_submit", {
+          event_category: "engagement",
+          event_label: "contact_form",
         });
       }
     } catch (error) {
-      console.error('Form submission error:', error);
-      setSubmitStatus('error');
+      console.error("Form submission error:", error);
+      setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  if (submitStatus === 'success') {
+  if (submitStatus === "success") {
     return (
       <Card className="shadow-sm">
         <CardContent className="pt-6">
           <div className="text-center">
             <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-foreground mb-2">
-              Dziękujemy za zapytanie!
-            </h3>
+            <h3 className="text-xl font-semibold text-foreground mb-2">Dziękujemy za zapytanie!</h3>
             <p className="text-muted-foreground mb-4">
               Twoja wiadomość została wysłana. Odpowiemy w ciągu 24 godzin.
             </p>
-            <Button 
-              onClick={() => setSubmitStatus('idle')}
+            <Button
+              onClick={() => setSubmitStatus("idle")}
               variant="outline"
               className="bg-white text-neutral-900 border-neutral-200 hover:bg-neutral-50"
             >
@@ -167,7 +174,7 @@ export default memo(function ContactForm() {
           <input
             type="text"
             {...register("honeypot")}
-            style={{ display: 'none' }}
+            style={{ display: "none" }}
             tabIndex={-1}
             autoComplete="off"
           />
@@ -181,9 +188,7 @@ export default memo(function ContactForm() {
               placeholder="Jan Kowalski"
               className={errors.name ? "border-red-500" : ""}
             />
-            {errors.name && (
-              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
-            )}
+            {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
           </div>
 
           {/* Phone and Email */}
@@ -197,9 +202,7 @@ export default memo(function ContactForm() {
                 placeholder="+48 123 456 789"
                 className={errors.phone ? "border-red-500" : ""}
               />
-              {errors.phone && (
-                <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>
-              )}
+              {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>}
             </div>
             <div>
               <Label htmlFor="email">E-mail *</Label>
@@ -210,9 +213,7 @@ export default memo(function ContactForm() {
                 placeholder="jan@example.com"
                 className={errors.email ? "border-red-500" : ""}
               />
-              {errors.email && (
-                <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
-              )}
+              {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
             </div>
           </div>
 
@@ -267,20 +268,47 @@ export default memo(function ContactForm() {
                 htmlFor="files"
                 className="cursor-pointer inline-flex items-center px-4 py-2 border border-dashed border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
               >
-                <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M7 10l5-5 5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M12 5v12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  className="h-4 w-4 mr-2"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden
+                >
+                  <path
+                    d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M7 10l5-5 5 5"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M12 5v12"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
                 Dodaj zdjęcia (max 5MB każde)
               </Label>
             </div>
-            
+
             {/* Selected files */}
             {selectedFiles.length > 0 && (
               <div className="mt-3 space-y-2">
                 {selectedFiles.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm bg-muted p-2 rounded">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between text-sm bg-muted p-2 rounded"
+                  >
                     <span className="truncate">{file.name}</span>
                     <Button
                       type="button"
@@ -302,16 +330,11 @@ export default memo(function ContactForm() {
 
           {/* Consent */}
           <div className="flex items-start space-x-2">
-            <input
-              type="checkbox"
-              id="consent"
-              {...register("consent")}
-              className="mt-1"
-            />
+            <input type="checkbox" id="consent" {...register("consent")} className="mt-1" />
             <div>
               <Label htmlFor="consent" className="text-sm">
-                Wyrażam zgodę na przetwarzanie danych osobowych w celu kontaktu 
-                w sprawie wyceny i realizacji usługi montażowej. *
+                Wyrażam zgodę na przetwarzanie danych osobowych w celu kontaktu w sprawie wyceny i
+                realizacji usługi montażowej. *
               </Label>
               {errors.consent && (
                 <p className="text-sm text-red-500 mt-1">{errors.consent.message}</p>
@@ -333,16 +356,34 @@ export default memo(function ContactForm() {
               </>
             ) : (
               <>
-                <svg className="h-4 w-4 mr-2" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
-                  <path d="M22 2L11 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <svg
+                  className="h-4 w-4 mr-2"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  aria-hidden
+                >
+                  <path
+                    d="M22 2L11 13"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <path
+                    d="M22 2L15 22L11 13L2 9L22 2Z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
                 Wyślij zapytanie
               </>
             )}
           </Button>
 
-          {submitStatus === 'error' && (
+          {submitStatus === "error" && (
             <div className="flex items-center space-x-2 text-red-500 text-sm">
               <AlertCircle className="h-4 w-4" />
               <span>
@@ -352,7 +393,7 @@ export default memo(function ContactForm() {
           )}
 
           <p className="text-xs text-muted-foreground text-center">
-            Odpowiadamy w ciągu 24 godzin. W pilnych sprawach dzwoń bezpośrednio: 
+            Odpowiadamy w ciągu 24 godzin. W pilnych sprawach dzwoń bezpośrednio:
             <a href="tel:+48XXXXXXXXX" className="text-primary hover:underline ml-1">
               +48 XXX XXX XXX
             </a>

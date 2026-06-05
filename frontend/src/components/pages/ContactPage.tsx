@@ -4,11 +4,12 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import ContactForm from "@/components/sections/ContactForm";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
-import { COMPANY_DATA } from "@/lib/company-data";
+import { COMPANY_DATA } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Kontakt - SkładaMy",
-  description: "Skontaktuj się z nami w sprawie montażu mebli w Słupsku. Bezpłatna wycena, szybka odpowiedź, profesjonalna obsługa.",
+  description:
+    "Skontaktuj się z nami w sprawie montażu mebli w Słupsku. Bezpłatna wycena, szybka odpowiedź, profesjonalna obsługa.",
   keywords: ["kontakt montaż mebli Słupsk", "zamówienie montaż IKEA", "wycena składanie mebli"],
 };
 
@@ -28,15 +29,17 @@ export default function KontaktPage() {
               Skontaktuj się z nami
             </h1>
             <p className="mt-4 text-lg text-neutral-700 max-w-2xl mx-auto">
-              Gotowy na montaż bez stresu? Napisz lub zadzwoń — odpowiadamy tego samego dnia
-              i przedstawiamy bezpłatną wycenę.
+              Gotowy na montaż bez stresu? Napisz lub zadzwoń — odpowiadamy tego samego dnia i
+              przedstawiamy bezpłatną wycenę.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             {/* Contact Info */}
             <div>
-              <h2 className="text-2xl font-semibold text-neutral-900 mb-6">Informacje kontaktowe</h2>
+              <h2 className="text-2xl font-semibold text-neutral-900 mb-6">
+                Informacje kontaktowe
+              </h2>
 
               <div className="grid grid-cols-1 gap-4">
                 <div className="flex items-start gap-4 p-4 bg-white rounded-lg border border-neutral-200 shadow-sm">
@@ -46,9 +49,16 @@ export default function KontaktPage() {
                   <div>
                     <div className="font-semibold text-neutral-900">Telefon</div>
                     <div className="text-neutral-700">
-                      <a href={`tel:${COMPANY_DATA.phone.replace(/\s/g, '')}`} className="hover:underline">{COMPANY_DATA.phone}</a>
+                      <a
+                        href={`tel:${COMPANY_DATA.phone.replace(/\s/g, "")}`}
+                        className="hover:underline"
+                      >
+                        {COMPANY_DATA.phone}
+                      </a>
                     </div>
-                    <div className="text-sm text-neutral-600 mt-1">Najszybszy kontakt — oddzwaniamy w ciągu godziny</div>
+                    <div className="text-sm text-neutral-600 mt-1">
+                      Najszybszy kontakt — oddzwaniamy w ciągu godziny
+                    </div>
                   </div>
                 </div>
 
@@ -59,9 +69,13 @@ export default function KontaktPage() {
                   <div>
                     <div className="font-semibold text-neutral-900">E-mail</div>
                     <div className="text-neutral-700">
-                      <a href={`mailto:${COMPANY_DATA.email}`} className="hover:underline">{COMPANY_DATA.email}</a>
+                      <a href={`mailto:${COMPANY_DATA.email}`} className="hover:underline">
+                        {COMPANY_DATA.email}
+                      </a>
                     </div>
-                    <div className="text-sm text-neutral-600 mt-1">Odpowiadamy w ciągu 24 godzin</div>
+                    <div className="text-sm text-neutral-600 mt-1">
+                      Odpowiadamy w ciągu 24 godzin
+                    </div>
                   </div>
                 </div>
 
@@ -71,8 +85,12 @@ export default function KontaktPage() {
                   </div>
                   <div>
                     <div className="font-semibold text-neutral-900">Obszar działania</div>
-                    <div className="text-neutral-700">Słupsk i okolice — dojazd bezpłatny w obrębie miasta</div>
-                    <div className="text-sm text-neutral-600 mt-1">Dojazd poza miasto — ustalamy indywidualnie</div>
+                    <div className="text-neutral-700">
+                      Słupsk i okolice — dojazd bezpłatny w obrębie miasta
+                    </div>
+                    <div className="text-sm text-neutral-600 mt-1">
+                      Dojazd poza miasto — ustalamy indywidualnie
+                    </div>
                   </div>
                 </div>
 
@@ -83,7 +101,9 @@ export default function KontaktPage() {
                   <div>
                     <div className="font-semibold text-neutral-900">Czas realizacji</div>
                     <div className="text-neutral-700">Zwykle 1–3 dni robocze</div>
-                    <div className="text-sm text-neutral-600 mt-1">Zależy od ilości i typu mebli</div>
+                    <div className="text-sm text-neutral-600 mt-1">
+                      Zależy od ilości i typu mebli
+                    </div>
                   </div>
                 </div>
               </div>
@@ -102,9 +122,7 @@ export default function KontaktPage() {
 
             {/* Contact Form */}
             <div>
-              <h2 className="text-2xl font-bold text-foreground mb-6">
-                Formularz kontaktowy
-              </h2>
+              <h2 className="text-2xl font-bold text-foreground mb-6">Formularz kontaktowy</h2>
               <div className="bg-white rounded-lg border border-neutral-200 shadow-sm p-4">
                 <ContactForm />
               </div>
@@ -118,30 +136,24 @@ export default function KontaktPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
               <div>
-                <h3 className="font-semibold text-foreground mb-2">
-                  Jak szybko otrzymam wycenę?
-                </h3>
+                <h3 className="font-semibold text-foreground mb-2">Jak szybko otrzymam wycenę?</h3>
                 <p className="text-muted-foreground text-sm">
-                  Standardowo odpowiadamy tego samego dnia. W przypadku zapytań złożonych 
-                  po godzinach - następnego dnia roboczego rano.
+                  Standardowo odpowiadamy tego samego dnia. W przypadku zapytań złożonych po
+                  godzinach - następnego dnia roboczego rano.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-2">
-                  Czy wycena jest płatna?
-                </h3>
+                <h3 className="font-semibold text-foreground mb-2">Czy wycena jest płatna?</h3>
                 <p className="text-muted-foreground text-sm">
-                  Nie, wycena jest całkowicie bezpłatna i nie zobowiązuje do zamówienia. 
-                  Płacisz tylko po wykonanym montażu.
+                  Nie, wycena jest całkowicie bezpłatna i nie zobowiązuje do zamówienia. Płacisz
+                  tylko po wykonanym montażu.
                 </p>
               </div>
               <div>
-                <h3 className="font-semibold text-foreground mb-2">
-                  Co jeśli mam pilny montaż?
-                </h3>
+                <h3 className="font-semibold text-foreground mb-2">Co jeśli mam pilny montaż?</h3>
                 <p className="text-muted-foreground text-sm">
-                  Zadzwoń bezpośrednio - często możemy zorganizować montaż już następnego dnia. 
-                  SMS lub WhatsApp też działają dobrze.
+                  Zadzwoń bezpośrednio - często możemy zorganizować montaż już następnego dnia. SMS
+                  lub WhatsApp też działają dobrze.
                 </p>
               </div>
               <div>
@@ -149,7 +161,7 @@ export default function KontaktPage() {
                   Czy montujecie wieczorami/weekendami?
                 </h3>
                 <p className="text-muted-foreground text-sm">
-                  Tak, dostosowujemy się do Państwa grafiku. Montaże weekendowe i wieczorne 
+                  Tak, dostosowujemy się do Państwa grafiku. Montaże weekendowe i wieczorne
                   realizujemy bez dodatkowych opłat.
                 </p>
               </div>

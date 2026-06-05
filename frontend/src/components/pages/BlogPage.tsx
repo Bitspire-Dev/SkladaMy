@@ -3,13 +3,20 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { BlogListClient } from "@/components/sections/blog/BlogListClient";
-import { getBlogPosts, getFeaturedBlogPosts, getCategories } from "@/lib/strapi.server";
+import { getBlogPosts, getFeaturedBlogPosts, getCategories } from "@/lib/cms/api";
 import type { BlogPost, Category } from "@/types/strapi";
 
 export const metadata: Metadata = {
   title: "Blog - Porady i inspiracje | SkładaMy",
-  description: "Praktyczne porady dotyczące montażu mebli, inspiracje aranżacyjne i najnowsze trendy w urządzaniu wnętrz. Eksperci od montażu dzielą się wiedzą.",
-  keywords: ["blog montaż mebli", "porady IKEA", "inspiracje wnętrz", "montaż poradnik", "aranżacja mieszkania"],
+  description:
+    "Praktyczne porady dotyczące montażu mebli, inspiracje aranżacyjne i najnowsze trendy w urządzaniu wnętrz. Eksperci od montażu dzielą się wiedzą.",
+  keywords: [
+    "blog montaż mebli",
+    "porady IKEA",
+    "inspiracje wnętrz",
+    "montaż poradnik",
+    "aranżacja mieszkania",
+  ],
 };
 
 export default async function BlogPage() {
@@ -21,7 +28,7 @@ export default async function BlogPage() {
     const [allPostsResponse, featuredPostsResponse, categoriesResponse] = await Promise.all([
       getBlogPosts({ pageSize: 50 }),
       getFeaturedBlogPosts(6),
-      getCategories()
+      getCategories(),
     ]);
 
     allPosts = allPostsResponse.data || [];
@@ -34,11 +41,7 @@ export default async function BlogPage() {
   return (
     <>
       <Header />
-      <BlogListClient 
-        allPosts={allPosts} 
-        featuredPosts={featuredPosts}
-        categories={categories}
-      />
+      <BlogListClient allPosts={allPosts} featuredPosts={featuredPosts} categories={categories} />
       <Footer />
       <StickyCTA />
     </>

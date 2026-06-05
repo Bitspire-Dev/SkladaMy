@@ -1,30 +1,31 @@
-'use client';
+"use client";
 
 import Image from "next/image";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { 
-  Calendar, 
-  Clock, 
-  ArrowLeft, 
-  User, 
+import { Card, CardContent } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
+import {
+  Calendar,
+  Clock,
+  ArrowLeft,
+  User,
   Eye,
   BookOpen,
   ChevronRight,
   Home,
-  Tag as TagIcon
+  Tag as TagIcon,
 } from "lucide-react";
 import Link from "next/link";
-import { formatDate, processBlogContent } from "@/lib/blog-helpers";
-import { getMediaURL } from "@/lib/strapi";
+import { formatDate } from "@/lib/content/formatters/dates";
+import { processBlogContent } from "@/lib/content/processors/html";
+import { getMediaURL } from "@/lib/cms/client";
 import AuthorCard from "@/components/sections/blog/AuthorCard";
 import ShareButtons from "@/components/sections/blog/ShareButtons";
 import TableOfContents from "@/components/sections/blog/TableOfContents";
 import TagBadges from "@/components/sections/blog/TagBadges";
 import type { BlogPost } from "@/types/strapi";
-import { usePathname } from 'next/navigation';
-import { getCurrentUrl } from "@/lib/env";
+import { usePathname } from "next/navigation";
+import { getCurrentUrl } from "@/lib/config";
 
 interface BlogPostContentProps {
   post: BlogPost;
@@ -70,8 +71,8 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
             <header className="mb-8">
               {/* Category badge */}
               {post.category && (
-                <Badge 
-                  className="mb-4 border-0 text-white" 
+                <Badge
+                  className="mb-4 border-0 text-white"
                   style={{ backgroundColor: post.category.color }}
                 >
                   {post.category.name}
@@ -141,7 +142,7 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
             )}
 
             {/* Article content */}
-            <div 
+            <div
               className="prose prose-base lg:prose-lg max-w-none 
                 prose-headings:font-semibold prose-headings:text-foreground
                 prose-h2:text-2xl prose-h2:mb-4 prose-h2:mt-8 
@@ -160,10 +161,13 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
                   <BookOpen className="h-6 w-6 mr-2" />
                   Powiązane artykuły
                 </h2>
-                
+
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {(post.relatedPosts || relatedPosts).slice(0, 3).map((relatedPost: BlogPost) => (
-                    <Card key={relatedPost.id} className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
+                    <Card
+                      key={relatedPost.id}
+                      className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
+                    >
                       <div className="aspect-video bg-linear-to-br from-muted to-muted/50 relative">
                         {relatedPost.featuredImage ? (
                           <Image
@@ -179,33 +183,33 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
                           </div>
                         )}
                         {relatedPost.category && (
-                          <Badge 
-                            className="absolute top-3 left-3 border-0 text-white" 
+                          <Badge
+                            className="absolute top-3 left-3 border-0 text-white"
                             style={{ backgroundColor: relatedPost.category.color }}
                           >
                             {relatedPost.category.name}
                           </Badge>
                         )}
                       </div>
-                      
+
                       <CardContent className="p-4 flex flex-col grow">
                         <h3 className="font-semibold text-foreground mb-2 line-clamp-2">
                           {relatedPost.title}
                         </h3>
-                        
+
                         <p className="text-sm text-muted-foreground mb-4 line-clamp-2 grow">
                           {relatedPost.excerpt}
                         </p>
-                        
+
                         <div className="flex items-center justify-between text-xs text-muted-foreground mb-3">
-                          <span>{formatDate(relatedPost.publishDate || relatedPost.publishedAt)}</span>
+                          <span>
+                            {formatDate(relatedPost.publishDate || relatedPost.publishedAt)}
+                          </span>
                           <span>{relatedPost.readTime || 5} min</span>
                         </div>
-                        
+
                         <Button asChild variant="outline" size="sm" className="w-full mt-auto">
-                          <Link href={`/blog/${relatedPost.slug}`}>
-                            Czytaj więcej
-                          </Link>
+                          <Link href={`/blog/${relatedPost.slug}`}>Czytaj więcej</Link>
                         </Button>
                       </CardContent>
                     </Card>
@@ -220,19 +224,15 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
                 Potrzebujesz pomocy z montażem?
               </h3>
               <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-                Nasz zespół ma doświadczenie w montażu wszystkich rodzajów mebli IKEA. 
-                Skontaktuj się z nami dla bezpłatnej wyceny.
+                Nasz zespół ma doświadczenie w montażu wszystkich rodzajów mebli IKEA. Skontaktuj
+                się z nami dla bezpłatnej wyceny.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button asChild size="lg">
-                  <Link href="/kontakt">
-                    Bezpłatna wycena
-                  </Link>
+                  <Link href="/kontakt">Bezpłatna wycena</Link>
                 </Button>
                 <Button asChild variant="outline" size="lg">
-                  <Link href="/portfolio">
-                    Zobacz nasze realizacje
-                  </Link>
+                  <Link href="/portfolio">Zobacz nasze realizacje</Link>
                 </Button>
               </div>
             </section>
@@ -244,11 +244,7 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
             {post.author && <AuthorCard author={post.author} />}
 
             {/* Share Buttons */}
-            <ShareButtons
-              url={fullUrl}
-              title={post.title}
-              description={post.excerpt}
-            />
+            <ShareButtons url={fullUrl} title={post.title} description={post.excerpt} />
 
             {/* Table of Contents */}
             <TableOfContents content={post.content} />

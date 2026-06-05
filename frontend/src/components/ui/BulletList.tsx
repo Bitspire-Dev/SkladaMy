@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export interface BulletListProps {
   items: string[];
@@ -15,10 +15,10 @@ export interface BulletListProps {
  */
 export const BulletList: React.FC<BulletListProps> = ({
   items,
-  className = 'space-y-2',
-  bulletClassName = 'w-1.5 h-1.5 bg-primary rounded-full mt-2 mr-3 flex-shrink-0',
-  itemClassName = 'text-sm text-muted-foreground',
-  as: Component = 'ul'
+  className = "space-y-2",
+  bulletClassName = "w-1.5 h-1.5 bg-primary rounded-full mt-2 mr-3 flex-shrink-0",
+  itemClassName = "text-sm text-muted-foreground",
+  as: Component = "ul",
 }) => {
   return (
     <Component className={className} role="list">

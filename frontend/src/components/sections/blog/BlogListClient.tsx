@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
 import { useState, useMemo, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
+import { Badge } from "@/components/ui/Badge";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
-import { formatDate } from "@/lib/blog-helpers";
-import { getMediaURL } from "@/lib/strapi";
+import { formatDate } from "@/lib/content/formatters/dates";
+import { getMediaURL } from "@/lib/cms/client";
 import BlogSearch from "@/components/sections/blog/BlogSearch";
 import TagBadges from "@/components/sections/blog/TagBadges";
 import type { BlogPost, Category } from "@/types/strapi";
@@ -28,14 +28,14 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
   const filteredPosts = useMemo(() => {
     return allPosts.filter((post) => {
       // Search filter
-      const matchesSearch = !searchQuery || 
+      const matchesSearch =
+        !searchQuery ||
         post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.excerpt?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         post.content?.toLowerCase().includes(searchQuery.toLowerCase());
 
-      // Category filter  
-      const matchesCategory = !selectedCategory || 
-        post.category?.slug === selectedCategory;
+      // Category filter
+      const matchesCategory = !selectedCategory || post.category?.slug === selectedCategory;
 
       return matchesSearch && matchesCategory;
     });
@@ -98,11 +98,11 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
                       </div>
                     )}
                     {post.category && (
-                      <Badge 
-                        className="absolute top-4 left-4 border-0 text-white font-semibold" 
-                        style={{ 
+                      <Badge
+                        className="absolute top-4 left-4 border-0 text-white font-semibold"
+                        style={{
                           backgroundColor: post.category.color,
-                          boxShadow: '0 2px 8px rgba(0,0,0,0.25)'
+                          boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
                         }}
                       >
                         {post.category.name}
@@ -153,11 +153,14 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
         {/* All Posts */}
         <div className="mb-16">
           <h2 className="text-2xl font-bold text-foreground mb-8">
-            {searchQuery || selectedCategory ? 'Wyniki wyszukiwania' : 'Wszystkie artykuły'}
+            {searchQuery || selectedCategory ? "Wyniki wyszukiwania" : "Wszystkie artykuły"}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredPosts.map((post) => (
-              <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col">
+              <Card
+                key={post.id}
+                className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
+              >
                 <div className="aspect-video bg-linear-to-br from-muted to-muted/50 relative">
                   {post.featuredImage ? (
                     <Image
@@ -173,11 +176,11 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
                     </div>
                   )}
                   {post.category && (
-                    <Badge 
-                      className="absolute top-3 left-3 border-0 text-white font-semibold" 
-                      style={{ 
+                    <Badge
+                      className="absolute top-3 left-3 border-0 text-white font-semibold"
+                      style={{
                         backgroundColor: post.category.color,
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.25)'
+                        boxShadow: "0 2px 8px rgba(0,0,0,0.25)",
                       }}
                     >
                       {post.category.name}
@@ -226,11 +229,11 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
             <p className="text-muted-foreground mb-6">
               Nie znaleźliśmy artykułów spełniających wybrane kryteria.
             </p>
-            <Button 
+            <Button
               onClick={() => {
-                setSearchQuery('');
+                setSearchQuery("");
                 setSelectedCategory(null);
-              }} 
+              }}
               variant="outline"
             >
               Wyczyść filtry

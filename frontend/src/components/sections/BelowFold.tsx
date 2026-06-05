@@ -1,12 +1,12 @@
 "use client";
-import dynamic from 'next/dynamic';
-import LazyComponent from '@/components/LazyComponent';
+import dynamic from "next/dynamic";
+import LazyComponent from "@/components/ui/LazyComponent";
 
 // Sekcje ładowane dopiero po wejściu w viewport (brak SSR aby zmniejszyć initial HTML/JS)
-const ProcessSection = dynamic(() => import('./ProcessSection'), { ssr: false });
-const TestimonialsSection = dynamic(() => import('./TestimonialsSection'), { ssr: false });
-const FAQSection = dynamic(() => import('./FAQSection'), { ssr: false });
-const FinalCTASection = dynamic(() => import('./FinalCTASection'), { ssr: false });
+const ProcessSection = dynamic(() => import("./ProcessSection"), { ssr: false });
+const TestimonialsSection = dynamic(() => import("./TestimonialsSection"), { ssr: false });
+const FAQSection = dynamic(() => import("./FAQSection"), { ssr: false });
+const FinalCTASection = dynamic(() => import("./FinalCTASection"), { ssr: false });
 
 export default function BelowFold() {
   return (

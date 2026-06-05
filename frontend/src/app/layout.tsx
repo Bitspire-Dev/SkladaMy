@@ -1,15 +1,14 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StructuredData from "@/components/StructuredData";
-import CookieConsentBanner from "@/components/layout/CookieConsentBanner";
 import Script from "next/script";
-import { getSiteUrl } from "@/lib/env";
+import { getSiteUrl } from "@/lib/config";
 import "./globals.css";
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ["latin"],
-  display: 'swap',
-  variable: '--font-inter'
+  display: "swap",
+  variable: "--font-inter",
 });
 
 const siteUrl = getSiteUrl();
@@ -17,20 +16,21 @@ const siteUrl = getSiteUrl();
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "SkładaMy - Profesjonalny montaż mebli w Słupsku | Gwarancja 30 dni",
-    template: "%s | SkładaMy"
+    default: "Montaż mebli w Słupsku - SkładaMy | Gwarancja 30 dni",
+    template: "%s | SkładaMy",
   },
-  description: "⭐ Montaż mebli IKEA w Słupsku ✓ Szafy PAX ✓ Kuchnie ✓ Gwarancja 30 dni ✓ 300+ zadowolonych klientów ✓ Dojazd w 24h ✓ Bezpłatna wycena",
+  description:
+    "⭐ Montaż mebli IKEA w Słupsku ✓ Szafy PAX ✓ Kuchnie ✓ Gwarancja 30 dni ✓ 300+ zadowolonych klientów ✓ Dojazd w 24h ✓ Bezpłatna wycena",
   keywords: [
-    "montaż mebli Słupsk", 
-    "składanie mebli IKEA Słupsk", 
+    "montaż mebli Słupsk",
+    "składanie mebli IKEA Słupsk",
     "montaż szafy PAX Słupsk",
     "montaż kuchni IKEA Słupsk",
     "monterzy mebli Słupsk",
     "wieszanie szafek Słupsk",
     "kotwienie ściany Słupsk",
     "usługi montażowe Słupsk",
-    "montaż garderoby Słupsk"
+    "montaż garderoby Słupsk",
   ],
   authors: [{ name: "SkładaMy", url: siteUrl }],
   creator: "SkładaMy",
@@ -44,15 +44,16 @@ export const metadata: Metadata = {
     locale: "pl_PL",
     url: siteUrl,
     siteName: "SkładaMy",
-    title: "SkładaMy - Profesjonalny montaż mebli w Słupsku | Gwarancja 30 dni",
-    description: "⭐ Montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Dojazd w 24h ✓ Bezpłatna wycena",
+    title: "Montaż mebli w Słupsku - SkładaMy | Gwarancja 30 dni",
+    description:
+      "⭐ Montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Dojazd w 24h ✓ Bezpłatna wycena",
     images: [
       {
         url: `${siteUrl}/skladamy.svg`,
         width: 160,
         height: 40,
         alt: "SkładaMy - Montaż mebli Słupsk",
-      }
+      },
     ],
   },
   twitter: {
@@ -60,7 +61,7 @@ export const metadata: Metadata = {
     site: "@skladamy_pl",
     title: "SkładaMy - Profesjonalny montaż mebli w Słupsku",
     description: "⭐ Montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni",
-    images: [`${siteUrl}/skladamy.svg`],
+    images: [`${siteUrl}/layout/skladamy.svg`],
   },
   robots: {
     index: true,
@@ -68,25 +69,29 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   verification: {
     google: process.env.GOOGLE_VERIFICATION_ID,
   },
   icons: {
-    icon: '/ikona.ico',
-    shortcut: '/ikona.ico',
-    apple: '/ikona.ico',
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   other: {
-    'geo.region': 'PL-PM',
-    'geo.placename': 'Słupsk',
-    'geo.position': '54.464;17.029',
-    'ICBM': '54.464, 17.029'
-  }
+    "geo.region": "PL-PM",
+    "geo.placename": "Słupsk",
+    "geo.position": "54.464;17.029",
+    ICBM: "54.464, 17.029",
+  },
 };
 
 export default function RootLayout({
@@ -97,11 +102,16 @@ export default function RootLayout({
   return (
     <html lang="pl" className={inter.variable}>
       <head>
-        <link rel="icon" href="/ikona.ico" />
-        <link rel="shortcut icon" href="/ikona.ico" />
-        <link rel="apple-touch-icon" href="/ikona.ico" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-32x32.png" type="image/png" sizes="32x32" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         {/* Inline critical CSS: podstawowe zmienne kolorów + body aby zredukować FOUC przy opóźnieniu głównego CSS */}
-        <style dangerouslySetInnerHTML={{ __html: `:root{--background:#FFFFFF;--foreground:#111111;--primary:#FFC400;--primary-foreground:#111111;}body{margin:0;background:var(--background);color:var(--foreground);font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}h1,h2,h3,h4,h5,h6{font-weight:600;letter-spacing:-.025em}` }} />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `:root{--background:#FFFFFF;--foreground:#111111;--primary:#FFC400;--primary-foreground:#111111;}body{margin:0;background:var(--background);color:var(--foreground);font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}h1,h2,h3,h4,h5,h6{font-weight:600;letter-spacing:-.025em}`,
+          }}
+        />
         {/* Preload głównego arkusza Next bez zmiany jego media (bezpieczne dla designu) */}
         <Script id="preload-main-css" strategy="beforeInteractive">
           {`
@@ -135,13 +145,10 @@ export default function RootLayout({
             src="https://www.googletagmanager.com/ns.html?id=GTM-56KC6N53"
             height="0"
             width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
+            style={{ display: "none", visibility: "hidden" }}
           ></iframe>
         </noscript>
-        <div className="min-h-screen bg-background">
-          {children}
-        </div>
-        <CookieConsentBanner />
+        <div className="min-h-screen bg-background">{children}</div>
       </body>
     </html>
   );

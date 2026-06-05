@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { List } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { useEffect, useMemo, useRef, useState } from "react";
+import { List } from "lucide-react";
+import { cn } from "@/lib/styles";
 
 interface TOCItem {
   id: string;
@@ -15,21 +15,24 @@ interface TableOfContentsProps {
 }
 
 export default function TableOfContents({ content }: TableOfContentsProps) {
-  const [activeId, setActiveId] = useState<string>('');
+  const [activeId, setActiveId] = useState<string>("");
   const observerRef = useRef<IntersectionObserver | null>(null);
   const tocItems = useMemo(() => {
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, 'text/html');
-    const headings = doc.querySelectorAll('h2, h3');
-
     const items: TOCItem[] = [];
-    headings.forEach((heading, index) => {
-      const level = parseInt(heading.tagName.charAt(1));
-      const text = heading.textContent || '';
-      const id = `heading-${index}`;
+    const headingRegex = /<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi;
+    let match: RegExpExecArray | null;
+    let index = 0;
 
-      items.push({ id, text, level });
-    });
+    while ((match = headingRegex.exec(content)) !== null) {
+      const level = Number.parseInt(match[1], 10);
+      const text = match[2].replace(/<[^>]*>/g, "").trim();
+
+      if (!text) {
+        continue;
+      }
+
+      items.push({ id: `heading-${index++}`, text, level });
+    }
 
     return items;
   }, [content]);
@@ -47,7 +50,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
         });
       },
       {
-        rootMargin: '-80px 0px -80% 0px',
+        rootMargin: "-80px 0px -80% 0px",
         threshold: 1,
       }
     );
@@ -74,7 +77,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
 
       window.scrollTo({
         top: offsetPosition,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
 
       setActiveId(id);
@@ -98,12 +101,12 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
             key={item.id}
             onClick={() => scrollToHeading(item.id)}
             className={cn(
-              'w-full text-left text-sm py-2 px-3 rounded-md transition-all',
-              'hover:bg-accent hover:text-accent-foreground',
-              item.level === 3 && 'pl-6 text-xs',
+              "w-full text-left text-sm py-2 px-3 rounded-md transition-all",
+              "hover:bg-accent hover:text-accent-foreground",
+              item.level === 3 && "pl-6 text-xs",
               activeId === item.id
-                ? 'bg-primary/10 text-primary font-medium border-l-2 border-primary'
-                : 'text-muted-foreground border-l-2 border-transparent'
+                ? "bg-primary/10 text-primary font-medium border-l-2 border-primary"
+                : "text-muted-foreground border-l-2 border-transparent"
             )}
           >
             {item.text}

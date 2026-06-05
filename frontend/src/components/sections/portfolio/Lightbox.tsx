@@ -1,11 +1,11 @@
-'use client';
+﻿"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
-import axios from 'axios';
-import { X, ChevronLeft, ChevronRight, Download, Share } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import axios from "axios";
+import { X, ChevronLeft, ChevronRight, Download, Share } from "lucide-react";
+import { Button } from "@/components/ui/Button";
 
 interface LightboxImage {
   id: string;
@@ -27,31 +27,34 @@ export function Lightbox({ images, currentIndex, onClose, onNavigate }: Lightbox
   const currentImage = images[currentIndex];
 
   // Keyboard navigation
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    switch (e.key) {
-      case 'Escape':
-        onClose();
-        break;
-      case 'ArrowLeft':
-        if (currentIndex > 0) {
-          onNavigate(currentIndex - 1);
-        }
-        break;
-      case 'ArrowRight':
-        if (currentIndex < images.length - 1) {
-          onNavigate(currentIndex + 1);
-        }
-        break;
-    }
-  }, [currentIndex, images.length, onClose, onNavigate]);
+  const handleKeyDown = useCallback(
+    (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "Escape":
+          onClose();
+          break;
+        case "ArrowLeft":
+          if (currentIndex > 0) {
+            onNavigate(currentIndex - 1);
+          }
+          break;
+        case "ArrowRight":
+          if (currentIndex < images.length - 1) {
+            onNavigate(currentIndex + 1);
+          }
+          break;
+      }
+    },
+    [currentIndex, images.length, onClose, onNavigate]
+  );
 
   useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
 
     return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
     };
   }, [handleKeyDown]);
 
@@ -72,12 +75,12 @@ export function Lightbox({ images, currentIndex, onClose, onNavigate }: Lightbox
   const handleDownload = async () => {
     try {
       const response = await axios.get(currentImage.src, {
-        responseType: 'blob',
+        responseType: "blob",
       });
-      
+
       const blob = response.data;
       const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
+      const a = document.createElement("a");
       a.href = url;
       a.download = `${currentImage.title}.jpg`;
       document.body.appendChild(a);
@@ -85,7 +88,7 @@ export function Lightbox({ images, currentIndex, onClose, onNavigate }: Lightbox
       document.body.removeChild(a);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Failed to download image:', error);
+      console.error("Failed to download image:", error);
     }
   };
 
@@ -98,7 +101,7 @@ export function Lightbox({ images, currentIndex, onClose, onNavigate }: Lightbox
           url: window.location.href,
         });
       } catch (error) {
-        console.error('Failed to share:', error);
+        console.error("Failed to share:", error);
       }
     } else {
       // Fallback - copy to clipboard
@@ -106,7 +109,7 @@ export function Lightbox({ images, currentIndex, onClose, onNavigate }: Lightbox
         await navigator.clipboard.writeText(window.location.href);
         // You could show a toast notification here
       } catch (error) {
-        console.error('Failed to copy to clipboard:', error);
+        console.error("Failed to copy to clipboard:", error);
       }
     }
   };
@@ -176,7 +179,7 @@ export function Lightbox({ images, currentIndex, onClose, onNavigate }: Lightbox
           >
             <Download className="w-5 h-5" aria-hidden="true" />
           </Button>
-          
+
           <Button
             variant="ghost"
             size="icon"
@@ -208,7 +211,7 @@ export function Lightbox({ images, currentIndex, onClose, onNavigate }: Lightbox
               className={`
                 max-w-full max-h-[90vh] w-auto h-auto object-contain
                 transition-opacity duration-300
-                ${isLoading ? 'opacity-0' : 'opacity-100'}
+                ${isLoading ? "opacity-0" : "opacity-100"}
               `}
               onLoad={() => setIsLoading(false)}
               priority
@@ -236,9 +239,11 @@ export function Lightbox({ images, currentIndex, onClose, onNavigate }: Lightbox
                 {currentImage.title && (
                   <h3 className="font-semibold text-lg">{currentImage.title}</h3>
                 )}
-                
+
                 <div className="flex items-center space-x-4 text-sm text-gray-200">
-                  <span>Zdjęcie {currentIndex + 1} z {images.length}</span>
+                  <span>
+                    Zdjęcie {currentIndex + 1} z {images.length}
+                  </span>
                 </div>
               </div>
 

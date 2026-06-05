@@ -1,7 +1,7 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { type NextRequest, NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
-export const runtime = 'nodejs';
+export const runtime = "nodejs";
 
 interface ContactFormData {
   name: string;
@@ -14,27 +14,27 @@ interface ContactFormData {
 /* eslint-disable max-lines-per-function */
 export async function POST(request: NextRequest) {
   try {
-    const contentType = request.headers.get('content-type') || '';
+    const contentType = request.headers.get("content-type") || "";
 
     let body: ContactFormData;
     let attachments: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
 
-    if (contentType.includes('multipart/form-data')) {
+    if (contentType.includes("multipart/form-data")) {
       const form = await request.formData();
       body = {
-        name: String(form.get('name') || ''),
-        email: String(form.get('email') || ''),
-        phone: String(form.get('phone') || ''),
-        subject: String(form.get('subject') || ''),
-        message: String(form.get('message') || ''),
+        name: String(form.get("name") || ""),
+        email: String(form.get("email") || ""),
+        phone: String(form.get("phone") || ""),
+        subject: String(form.get("subject") || ""),
+        message: String(form.get("message") || ""),
       };
 
-      const files = form.getAll('files').filter((v): v is File => v instanceof File);
+      const files = form.getAll("files").filter((v): v is File => v instanceof File);
       attachments = await Promise.all(
         files.slice(0, 5).map(async (file) => {
           const arrayBuffer = await file.arrayBuffer();
           return {
-            filename: file.name || 'zalacznik',
+            filename: file.name || "zalacznik",
             content: Buffer.from(arrayBuffer),
             contentType: file.type || undefined,
           };
@@ -46,17 +46,14 @@ export async function POST(request: NextRequest) {
 
     // Validate required fields
     if (!body.name || !body.email || !body.message || !body.subject) {
-      return NextResponse.json(
-        { error: 'Brak wymaganych pól' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: "Brak wymaganych pól" }, { status: 400 });
     }
 
     // Create transporter
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === 'true',
+      secure: process.env.SMTP_SECURE === "true",
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -94,30 +91,30 @@ export async function POST(request: NextRequest) {
                 <div class="label">👤 Imię i nazwisko:</div>
                 <div class="value">${body.name}</div>
               </div>
-              
+
               <div class="field">
                 <div class="label">📧 Email:</div>
                 <div class="value"><a href="mailto:${body.email}">${body.email}</a></div>
               </div>
-              
+
               <div class="field">
                 <div class="label">📱 Telefon:</div>
                 <div class="value"><a href="tel:${body.phone}">${body.phone}</a></div>
               </div>
-              
+
               <div class="field">
                 <div class="label">🛠️ Typ usługi:</div>
                 <div class="value">${body.subject}</div>
               </div>
-              
+
               <div class="field">
                 <div class="label">💬 Wiadomość:</div>
-                <div class="value">${body.message.replace(/\n/g, '<br>')}</div>
+                <div class="value">${body.message.replace(/\n/g, "<br>")}</div>
               </div>
-              
+
               <div class="footer">
                 <p>Wiadomość wysłana z formularza kontaktowego na stronie SkładaMy.com.pl</p>
-                <p>Data: ${new Date().toLocaleString('pl-PL')}</p>
+                <p>Data: ${new Date().toLocaleString("pl-PL")}</p>
               </div>
             </div>
           </div>
@@ -136,7 +133,7 @@ Wiadomość:
 ${body.message}
 
 ---
-Data: ${new Date().toLocaleString('pl-PL')}
+Data: ${new Date().toLocaleString("pl-PL")}
       `,
       attachments: attachments.length > 0 ? attachments : undefined,
     };
@@ -145,7 +142,7 @@ Data: ${new Date().toLocaleString('pl-PL')}
     const mailToCustomer = {
       from: `"SkładaMy - Montaż Mebli" <${process.env.SMTP_FROM}>`,
       to: body.email,
-      subject: '✅ Potwierdzenie otrzymania wiadomości - SkładaMy',
+      subject: "✅ Potwierdzenie otrzymania wiadomości - SkładaMy",
       html: `
         <!DOCTYPE html>
         <html>
@@ -167,25 +164,25 @@ Data: ${new Date().toLocaleString('pl-PL')}
             </div>
             <div class="content">
               <p>Witaj <strong>${body.name}</strong>,</p>
-              
+
               <p>Otrzymaliśmy Twoją wiadomość dotyczącą: <strong>${body.subject}</strong></p>
-              
+
               <div class="highlight">
                 <p><strong>📞 Odpowiemy do Ciebie w ciągu 24 godzin</strong></p>
-                <p>W pilnych sprawach zadzwoń: <a href="tel:+48884938490">+48 884 938 490</a></p>
+                <p>W pilnych sprawach zadzwoń: <a href="tel:+48780926993">+48 780 926 993</a></p>
               </div>
-              
+
               <p><strong>Treść Twojej wiadomości:</strong></p>
-              <p style="background: #f9f9f9; padding: 15px; border-radius: 5px;">${body.message.replace(/\n/g, '<br>')}</p>
-              
+              <p style="background: #f9f9f9; padding: 15px; border-radius: 5px;">${body.message.replace(/\n/g, "<br>")}</p>
+
               <p>Pozdrawiamy,<br>
               <strong>Zespół SkładaMy</strong><br>
               Profesjonalny montaż mebli IKEA w Słupsku</p>
-              
+
               <div class="footer">
                 <p>
-                  📧 <a href="mailto:kontakt@skladamy.com.pl">kontakt@skladamy.com.pl</a> | 
-                  📱 <a href="tel:+48884938490">+48 884 938 490</a><br>
+                  📧 <a href="mailto:kontakt@skladamy.com.pl">kontakt@skladamy.com.pl</a> |
+                  📱 <a href="tel:+48780926993">+48 780 926 993</a><br>
                   🌐 <a href="https://skladamy.com.pl">www.skladamy.com.pl</a>
                 </p>
               </div>
@@ -200,7 +197,7 @@ Witaj ${body.name},
 Otrzymaliśmy Twoją wiadomość dotyczącą: ${body.subject}
 
 📞 Odpowiemy do Ciebie w ciągu 24 godzin
-W pilnych sprawach zadzwoń: +48 884 938 490
+W pilnych sprawach zadzwoń: +48 780 926 993
 
 Treść Twojej wiadomości:
 ${body.message}
@@ -210,7 +207,7 @@ Zespół SkładaMy
 Profesjonalny montaż mebli IKEA w Słupsku
 
 📧 kontakt@skladamy.com.pl
-📱 +48 884 938 490
+📱 +48 780 926 993
 🌐 www.skladamy.com.pl
       `,
     };
@@ -219,14 +216,14 @@ Profesjonalny montaż mebli IKEA w Słupsku
     await transporter.sendMail(mailToCompany);
     await transporter.sendMail(mailToCustomer);
 
-    return NextResponse.json(
-      { message: 'Email wysłany pomyślnie' },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "Email wysłany pomyślnie" }, { status: 200 });
   } catch (error) {
-    console.error('Email error:', error);
+    console.error("Email error:", error);
     return NextResponse.json(
-      { error: 'Błąd wysyłania emaila', details: error instanceof Error ? error.message : 'Unknown error' },
+      {
+        error: "Błąd wysyłania emaila",
+        details: error instanceof Error ? error.message : "Unknown error",
+      },
       { status: 500 }
     );
   }

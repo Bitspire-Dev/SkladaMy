@@ -1,9 +1,9 @@
-'use client';
+﻿"use client";
 
-import { Badge } from '@/components/ui/badge';
-import type { BlogTag, Tag } from '@/types/strapi';
+import { Badge } from "@/components/ui/Badge";
+import type { BlogTag, Tag } from "@/types/strapi";
 
-type TagLike = Pick<BlogTag, 'name'> | Pick<Tag, 'name'>;
+type TagLike = Pick<BlogTag, "name"> | Pick<Tag, "name">;
 
 interface TagBadgesProps {
   tags?: TagLike[];
@@ -14,7 +14,7 @@ interface TagBadgesProps {
 export default function TagBadges({ tags, limit, className }: TagBadgesProps) {
   if (!tags || tags.length === 0) return null;
 
-  const visible = typeof limit === 'number' ? tags.slice(0, limit) : tags;
+  const visible = typeof limit === "number" ? tags.slice(0, limit) : tags;
 
   return (
     <div className={className}>

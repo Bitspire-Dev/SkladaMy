@@ -1,11 +1,14 @@
 import { dirname } from "path";
 import { fileURLToPath } from "url";
 import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
+import prettier from "eslint-config-prettier";
+import prettierPlugin from "eslint-plugin-prettier";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const [nextBase = {}, nextTypescript = {}, nextIgnores = {}, nextCoreConfig = {}] = nextCoreWebVitals;
+const [nextBase = {}, nextTypescript = {}, nextIgnores = {}, nextCoreConfig = {}] =
+  nextCoreWebVitals;
 
 const customIgnores = [
   "**/node_modules/**",
@@ -35,7 +38,7 @@ const reactAndGeneralRules = {
   "no-alert": "warn",
   "prefer-const": "error",
   "no-var": "error",
-  "eqeqeq": ["error", "always", { null: "ignore" }],
+  eqeqeq: ["error", "always", { null: "ignore" }],
   "no-param-reassign": ["error", { props: false }],
   "prefer-template": "warn",
   "no-throw-literal": "error",
@@ -45,26 +48,32 @@ const reactAndGeneralRules = {
   "no-else-return": ["warn", { allowElseIf: false }],
   "object-shorthand": ["warn", "always"],
   "prefer-destructuring": ["warn", { object: true, array: false }],
-  "yoda": "error",
-  "complexity": ["warn", { max: 15 }],
+  yoda: "error",
+  complexity: ["warn", { max: 15 }],
   "max-depth": ["warn", { max: 4 }],
   "max-lines-per-function": ["warn", { max: 150, skipBlankLines: true, skipComments: true }],
   "@next/next/no-html-link-for-pages": "error",
   "@next/next/no-img-element": "warn",
   "import/no-anonymous-default-export": "warn",
-  "react/jsx-no-bind": ["warn", {
-    allowArrowFunctions: true,
-    allowBind: false,
-    ignoreRefs: true,
-  }],
+  "react/jsx-no-bind": [
+    "warn",
+    {
+      allowArrowFunctions: true,
+      allowBind: false,
+      ignoreRefs: true,
+    },
+  ],
 };
 
 const typescriptRules = {
-  "@typescript-eslint/no-unused-vars": ["error", {
-    argsIgnorePattern: "^_",
-    varsIgnorePattern: "^_",
-    ignoreRestSiblings: true,
-  }],
+  "@typescript-eslint/no-unused-vars": [
+    "error",
+    {
+      argsIgnorePattern: "^_",
+      varsIgnorePattern: "^_",
+      ignoreRestSiblings: true,
+    },
+  ],
   "@typescript-eslint/no-explicit-any": "error",
   "@typescript-eslint/no-non-null-assertion": "error",
   "@typescript-eslint/consistent-type-imports": ["warn", { prefer: "type-imports" }],
@@ -88,7 +97,7 @@ const mergedTypescriptConfig = {
     ...nextTypescript.languageOptions,
     parserOptions: {
       ...nextTypescript.languageOptions?.parserOptions,
-      project: "./tsconfig.json",
+      project: "./tsconfig.eslint.json",
       tsconfigRootDir: __dirname,
     },
   },
@@ -102,4 +111,14 @@ const mergedIgnores = {
   ignores: [...baseIgnores, ...customIgnores],
 };
 
-export default [mergedIgnores, mergedReactConfig, mergedTypescriptConfig];
+const prettierConfig = {
+  plugins: {
+    prettier: prettierPlugin,
+  },
+  rules: {
+    ...prettier.rules,
+    "prettier/prettier": "error",
+  },
+};
+
+export default [mergedIgnores, mergedReactConfig, mergedTypescriptConfig, prettierConfig];

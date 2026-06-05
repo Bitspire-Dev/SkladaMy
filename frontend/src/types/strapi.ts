@@ -1,4 +1,16 @@
-// Strapi API Types
+// =============================================================================
+// STRAPI API TYPES
+// Centralized type definitions for Strapi CMS integration
+// =============================================================================
+
+// =============================================================================
+// BASE TYPES
+// Core types used across multiple entities
+// =============================================================================
+
+/**
+ * Strapi image with multiple formats
+ */
 export interface StrapiImage {
   id: number;
   documentId: string;
@@ -26,6 +38,9 @@ export interface StrapiImage {
   publishedAt: string;
 }
 
+/**
+ * Image format variant (thumbnail, small, medium, large)
+ */
 export interface ImageFormat {
   name: string;
   hash: string;
@@ -37,7 +52,14 @@ export interface ImageFormat {
   url: string;
 }
 
-// Response Types
+// =============================================================================
+// RESPONSE TYPES
+// Generic wrappers for Strapi API responses
+// =============================================================================
+
+/**
+ * Generic Strapi response wrapper
+ */
 export interface StrapiResponse<T> {
   data: T;
   meta?: {
@@ -50,6 +72,9 @@ export interface StrapiResponse<T> {
   };
 }
 
+/**
+ * Base entity fields present in all Strapi content types
+ */
 export interface StrapiEntity {
   id: number;
   createdAt: string;
@@ -57,10 +82,20 @@ export interface StrapiEntity {
   publishedAt?: string;
 }
 
+/** Collection response (array of items) */
 export type CollectionResponse<T> = StrapiResponse<T[]>;
+
+/** Single item response */
 export type SingleResponse<T> = StrapiResponse<T>;
 
-// Blog Types
+// =============================================================================
+// BLOG SYSTEM TYPES
+// Types for blog posts, categories, tags, and authors
+// =============================================================================
+
+/**
+ * Blog post category
+ */
 export interface Category {
   id: number;
   documentId: string;
@@ -75,6 +110,9 @@ export interface Category {
   publishedAt: string;
 }
 
+/**
+ * Blog post tag
+ */
 export interface Tag {
   id: number;
   documentId: string;
@@ -87,6 +125,9 @@ export interface Tag {
   publishedAt: string;
 }
 
+/**
+ * Blog post author
+ */
 export interface Author {
   name: string;
   role?: string;
@@ -98,12 +139,18 @@ export interface Author {
   twitter?: string;
 }
 
+/**
+ * FAQ item for structured data
+ */
 export interface FAQItem {
   id?: number;
   question: string;
   answer: string;
 }
 
+/**
+ * Blog post content type
+ */
 export interface BlogPost {
   id: number;
   documentId: string;
@@ -130,13 +177,23 @@ export interface BlogPost {
   faq?: FAQItem[];
 }
 
+/**
+ * Simplified blog tag (for filtering UI)
+ */
 export interface BlogTag {
   id: number;
   name: string;
   slug: string;
 }
 
-// SEO Component
+// =============================================================================
+// SEO TYPES
+// Search engine optimization metadata
+// =============================================================================
+
+/**
+ * SEO metadata for pages and posts
+ */
 export interface SEO {
   metaTitle?: string;
   metaDescription?: string;
@@ -148,19 +205,24 @@ export interface SEO {
   canonicalUrl?: string;
   noindex?: boolean;
   nofollow?: boolean;
-  twitterCard?: 'summary' | 'summary_large_image';
+  twitterCard?: "summary" | "summary_large_image";
   structuredData?: Record<string, unknown>;
   lastmod?: string;
 }
 
+/**
+ * Social media specific metadata
+ */
 export interface MetaSocial {
-  socialNetwork: 'Facebook' | 'Twitter';
+  socialNetwork: "Facebook" | "Twitter";
   title: string;
   description: string;
   image?: StrapiImage;
 }
 
-// Blog Category for filtering
+/**
+ * Category filter option (for blog sidebar/filtering)
+ */
 export interface BlogCategoryFilter {
   value: string;
   label: string;
@@ -168,7 +230,14 @@ export interface BlogCategoryFilter {
   color: string;
 }
 
-// Gallery Types (nowa galeria zamiast portfolio)
+// =============================================================================
+// GALLERY TYPES
+// Portfolio and image gallery content
+// =============================================================================
+
+/**
+ * Photo gallery collection
+ */
 export interface Gallery {
   id: number;
   images: StrapiImage[];
@@ -178,18 +247,31 @@ export interface Gallery {
   publishedAt: string;
 }
 
+/**
+ * Shared FAQ item (simplified, no ID)
+ */
 export interface SharedFAQItem {
   question: string;
   answer: string;
 }
 
-// Blog types
+// =============================================================================
+// UTILITY TYPES
+// Helper types for API calls and filtering
+// =============================================================================
+
+/**
+ * Blog category display info
+ */
 export interface BlogCategory {
   value: string;
   label: string;
   count: number;
 }
 
+/**
+ * Blog statistics for dashboard
+ */
 export interface BlogStats {
   totalPosts: number;
   totalViews: number;
@@ -197,15 +279,21 @@ export interface BlogStats {
   categories: Record<string, number>;
 }
 
+/**
+ * Filter parameters for blog posts API
+ */
 export interface BlogFilters {
   search?: string;
   category?: string;
   tags?: string[];
   page?: number;
   pageSize?: number;
-  limit?: number;  // Alias for pageSize for backward compatibility
+  limit?: number; // Alias for pageSize for backward compatibility
 }
 
+/**
+ * Blog posts API response (convenience wrapper)
+ */
 export interface BlogPostsResponse {
   data: BlogPost[];
   meta: {
@@ -218,7 +306,14 @@ export interface BlogPostsResponse {
   };
 }
 
-// API Functions Types
+// =============================================================================
+// API FUNCTION TYPES
+// Type aliases for async API functions
+// =============================================================================
+
+/** Generic API response promise */
 export type ApiResponse<T> = Promise<StrapiResponse<T>>;
 export type EntityResponse<T> = Promise<StrapiResponse<StrapiEntity & { attributes: T }>>;
-export type CollectionResponsePromise<T> = Promise<StrapiResponse<Array<StrapiEntity & { attributes: T }>>>;
+export type CollectionResponsePromise<T> = Promise<
+  StrapiResponse<Array<StrapiEntity & { attributes: T }>>
+>;

@@ -1,9 +1,9 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Phone } from "lucide-react";
 import { useState, useEffect } from "react";
-import { formatPhoneForTel } from "@/lib/company-data";
+import { formatPhoneForTel } from "@/lib/config";
 
 export default function StickyCTA() {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,10 +23,10 @@ export default function StickyCTA() {
 
   const handleCall = () => {
     // Analytics event tracking
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'call_click', {
-        event_category: 'engagement',
-        event_label: 'sticky_cta'
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "call_click", {
+        event_category: "engagement",
+        event_label: "sticky_cta",
       });
     }
   };

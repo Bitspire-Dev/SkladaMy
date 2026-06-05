@@ -4,25 +4,33 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '1337',
-        pathname: '/uploads/**',
+        protocol: "http",
+        hostname: "localhost",
+        port: "1337",
+        pathname: "/uploads/**",
       },
       {
-        protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_STRAPI_URL?.replace(/^https?:\/\//, '') ?? (() => { throw new Error('NEXT_PUBLIC_STRAPI_URL must be set in .env!'); })(),
-        pathname: '/uploads/**',
+        protocol: "https",
+        hostname:
+          process.env.NEXT_PUBLIC_STRAPI_URL?.replace(/^https?:\/\//, "") ??
+          (() => {
+            throw new Error("NEXT_PUBLIC_STRAPI_URL must be set in .env!");
+          })(),
+        pathname: "/uploads/**",
       },
     ],
-    formats: ['image/webp', 'image/avif'],
+    formats: ["image/avif", "image/webp"],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentDispositionType: "inline",
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
-    // Disable optimization completely - DirectAdmin doesn't support Image Optimization API
-    unoptimized: true,
+    // AVIF first for best quality/size ratio, WebP as fallback
+    // Note: On DirectAdmin, ensure the Image Optimization API endpoint is available
+    // or use a custom loader with external service like Cloudinary/Imgix
   },
   experimental: {
-    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+    optimizePackageImports: ["@radix-ui/react-icons", "lucide-react"],
     // Limit workers for low-resource hosting environments
     cpus: 1,
   },
@@ -44,32 +52,59 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: "/(.*)",
         headers: [
           {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
+            key: "X-Content-Type-Options",
+            value: "nosniff",
           },
           {
-            key: 'X-Frame-Options',
-            value: 'DENY',
+            key: "X-Frame-Options",
+            value: "DENY",
           },
           {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
+            key: "X-XSS-Protection",
+            value: "1; mode=block",
           },
           {
-            key: 'Referrer-Policy',
-            value: 'origin-when-cross-origin',
+            key: "Referrer-Policy",
+            value: "origin-when-cross-origin",
           },
         ],
       },
       {
-        source: '/sitemap.xml',
+        source: "/sitemap.xml",
         headers: [
           {
-            key: 'Content-Type',
-            value: 'application/xml',
+            key: "Content-Type",
+            value: "application/xml",
+          },
+        ],
+      },
+      {
+        source: "/layout/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*.avif",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
+      {
+        source: "/:path*.svg",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
           },
         ],
       },

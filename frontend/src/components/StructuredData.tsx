@@ -1,112 +1,113 @@
-import { COMPANY_DATA } from '@/lib/company-data';
-import { getSiteUrl } from '@/lib/env';
+import { COMPANY_DATA, getSiteUrl } from "@/lib/config";
 
 export default function StructuredData() {
   const siteUrl = getSiteUrl();
-  
+
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "name": COMPANY_DATA.name,
-    "image": `${siteUrl}/skladamy.svg`,
-    "description": "Profesjonalny montaż mebli IKEA w Słupsku. Szafy PAX, kuchnie, wieszanie szafek. Gwarancja 30 dni, dojazd w 24h.",
-    "address": {
+    name: COMPANY_DATA.name,
+    image: `${siteUrl}/layout/skladamy.svg`,
+    description:
+      "Profesjonalny montaż mebli IKEA w Słupsku. Szafy PAX, kuchnie, wieszanie szafek. Gwarancja 30 dni, dojazd w 24h.",
+    address: {
       "@type": "PostalAddress",
-      "addressLocality": COMPANY_DATA.address.city,
-      "addressRegion": COMPANY_DATA.address.region,
-      "addressCountry": "PL"
+      addressLocality: COMPANY_DATA.address.city,
+      addressRegion: COMPANY_DATA.address.region,
+      addressCountry: "PL",
     },
-    "geo": {
+    geo: {
       "@type": "GeoCoordinates",
-      "latitude": COMPANY_DATA.address.coordinates.latitude,
-      "longitude": COMPANY_DATA.address.coordinates.longitude
+      latitude: COMPANY_DATA.address.coordinates.latitude,
+      longitude: COMPANY_DATA.address.coordinates.longitude,
     },
-    "url": siteUrl,
-    "telephone": COMPANY_DATA.phone,
-    "email": COMPANY_DATA.email,
-    "priceRange": "$$",
-    "serviceArea": {
+    url: siteUrl,
+    telephone: COMPANY_DATA.phone,
+    email: COMPANY_DATA.email,
+    priceRange: "$$",
+    serviceArea: {
       "@type": "GeoCircle",
-      "geoMidpoint": {
+      geoMidpoint: {
         "@type": "GeoCoordinates",
-        "latitude": COMPANY_DATA.address.coordinates.latitude,
-        "longitude": COMPANY_DATA.address.coordinates.longitude
+        latitude: COMPANY_DATA.address.coordinates.latitude,
+        longitude: COMPANY_DATA.address.coordinates.longitude,
       },
-      "geoRadius": "50000"
+      geoRadius: "50000",
     },
-    "hasOfferCatalog": {
+    hasOfferCatalog: {
       "@type": "OfferCatalog",
-      "name": "Usługi montażowe",
-      "itemListElement": [
+      name: "Usługi montażowe",
+      itemListElement: [
         {
           "@type": "OfferCatalog",
-          "name": "Montaż mebli IKEA",
-          "itemListElement": [
+          name: "Montaż mebli IKEA",
+          itemListElement: [
             {
               "@type": "Offer",
-              "itemOffered": {
+              itemOffered: {
                 "@type": "Service",
-                "name": "Montaż szafy PAX"
-              }
+                name: "Montaż szafy PAX",
+              },
             },
             {
-              "@type": "Offer", 
-              "itemOffered": {
+              "@type": "Offer",
+              itemOffered: {
                 "@type": "Service",
-                "name": "Montaż kuchni IKEA"
-              }
-            }
-          ]
+                name: "Montaż kuchni IKEA",
+              },
+            },
+          ],
         },
         {
           "@type": "OfferCatalog",
-          "name": "Wieszanie szafek",
-          "itemListElement": [
+          name: "Wieszanie szafek",
+          itemListElement: [
             {
               "@type": "Offer",
-              "itemOffered": {
-                "@type": "Service", 
-                "name": "Wieszanie szafek kuchennych"
-              }
-            }
-          ]
-        }
-      ]
+              itemOffered: {
+                "@type": "Service",
+                name: "Wieszanie szafek kuchennych",
+              },
+            },
+          ],
+        },
+      ],
     },
-    "aggregateRating": {
+    aggregateRating: {
       "@type": "AggregateRating",
-      "ratingValue": "4.9",
-      "reviewCount": "300"
+      ratingValue: "4.9",
+      reviewCount: "300",
     },
-    "openingHours": "Mo-Sa 08:00-20:00"
+    openingHours: "Mo-Sa 08:00-20:00",
   };
 
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    "name": "Montaż mebli IKEA Słupsk",
-    "description": "Profesjonalny montaż mebli IKEA w Słupsku i okolicach. Szafy PAX, kuchnie, wieszanie szafek.",
-    "provider": {
+    name: "Montaż mebli IKEA Słupsk",
+    description:
+      "Profesjonalny montaż mebli IKEA w Słupsku i okolicach. Szafy PAX, kuchnie, wieszanie szafek.",
+    provider: {
       "@type": "LocalBusiness",
-      "name": "SkładaMy"
+      name: "SkładaMy",
     },
-    "areaServed": {
+    areaServed: {
       "@type": "City",
-      "name": "Słupsk"
+      name: "Słupsk",
     },
-    "hasOfferCatalog": {
+    hasOfferCatalog: {
       "@type": "OfferCatalog",
-      "name": "Montaż mebli",
-      "itemListElement": [
+      name: "Montaż mebli",
+      itemListElement: [
         {
           "@type": "Offer",
-          "itemOffered": {
+          itemOffered: {
             "@type": "Service",
-            "name": "Montaż szafy PAX IKEA"
-          }
-        }
-      ]
-    }
+            name: "Montaż szafy PAX IKEA",
+          },
+        },
+      ],
+    },
   };
 
   return (

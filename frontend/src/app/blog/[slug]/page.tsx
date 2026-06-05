@@ -1,7 +1,6 @@
-import type { Metadata } from 'next';
-import BlogPostPage, { generateBlogPostMetadata } from '@/components/pages/BlogPostPage';
-import { getBlogPosts } from '@/lib/strapi.server';
-
+import type { Metadata } from "next";
+import BlogPostPage, { generateBlogPostMetadata } from "@/components/pages/BlogPostPage";
+import { getBlogPosts } from "@/lib/cms/api";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -14,7 +13,7 @@ export async function generateStaticParams() {
 
     return blogPosts.map((post) => ({ slug: post.slug }));
   } catch (error) {
-    console.warn('Warning: Could not fetch blog posts for static generation:', error);
+    console.warn("Warning: Could not fetch blog posts for static generation:", error);
     return [] as Array<{ slug: string }>;
   }
 }

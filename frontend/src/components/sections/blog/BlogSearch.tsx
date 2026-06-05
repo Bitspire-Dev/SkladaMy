@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Search, X } from 'lucide-react';
-import type { Category } from '@/types/strapi';
-import { cn } from '@/lib/utils';
+import { useState, useEffect } from "react";
+import { Search, X } from "lucide-react";
+import type { Category } from "@/types/strapi";
+import { cn } from "@/lib/styles";
 
 interface BlogSearchProps {
   categories: Category[];
@@ -18,14 +18,12 @@ export default function BlogSearch({
   categories,
   onSearch,
   onCategoryChange,
-  initialSearch = '',
+  initialSearch = "",
   initialCategory,
   totalResults,
 }: BlogSearchProps) {
   const [searchQuery, setSearchQuery] = useState(initialSearch);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(
-    initialCategory || null
-  );
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory || null);
   const [debouncedQuery, setDebouncedQuery] = useState(searchQuery);
 
   // Debounce search input
@@ -53,8 +51,8 @@ export default function BlogSearch({
   };
 
   const clearSearch = () => {
-    setSearchQuery('');
-    setDebouncedQuery('');
+    setSearchQuery("");
+    setDebouncedQuery("");
   };
 
   const clearAll = () => {
@@ -108,17 +106,15 @@ export default function BlogSearch({
               key={category.id}
               onClick={() => handleCategoryClick(category.slug)}
               className={cn(
-                'px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
-                'border border-border hover:border-primary/50',
+                "px-4 py-2 rounded-full text-sm font-medium transition-all duration-200",
+                "border border-border hover:border-primary/50",
                 selectedCategory === category.slug
-                  ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                  : 'bg-background text-foreground hover:bg-accent'
+                  ? "bg-primary text-primary-foreground border-primary shadow-sm"
+                  : "bg-background text-foreground hover:bg-accent"
               )}
               style={{
-                backgroundColor:
-                  selectedCategory === category.slug ? category.color : undefined,
-                borderColor:
-                  selectedCategory === category.slug ? category.color : undefined,
+                backgroundColor: selectedCategory === category.slug ? category.color : undefined,
+                borderColor: selectedCategory === category.slug ? category.color : undefined,
               }}
             >
               {category.name}
@@ -132,12 +128,12 @@ export default function BlogSearch({
         <div className="flex items-center justify-between py-2 border-t border-border">
           <p className="text-sm text-muted-foreground">
             {(() => {
-              if (totalResults === 0) return 'Nie znaleziono artykułów';
-              if (totalResults === 1) return '1 artykuł';
+              if (totalResults === 0) return "Nie znaleziono artykułów";
+              if (totalResults === 1) return "1 artykuł";
               if (totalResults < 5) return `${totalResults} artykuły`;
               return `${totalResults} artykułów`;
             })()}
-            {hasActiveFilters && ' spełniających kryteria'}
+            {hasActiveFilters && " spełniających kryteria"}
           </p>
 
           {hasActiveFilters && (
@@ -152,8 +148,7 @@ export default function BlogSearch({
                   className="px-2 py-1 rounded-md text-white"
                   style={{
                     backgroundColor:
-                      categories.find((c) => c.slug === selectedCategory)?.color ||
-                      '#3b82f6',
+                      categories.find((c) => c.slug === selectedCategory)?.color || "#3b82f6",
                   }}
                 >
                   {categories.find((c) => c.slug === selectedCategory)?.name}

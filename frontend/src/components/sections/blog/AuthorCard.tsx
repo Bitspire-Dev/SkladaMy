@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import { Mail, Twitter, Linkedin, Github } from 'lucide-react';
-import type { Author } from '@/types/strapi';
+import Image from "next/image";
+import { Mail, Twitter, Linkedin, Github } from "lucide-react";
+import type { Author } from "@/types/strapi";
 
 interface AuthorCardProps {
   author: Author;
@@ -28,9 +28,7 @@ export default function AuthorCard({ author }: AuthorCardProps) {
         <div className="flex-1 min-w-0">
           <h4 className="font-semibold text-foreground">{author.name}</h4>
           {author.bio && (
-            <p className="text-sm text-muted-foreground mt-1 line-clamp-3">
-              {author.bio}
-            </p>
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-3">{author.bio}</p>
           )}
         </div>
       </div>
@@ -51,7 +49,11 @@ export default function AuthorCard({ author }: AuthorCardProps) {
 
           {author.twitter && (
             <a
-              href={author.twitter.startsWith('http') ? author.twitter : `https://twitter.com/${author.twitter.replace('@', '')}`}
+              href={
+                author.twitter.startsWith("http")
+                  ? author.twitter
+                  : `https://twitter.com/${author.twitter.replace("@", "")}`
+              }
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"

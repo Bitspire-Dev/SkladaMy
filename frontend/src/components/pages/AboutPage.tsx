@@ -2,33 +2,34 @@ import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import BulletList from "@/components/ui/BulletList";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Shield, Clock, Users, Award, Phone, Mail } from "lucide-react";
 import Link from "next/link";
-import { formatPhoneForTel } from "@/lib/company-data";
-import { getSiteUrl } from "@/lib/env";
+import { formatPhoneForTel, getSiteUrl } from "@/lib/config";
 
 const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
-  title: "O nas - SkładaMy | Doświadczeni Monterzy Mebli IKEA Słupsk",
-  description: "⭐ Poznaj zespół SkładaMy ✓ 4 lata doświadczenia ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Ubezpieczenie OC ✓ Specjaliści od mebli IKEA",
+  title: "O nas - Doświadczeni monterzy mebli Słupsk | SkładaMy",
+  description:
+    "⭐ Poznaj zespół SkładaMy ✓ 4 lata doświadczenia ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Ubezpieczenie OC ✓ Specjaliści od mebli IKEA",
   keywords: [
-    "o firmie SkładaMy Słupsk", 
-    "monterzy mebli IKEA Słupsk", 
-    "doświadczenie montaż mebli", 
+    "o firmie SkładaMy Słupsk",
+    "monterzy mebli IKEA Słupsk",
+    "doświadczenie montaż mebli",
     "gwarancja montażu Słupsk",
     "ubezpieczenie monterzy",
-    "zespół SkładaMy"
+    "zespół SkładaMy",
   ],
   alternates: {
-    canonical: `${siteUrl}/o-nas`
+    canonical: `${siteUrl}/o-nas`,
   },
   openGraph: {
-    title: "O nas - SkładaMy | Doświadczeni Monterzy Mebli IKEA Słupsk",
-    description: "⭐ Poznaj zespół SkładaMy ✓ 4 lata doświadczenia ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni",
+    title: "O nas - Doświadczeni monterzy mebli Słupsk | SkładaMy",
+    description:
+      "⭐ Poznaj zespół SkładaMy ✓ 4 lata doświadczenia ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni",
     url: `${siteUrl}/o-nas`,
     siteName: "SkładaMy",
     locale: "pl_PL",
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "O nas - SkładaMy | Doświadczeni Monterzy Mebli IKEA Słupsk",
+    title: "O nas - Doświadczeni monterzy mebli Słupsk | SkładaMy",
     description: "⭐ Poznaj zespół SkładaMy ✓ 4 lata doświadczenia ✓ 300+ zadowolonych klientów",
   },
 };
@@ -45,36 +46,50 @@ const teamValues = [
   {
     icon: Shield,
     title: "Gwarancja i bezpieczeństwo",
-    description: "Każdy montaż objęty 30-dniową gwarancją. Pracujemy z ubezpieczeniem OC na kwotę 100 000 zł."
+    description:
+      "Każdy montaż objęty 30-dniową gwarancją. Pracujemy z ubezpieczeniem OC na kwotę 100 000 zł.",
   },
   {
     icon: Clock,
     title: "Punktualność",
-    description: "Szanujemy Państwa czas. Przyjeżdżamy punktualnie w umówionym terminie i kończymy zgodnie z planem."
+    description:
+      "Szanujemy Państwa czas. Przyjeżdżamy punktualnie w umówionym terminie i kończymy zgodnie z planem.",
   },
   {
     icon: Users,
     title: "Zaufanie klientów",
-    description: "Ponad 300 zadowolonych klientów w Słupsku i okolicach. Większość zleceń to polecenia od znajomych."
+    description:
+      "Ponad 300 zadowolonych klientów w Słupsku i okolicach. Większość zleceń to polecenia od znajomych.",
   },
   {
     icon: Award,
     title: "Doświadczenie",
-    description: "Od 2020 roku specjalizujemy się w montażu mebli IKEA. Znamy wszystkie ich systemy na pamięć."
-  }
+    description:
+      "Od 2020 roku specjalizujemy się w montażu mebli IKEA. Znamy wszystkie ich systemy na pamięć.",
+  },
 ];
 
 const guaranteeDetails = [
   {
     title: "Gwarancja 30 dni",
     description: "Jeśli coś się rozluzuje przy normalnym użytkowaniu - naprawiamy za darmo",
-    included: ["Ponowne dokręcenie śrub", "Wymiana uszkodzonych elementów", "Sprawdzenie stabilności", "Regulacja frontów i szuflad"]
+    included: [
+      "Ponowne dokręcenie śrub",
+      "Wymiana uszkodzonych elementów",
+      "Sprawdzenie stabilności",
+      "Regulacja frontów i szuflad",
+    ],
   },
   {
     title: "Wykluczenia gwarancyjne",
     description: "Gwarancja nie obejmuje sytuacji poza normalnym użytkowaniem",
-    included: ["Uszkodzenia mechaniczne", "Przeciążenia ponad normę", "Przeróbki przez inne osoby", "Zalania czy zawilgocenia"]
-  }
+    included: [
+      "Uszkodzenia mechaniczne",
+      "Przeciążenia ponad normę",
+      "Przeróbki przez inne osoby",
+      "Zalania czy zawilgocenia",
+    ],
+  },
 ];
 
 /* eslint-disable max-lines-per-function */
@@ -82,7 +97,7 @@ export default function AboutPage() {
   return (
     <>
       <Header />
-  <main className="relative py-20 overflow-hidden bg-neutral-50 isolate">
+      <main className="relative py-20 overflow-hidden bg-neutral-50 isolate">
         {/* Decorative background */}
         <div
           aria-hidden
@@ -99,8 +114,7 @@ export default function AboutPage() {
             backgroundImage: "radial-gradient(#e5e7eb 1px, transparent 1px)",
             backgroundSize: "22px 22px",
             backgroundPosition: "0 0",
-            maskImage:
-              "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)",
+            maskImage: "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)",
             WebkitMaskImage:
               "linear-gradient(to bottom, transparent, black 10%, black 90%, transparent)",
           }}
@@ -109,8 +123,7 @@ export default function AboutPage() {
           aria-hidden
           className="pointer-events-none absolute inset-x-0 top-0 h-32 z-0"
           style={{
-            background:
-              "linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0))",
+            background: "linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0))",
           }}
         />
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -124,9 +137,9 @@ export default function AboutPage() {
               O firmie SkładaMy
             </h1>
             <p className="text-lg sm:text-xl text-neutral-800 max-w-3xl mx-auto leading-relaxed">
-              Jesteśmy zespołem doświadczonych monterów specjalizujących się w montażu mebli 
-              w Słupsku i okolicach. Naszą pasją jest tworzenie funkcjonalnych przestrzeni 
-              bez stresu dla naszych klientów.
+              Jesteśmy zespołem doświadczonych monterów specjalizujących się w montażu mebli w
+              Słupsku i okolicach. Naszą pasją jest tworzenie funkcjonalnych przestrzeni bez stresu
+              dla naszych klientów.
             </p>
           </div>
 
@@ -134,31 +147,27 @@ export default function AboutPage() {
           <div className="mb-20">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               <div>
-                <h2 className="text-3xl font-bold text-neutral-900 mb-6">
-                  Nasza historia
-                </h2>
+                <h2 className="text-3xl font-bold text-neutral-900 mb-6">Nasza historia</h2>
                 <div className="space-y-4 text-neutral-800">
                   <p>
-                    SkładaMy powstało w 2020 roku z prostej obserwacji - coraz więcej osób kupuje 
-                    meble do samodzielnego montażu, ale nie każdy ma czas, narzędzia czy ochotę 
-                    na wielogodzinne zmagania z instrukcjami.
+                    SkładaMy powstało w 2020 roku z prostej obserwacji - coraz więcej osób kupuje
+                    meble do samodzielnego montażu, ale nie każdy ma czas, narzędzia czy ochotę na
+                    wielogodzinne zmagania z instrukcjami.
                   </p>
                   <p>
-                    Zaczęliśmy od pomagania znajomym w montażu szaf PAX z IKEA. Szybko okazało się, 
-                    że nasze doświadczenie i podejście do jakości są bardzo cenione. W naturalny 
+                    Zaczęliśmy od pomagania znajomym w montażu szaf PAX z IKEA. Szybko okazało się,
+                    że nasze doświadczenie i podejście do jakości są bardzo cenione. W naturalny
                     sposób przekształciliśmy hobby w profesjonalną działalność.
                   </p>
                   <p>
-                    Dziś montujemy wszystkie typy mebli, ale IKEA pozostaje naszą specjalnością. 
-                    Znamy każdy system, każdy typ śruby i każdą sztuczkę, która przyspiesza pracę 
+                    Dziś montujemy wszystkie typy mebli, ale IKEA pozostaje naszą specjalnością.
+                    Znamy każdy system, każdy typ śruby i każdą sztuczkę, która przyspiesza pracę
                     bez kompromisów w jakości.
                   </p>
                 </div>
               </div>
               <div className="rounded-2xl p-8 border border-neutral-200 bg-white shadow-sm">
-                <h3 className="text-xl font-semibold text-neutral-900 mb-4">
-                  SkładaMy w liczbach
-                </h3>
+                <h3 className="text-xl font-semibold text-neutral-900 mb-4">SkładaMy w liczbach</h3>
                 <div className="grid grid-cols-2 gap-6">
                   <div className="text-center">
                     <div className="text-3xl font-bold text-[#FFC400] mb-1">300+</div>
@@ -188,17 +197,16 @@ export default function AboutPage() {
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {teamValues.map((value, index) => (
-                <Card key={index} className="text-center h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <Card
+                  key={index}
+                  className="text-center h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                >
                   <CardContent className="pt-6">
                     <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 border border-neutral-200 bg-white">
                       <value.icon className="h-8 w-8 text-[#6a4a00]" />
                     </div>
-                    <h3 className="text-lg font-semibold text-neutral-900 mb-3">
-                      {value.title}
-                    </h3>
-                    <p className="text-neutral-800 text-sm leading-relaxed">
-                      {value.description}
-                    </p>
+                    <h3 className="text-lg font-semibold text-neutral-900 mb-3">{value.title}</h3>
+                    <p className="text-neutral-800 text-sm leading-relaxed">{value.description}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -212,7 +220,10 @@ export default function AboutPage() {
             </h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {guaranteeDetails.map((section, index) => (
-                <Card key={index} className="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg">
+                <Card
+                  key={index}
+                  className="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
+                >
                   <CardHeader>
                     <CardTitle className="text-xl">{section.title}</CardTitle>
                     <p className="text-neutral-700">{section.description}</p>
@@ -238,8 +249,8 @@ export default function AboutPage() {
                   </div>
                   <h3 className="font-semibold text-neutral-900 mb-2">Przygotowanie</h3>
                   <p className="text-sm text-neutral-700">
-                    Sprawdzamy kompletność paczek, planujemy kolejność montażu, 
-                    przygotowujemy narzędzia
+                    Sprawdzamy kompletność paczek, planujemy kolejność montażu, przygotowujemy
+                    narzędzia
                   </p>
                 </div>
                 <div className="text-center">
@@ -248,8 +259,8 @@ export default function AboutPage() {
                   </div>
                   <h3 className="font-semibold text-neutral-900 mb-2">Montaż</h3>
                   <p className="text-sm text-neutral-700">
-                    Składamy meble zgodnie z instrukcją, kotwimy do ściany, 
-                    sprawdzamy stabilność i funkcjonalność
+                    Składamy meble zgodnie z instrukcją, kotwimy do ściany, sprawdzamy stabilność i
+                    funkcjonalność
                   </p>
                 </div>
                 <div className="text-center">
@@ -258,8 +269,8 @@ export default function AboutPage() {
                   </div>
                   <h3 className="font-semibold text-neutral-900 mb-2">Odbiór</h3>
                   <p className="text-sm text-neutral-700">
-                    Sprzątamy po sobie, odbieramy pracę z klientem, 
-                    udzielamy wskazówek dotyczących użytkowania
+                    Sprzątamy po sobie, odbieramy pracę z klientem, udzielamy wskazówek dotyczących
+                    użytkowania
                   </p>
                 </div>
               </div>
@@ -272,17 +283,26 @@ export default function AboutPage() {
               Gotowy na montaż bez stresu?
             </h2>
             <p className="text-neutral-900/80 mb-6 max-w-2xl mx-auto">
-              Skontaktuj się z nami już dziś. Odpowiadamy tego samego dnia 
-              z bezpłatną wyceną dostosowaną do Twoich potrzeb.
+              Skontaktuj się z nami już dziś. Odpowiadamy tego samego dnia z bezpłatną wyceną
+              dostosowaną do Twoich potrzeb.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button asChild size="lg" className="bg-white text-neutral-900 hover:bg-neutral-100 border border-neutral-200">
+              <Button
+                asChild
+                size="lg"
+                className="bg-white text-neutral-900 hover:bg-neutral-100 border border-neutral-200"
+              >
                 <a href={`tel:${formatPhoneForTel()}`} aria-label="Zadzwoń do nas">
                   <Phone className="mr-2 h-5 w-5" />
-                  884 938 490
+                  780 926 993
                 </a>
               </Button>
-              <Button asChild size="lg" variant="outline" className="border-white/60 text-neutral-900 hover:bg-white/20">
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="border-white/60 text-neutral-900 hover:bg-white/20"
+              >
                 <Link href="/kontakt" aria-label="Przejdź do formularza kontaktowego">
                   <Mail className="mr-2 h-5 w-5" />
                   Formularz kontaktowy

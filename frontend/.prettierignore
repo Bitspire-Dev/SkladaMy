@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+out
+build
+dist
+
+# Misc
+*.log
+.DS_Store
+.env*
+!.env.example
+
+# Lock files (handled by pnpm)
+pnpm-lock.yaml
+
+# Generated files
+*.tsbuildinfo
+next-env.d.ts
+
+# Coverage
+coverage

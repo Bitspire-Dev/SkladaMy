@@ -1,39 +1,42 @@
-import type { Metadata } from 'next';
-import { GalleryContent } from '@/components/GalleryContent';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
-import { getGallery } from '@/lib/strapi.server';
-import type { StrapiImage } from '@/types/strapi';
-import { getSiteUrl } from '@/lib/env';
+import type { Metadata } from "next";
+import { GalleryContent } from "@/components/sections/portfolio/GalleryContent";
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
+import { getGallery } from "@/lib/cms/api";
+import type { StrapiImage } from "@/types/strapi";
+import { getSiteUrl } from "@/lib/config";
 
 const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
-  title: 'Portfolio Montażu Mebli IKEA Słupsk | SkładaMy - 300+ Realizacji',
-  description: '⭐ Galeria zdjęć montażu mebli IKEA w Słupsku ✓ Szafy PAX ✓ Kuchnie KNOXHULT ✓ 300+ zadowolonych klientów ✓ Zobacz nasze realizacje przed i po',
+  title: "Portfolio montażu mebli IKEA Słupsk | SkładaMy",
+  description:
+    "⭐ Galeria zdjęć montażu mebli IKEA w Słupsku ✓ Szafy PAX ✓ Kuchnie KNOXHULT ✓ 300+ zadowolonych klientów ✓ Zobacz nasze realizacje przed i po",
   keywords: [
-    'portfolio montaż mebli Słupsk',
-    'galeria montaż IKEA Słupsk',
-    'zdjęcia szafy PAX Słupsk',
-    'realizacje montaż kuchni',
-    'przed i po montaż mebli',
-    'portfolio monterzy Słupsk'
+    "portfolio montaż mebli Słupsk",
+    "galeria montaż IKEA Słupsk",
+    "zdjęcia szafy PAX Słupsk",
+    "realizacje montaż kuchni",
+    "przed i po montaż mebli",
+    "portfolio monterzy Słupsk",
   ],
   alternates: {
-    canonical: `${siteUrl}/portfolio`
+    canonical: `${siteUrl}/portfolio`,
   },
   openGraph: {
-    title: 'Portfolio Montażu Mebli IKEA Słupsk | 300+ Realizacji',
-    description: '⭐ Zobacz nasze realizacje montażu mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Szafy PAX ✓ Kuchnie',
+    title: "Portfolio montażu mebli IKEA Słupsk | SkładaMy",
+    description:
+      "⭐ Zobacz nasze realizacje montażu mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Szafy PAX ✓ Kuchnie",
     url: `${siteUrl}/portfolio`,
-    siteName: 'SkładaMy',
-    locale: 'pl_PL',
-    type: 'website',
+    siteName: "SkładaMy",
+    locale: "pl_PL",
+    type: "website",
   },
   twitter: {
-    card: 'summary_large_image',
-    title: 'Portfolio Montażu Mebli IKEA Słupsk | 300+ Realizacji',
-    description: '⭐ Zobacz nasze realizacje montażu mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów',
+    card: "summary_large_image",
+    title: "Portfolio montażu mebli IKEA Słupsk | SkładaMy",
+    description:
+      "⭐ Zobacz nasze realizacje montażu mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów",
   },
 };
 
@@ -44,7 +47,9 @@ export default async function PortfolioPage() {
 
   try {
     const galleryResponse = await getGallery();
-    const { data: { images: fetchedImages, featuredImages: fetchedFeatured } } = galleryResponse;
+    const {
+      data: { images: fetchedImages, featuredImages: fetchedFeatured },
+    } = galleryResponse;
     images = fetchedImages || [];
     featuredImages = fetchedFeatured;
   } catch (error) {
@@ -62,8 +67,8 @@ export default async function PortfolioPage() {
               Portfolio Montażu Mebli IKEA Słupsk
             </h1>
             <p className="text-xl text-gray-700 mb-8">
-              ⭐ <strong>300+ zrealizowanych projektów</strong> - Zobacz nasze najlepsze realizacje montażu mebli IKEA w Słupsku. 
-              Szafy PAX, kuchnie KNOXHULT, garderoby i więcej.
+              ⭐ <strong>300+ zrealizowanych projektów</strong> - Zobacz nasze najlepsze realizacje
+              montażu mebli IKEA w Słupsku. Szafy PAX, kuchnie KNOXHULT, garderoby i więcej.
             </p>
             <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-700">
               <span>✓ Szafy PAX</span>
@@ -75,17 +80,17 @@ export default async function PortfolioPage() {
         </div>
       </section>
 
-  {/* Gallery Section */}
+      {/* Gallery Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <GalleryContent 
-            images={images} 
+          <GalleryContent
+            images={images}
             featuredImages={featuredImages}
-            className="max-w-7xl mx-auto" 
+            className="max-w-7xl mx-auto"
           />
         </div>
       </section>
-  <Footer />
+      <Footer />
     </div>
   );
 }

@@ -6,46 +6,49 @@ import HeroSection from "@/components/sections/HeroSection";
 import ServicesSection from "@/components/sections/ServicesSection";
 import WhyUsSection from "@/components/sections/WhyUsSection";
 import BelowFold from "@/components/sections/BelowFold";
-import { getSiteUrl } from "@/lib/env";
+import { getSiteUrl } from "@/lib/config";
 
 const siteUrl = getSiteUrl();
 
 export const metadata: Metadata = {
-  title: "SkładaMy - Profesjonalny montaż mebli IKEA w Słupsku | Gwarancja 30 dni",
-  description: "⭐ Najlepszy montaż mebli IKEA w Słupsku ✓ Szafy PAX ✓ Kuchnie ✓ Gwarancja 30 dni ✓ 300+ zadowolonych klientów ✓ Dojazd w 24h ✓ Bezpłatna wycena",
+  title: "Montaż mebli IKEA Słupsk | SkładaMy - Gwarancja 30 dni",
+  description:
+    "⭐ Najlepszy montaż mebli IKEA w Słupsku ✓ Szafy PAX ✓ Kuchnie ✓ Gwarancja 30 dni ✓ 300+ zadowolonych klientów ✓ Dojazd w 24h ✓ Bezpłatna wycena",
   keywords: [
     "montaż mebli Słupsk",
-    "składanie mebli IKEA Słupsk", 
+    "składanie mebli IKEA Słupsk",
     "montaż szafy PAX Słupsk",
     "montaż kuchni IKEA Słupsk",
     "wieszanie szafek Słupsk",
     "kotwienie ściany Słupsk",
     "monterzy mebli Słupsk",
-    "usługi montażowe Słupsk"
+    "usługi montażowe Słupsk",
   ],
   alternates: {
-    canonical: siteUrl
+    canonical: siteUrl,
   },
   openGraph: {
-    title: "SkładaMy - Profesjonalny montaż mebli IKEA w Słupsku",
-    description: "⭐ Najlepszy montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Dojazd w 24h",
+    title: "Montaż mebli IKEA Słupsk - SkładaMy",
+    description:
+      "⭐ Najlepszy montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Dojazd w 24h",
     url: siteUrl,
     siteName: "SkładaMy",
     locale: "pl_PL",
     type: "website",
     images: [
       {
-        url: "/skladamy.svg",
+        url: "/layout/skladamy.svg",
         width: 160,
         height: 40,
         alt: "SkładaMy - Montaż mebli Słupsk",
-      }
+      },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "SkładaMy - Profesjonalny montaż mebli IKEA w Słupsku",
-    description: "⭐ Najlepszy montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni",
+    title: "Montaż mebli IKEA Słupsk - SkładaMy",
+    description:
+      "⭐ Najlepszy montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni",
   },
 };
 

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Share2, Twitter, Facebook, Linkedin, Link as LinkIcon, Check } from 'lucide-react';
+import { useState } from "react";
+import { Share2, Twitter, Facebook, Linkedin, Link as LinkIcon, Check } from "lucide-react";
 
 interface ShareButtonsProps {
   url: string;
@@ -26,7 +26,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
-      console.error('Failed to copy:', err);
+      console.error("Failed to copy:", err);
     }
   };
 
@@ -46,9 +46,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
           className="flex items-center gap-3 w-full px-4 py-3 rounded-lg border border-border bg-background hover:bg-accent transition-colors group"
         >
           <Twitter className="h-5 w-5 text-[#1DA1F2] group-hover:scale-110 transition-transform" />
-          <span className="text-sm font-medium text-foreground">
-            Udostępnij na Twitter
-          </span>
+          <span className="text-sm font-medium text-foreground">Udostępnij na Twitter</span>
         </a>
 
         {/* Facebook */}
@@ -59,9 +57,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
           className="flex items-center gap-3 w-full px-4 py-3 rounded-lg border border-border bg-background hover:bg-accent transition-colors group"
         >
           <Facebook className="h-5 w-5 text-[#1877F2] group-hover:scale-110 transition-transform" />
-          <span className="text-sm font-medium text-foreground">
-            Udostępnij na Facebook
-          </span>
+          <span className="text-sm font-medium text-foreground">Udostępnij na Facebook</span>
         </a>
 
         {/* LinkedIn */}
@@ -72,9 +68,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
           className="flex items-center gap-3 w-full px-4 py-3 rounded-lg border border-border bg-background hover:bg-accent transition-colors group"
         >
           <Linkedin className="h-5 w-5 text-[#0A66C2] group-hover:scale-110 transition-transform" />
-          <span className="text-sm font-medium text-foreground">
-            Udostępnij na LinkedIn
-          </span>
+          <span className="text-sm font-medium text-foreground">Udostępnij na LinkedIn</span>
         </a>
 
         {/* Copy Link */}
@@ -92,9 +86,7 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
           ) : (
             <>
               <LinkIcon className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:scale-110 transition-all" />
-              <span className="text-sm font-medium text-foreground">
-                Kopiuj link
-              </span>
+              <span className="text-sm font-medium text-foreground">Kopiuj link</span>
             </>
           )}
         </button>
