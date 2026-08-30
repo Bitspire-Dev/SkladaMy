@@ -1,7 +1,7 @@
 /**
  * blog-post router
  */
-import { factories } from '@strapi/strapi';
+import { factories } from '@strapi/core';
 
 export default factories.createCoreRouter('api::blog-post.blog-post', {
   config: {

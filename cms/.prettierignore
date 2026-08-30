@@ -1,0 +1,11 @@
+node_modules/
+build/
+dist/
+public/
+database/
+logs/
+.cache/
+.tmp/
+.strapi/
+types/generated/
+coverage/

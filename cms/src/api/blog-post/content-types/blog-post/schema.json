@@ -90,7 +90,8 @@
     "relatedPosts": {
       "type": "relation",
       "relation": "manyToMany",
-      "target": "api::blog-post.blog-post"
+      "target": "api::blog-post.blog-post",
+      "inversedBy": "relatedPosts"
     },
     "seo": {
       "type": "component",

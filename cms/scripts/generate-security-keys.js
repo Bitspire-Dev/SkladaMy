@@ -3,7 +3,7 @@
 /**
  * Generate security keys for Strapi CMS
  * Run: node scripts/generate-security-keys.js
- * 
+ *
  * Generates all required security keys:
  * - APP_KEYS (4 keys for session encryption)
  * - API_TOKEN_SALT (for API token hashing)
@@ -33,12 +33,7 @@ console.log('📋 Copy these values to your .env file:\n');
 console.log('─────────────────────────────────────────────────────────────────\n');
 
 // Generate APP_KEYS (4 keys for session rotation)
-const appKeys = [
-  generateKey(),
-  generateKey(),
-  generateKey(),
-  generateKey()
-].join(',');
+const appKeys = [generateKey(), generateKey(), generateKey(), generateKey()].join(',');
 
 console.log('# Security Keys - Generated on', new Date().toISOString());
 console.log(`APP_KEYS="${appKeys}"`);

@@ -91,8 +91,8 @@ const authorData = {
   name: 'Zespół SkładaMy',
   role: 'Certyfikowani monterzy IKEA',
   bio: 'Zespół ekspertów w montażu mebli IKEA z wieloletnim doświadczeniem. Specjalizujemy się w profesjonalnym montażu i doradzamy klientom w wyborze najlepszych rozwiązań.',
-  email: 'kontakt@skladamy.pl',
-  website: 'https://skladamy.pl',
+  email: 'kontakt@skladamy.com',
+  website: 'https://skladamy.com',
   linkedin: 'https://linkedin.com/company/skladamy',
   twitter: '@skladamy',
 };
@@ -101,7 +101,8 @@ const authorData = {
 const premiumArticle = {
   title: 'Kompletny przewodnik po montażu szafy PAX IKEA - Od A do Z [2025]',
   slug: 'kompletny-przewodnik-montaz-szafy-pax-ikea-2025',
-  excerpt: 'Poznaj profesjonalne techniki montażu szafy PAX IKEA. Szczegółowy przewodnik krok po kroku z wskazówkami ekspertów, listą narzędzi, oszacowaniem czasu i najczęstszymi błędami do uniknięcia. Wszystko, czego potrzebujesz, aby samodzielnie zmontować szafę PAX.',
+  excerpt:
+    'Poznaj profesjonalne techniki montażu szafy PAX IKEA. Szczegółowy przewodnik krok po kroku z wskazówkami ekspertów, listą narzędzi, oszacowaniem czasu i najczęstszymi błędami do uniknięcia. Wszystko, czego potrzebujesz, aby samodzielnie zmontować szafę PAX.',
   content: `<h2>Wprowadzenie do systemu PAX</h2>
 
 <p>System szaf PAX to jedno z najbardziej wszechstronnych i popularnych rozwiązań do przechowywania oferowanych przez IKEA. Od ponad 40 lat PAX ewoluuje, oferując coraz więcej możliwości personalizacji. W tym kompleksowym przewodniku przeprowadzimy Cię przez cały proces montażu - od przygotowania po finalne detale.</p>
@@ -386,63 +387,78 @@ const premiumArticle = {
   featured: true,
   publishDate: '2025-12-28T09:00:00.000Z',
   categorySlug: 'poradniki',
-  tagSlugs: ['ikea', 'montaz', 'szafy', 'pax', 'narzedzia', 'diy', 'bezpieczenstwo', 'czas-montazu', 'instrukcje', 'wskazowki-profesjonalistow'],
+  tagSlugs: [
+    'ikea',
+    'montaz',
+    'szafy',
+    'pax',
+    'narzedzia',
+    'diy',
+    'bezpieczenstwo',
+    'czas-montazu',
+    'instrukcje',
+    'wskazowki-profesjonalistow',
+  ],
   seo: {
     metaTitle: 'Przewodnik montażu szafy PAX IKEA 2025 | SkładaMy',
-    metaDescription: 'Profesjonalny przewodnik: jak zmontować szafę PAX IKEA. Czas, narzędzia, błędy i wskazówki ekspertów. 18 min czytania.',
-    keywords: 'montaż pax ikea, jak zmontować szafę pax, instrukcja pax, przewodnik pax, czas montażu pax, narzędzia do pax, błędy montaż pax',
+    metaDescription:
+      'Profesjonalny przewodnik: jak zmontować szafę PAX IKEA. Czas, narzędzia, błędy i wskazówki ekspertów. 18 min czytania.',
+    keywords:
+      'montaż pax ikea, jak zmontować szafę pax, instrukcja pax, przewodnik pax, czas montażu pax, narzędzia do pax, błędy montaż pax',
     ogTitle: 'Kompletny przewodnik po montażu szafy PAX IKEA [2025]',
-    ogDescription: 'Dowiedz się wszystkiego o montażu szafy PAX - od przygotowania po finalne detale. Przewodnik dla amatorów i profesjonalistów.',
+    ogDescription:
+      'Dowiedz się wszystkiego o montażu szafy PAX - od przygotowania po finalne detale. Przewodnik dla amatorów i profesjonalistów.',
     ogType: 'article',
-    canonicalUrl: 'https://skladamy.pl/blog/kompletny-przewodnik-montaz-szafy-pax-ikea-2025',
+    canonicalUrl: 'https://skladamy.com/blog/kompletny-przewodnik-montaz-szafy-pax-ikea-2025',
     noindex: false,
     nofollow: false,
     twitterCard: 'summary_large_image',
     structuredData: {
-      "@context": "https://schema.org",
-      "@type": "Article",
-      "headline": "Kompletny przewodnik po montażu szafy PAX IKEA - Od A do Z [2025]",
-      "description": "Poznaj profesjonalne techniki montażu szafy PAX IKEA. Szczegółowy przewodnik krok po kroku z wskazówkami ekspertów, listą narzędzi, oszacowaniem czasu i najczęstszymi błędami do uniknięcia.",
-      "image": "https://skladamy.pl/uploads/pax-assembly-guide.jpg",
-      "datePublished": "2025-12-28T09:00:00+01:00",
-      "dateModified": "2025-12-28T09:00:00+01:00",
-      "author": {
-        "@type": "Person",
-        "name": "Zespół SkładaMy",
-        "url": "https://skladamy.pl"
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: 'Kompletny przewodnik po montażu szafy PAX IKEA - Od A do Z [2025]',
+      description:
+        'Poznaj profesjonalne techniki montażu szafy PAX IKEA. Szczegółowy przewodnik krok po kroku z wskazówkami ekspertów, listą narzędzi, oszacowaniem czasu i najczęstszymi błędami do uniknięcia.',
+      image: 'https://skladamy.com/uploads/pax-assembly-guide.jpg',
+      datePublished: '2025-12-28T09:00:00+01:00',
+      dateModified: '2025-12-28T09:00:00+01:00',
+      author: {
+        '@type': 'Person',
+        name: 'Zespół SkładaMy',
+        url: 'https://skladamy.com',
       },
-      "publisher": {
-        "@type": "Organization",
-        "name": "SkładaMy",
-        "url": "https://skladamy.pl",
-        "logo": {
-          "@type": "ImageObject",
-          "url": "https://skladamy.pl/logo.png",
-          "width": 250,
-          "height": 60
-        }
+      publisher: {
+        '@type': 'Organization',
+        name: 'SkładaMy',
+        url: 'https://skladamy.com',
+        logo: {
+          '@type': 'ImageObject',
+          url: 'https://skladamy.com/logo.png',
+          width: 250,
+          height: 60,
+        },
       },
-      "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://skladamy.pl/blog/kompletny-przewodnik-montaz-szafy-pax-ikea-2025"
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': 'https://skladamy.com/blog/kompletny-przewodnik-montaz-szafy-pax-ikea-2025',
       },
-      "wordCount": 3000,
-      "articleBody": "Kompletny przewodnik po montażu szafy PAX IKEA...",
-      "inLanguage": "pl-PL",
-      "about": {
-        "@type": "Thing",
-        "name": "Montaż mebli IKEA"
+      wordCount: 3000,
+      articleBody: 'Kompletny przewodnik po montażu szafy PAX IKEA...',
+      inLanguage: 'pl-PL',
+      about: {
+        '@type': 'Thing',
+        name: 'Montaż mebli IKEA',
       },
-      "mentions": [
+      mentions: [
         {
-          "@type": "Product",
-          "name": "Szafa PAX IKEA",
-          "brand": {
-            "@type": "Brand",
-            "name": "IKEA"
-          }
-        }
-      ]
+          '@type': 'Product',
+          name: 'Szafa PAX IKEA',
+          brand: {
+            '@type': 'Brand',
+            name: 'IKEA',
+          },
+        },
+      ],
     },
     lastmod: new Date().toISOString(),
   },
@@ -461,7 +477,10 @@ async function seedDatabase() {
         createdCategories[category.slug] = response.data.data.id;
         console.log(`✅ Utworzono kategorię: ${category.name}`);
       } catch (error) {
-        console.error(`❌ Błąd podczas tworzenia kategorii ${category.name}:`, error.response?.data?.error?.message || error.message);
+        console.error(
+          `❌ Błąd podczas tworzenia kategorii ${category.name}:`,
+          error.response?.data?.error?.message || error.message,
+        );
       }
     }
 
@@ -473,7 +492,10 @@ async function seedDatabase() {
         createdTags[tag.slug] = response.data.data.id;
         console.log(`✅ Utworzono tag: ${tag.name}`);
       } catch (error) {
-        console.error(`❌ Błąd podczas tworzenia tagu ${tag.name}:`, error.response?.data?.error?.message || error.message);
+        console.error(
+          `❌ Błąd podczas tworzenia tagu ${tag.name}:`,
+          error.response?.data?.error?.message || error.message,
+        );
       }
     }
 
@@ -493,8 +515,9 @@ async function seedDatabase() {
         readTime: premiumArticle.readTime,
         featured: premiumArticle.featured,
         publishDate: premiumArticle.publishDate,
-        category: categoryId,
-        tags: tagIds,
+        // Strapi v5 relations expect wrapped objects, not flat IDs.
+        category: { set: [{ id: categoryId }] },
+        tags: { set: tagIds.map((id) => ({ id })) },
         author: authorData,
         seo: premiumArticle.seo,
       };
@@ -505,7 +528,10 @@ async function seedDatabase() {
       console.log(`   🏷️  Tagów: ${tagIds.length}`);
       console.log(`   📝 Długość: ~${premiumArticle.content.length} znaków`);
     } catch (error) {
-      console.error(`❌ Błąd podczas tworzenia artykułu ${premiumArticle.title}:`, error.response?.data);
+      console.error(
+        `❌ Błąd podczas tworzenia artykułu ${premiumArticle.title}:`,
+        error.response?.data,
+      );
       if (error.response?.data?.error?.details) {
         console.log('Szczegóły błędu:', JSON.stringify(error.response.data.error.details, null, 2));
       }

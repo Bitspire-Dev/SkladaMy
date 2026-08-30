@@ -1,7 +1,7 @@
 /**
  * tag router
  */
-import { factories } from '@strapi/strapi';
+import { factories } from '@strapi/core';
 
 export default factories.createCoreRouter('api::tag.tag', {
   config: {

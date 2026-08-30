@@ -1,7 +1,16 @@
 /**
  * Error Logger Middleware
- * Logs all HTTP errors (4xx, 5xx) to Winston logger and files
+ * Logs HTTP errors (4xx, 5xx) and unhandled exceptions to Strapi's logger.
+ *
+ * Design notes:
+ *  - No per-request logging on the hot path (was a synchronous console.log on
+ *    every request). Use strapi.log.debug gated by LOG_LEVEL for verbose mode.
+ *  - Request bodies are only logged when LOG_LEVEL=debug, never in production
+ *    by default (PII / payload size concerns).
+ *  - IPs and emails are masked to reduce PII in logs.
  */
+
+const SENSITIVE_KEY_RE = /password|pass|secret|token|jwt|session|cookie|authorization|apikey|api_key/i;
 
 const redactDeep = (input: any) => {
   const visited = new WeakSet<object>();
@@ -23,7 +32,7 @@ const redactDeep = (input: any) => {
 
       const out: Record<string, any> = {};
       for (const [key, v] of Object.entries(value)) {
-        if (/password|pass|secret|token|jwt|session|cookie|authorization/i.test(key)) {
+        if (SENSITIVE_KEY_RE.test(key)) {
           out[key] = '[REDACTED]';
         } else {
           out[key] = redact(v, depth + 1);
@@ -46,99 +55,105 @@ const sanitizeHeaders = (headers: any) => {
   return safe;
 };
 
+// Mask an IPv4/IPv6 address, keeping the first octet for rough correlation.
+const maskIp = (ip: string | undefined): string => {
+  if (!ip) return undefined;
+  if (ip.includes('.')) {
+    const parts = ip.split('.');
+    return `${parts[0]}.x.x.x`;
+  }
+  // IPv6 — keep first group only.
+  const parts = ip.split(':');
+  return `${parts[0]}:x:x:x`;
+};
+
+// Mask the local part of an email address.
+const maskEmail = (value: string): string => {
+  if (typeof value !== 'string') return value;
+  return value.replace(/([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g, (_m, local, domain) => {
+    const maskedLocal = local.length > 2 ? `${local.slice(0, 2)}…` : '…';
+    return `${maskedLocal}@${domain}`;
+  });
+};
+
+const maskEmailsDeep = (input: any): any => {
+  if (typeof input === 'string') return maskEmail(input);
+  if (Array.isArray(input)) return input.map(maskEmailsDeep);
+  if (input && typeof input === 'object') {
+    const out: Record<string, any> = {};
+    for (const [k, v] of Object.entries(input)) out[k] = maskEmailsDeep(v);
+    return out;
+  }
+  return input;
+};
+
+const isDebug = () => (process.env.LOG_LEVEL || '').toLowerCase() === 'debug';
+
 const errorLogger = (_config, { strapi }) => {
-  console.log('🔍🔍🔍 [ERROR-LOGGER] Middleware loaded!');
-  
   return async (ctx, next) => {
     const startTime = Date.now();
-    console.log(`🔍 [ERROR-LOGGER] Request: ${ctx.method} ${ctx.url}`);
-    console.log(`🔍 [ERROR-LOGGER] Path: ${ctx.path}, Query: ${JSON.stringify(ctx.query)}`);
-    console.log(
-      `🔍 [ERROR-LOGGER] Proxy/HTTPS: protocol=${ctx.protocol} secure=${ctx.secure} request.secure=${ctx.request?.secure} app.proxy=${ctx.app?.proxy}`
-    );
-    console.log(
-      `🔍 [ERROR-LOGGER] Forwarded: x-forwarded-proto=${ctx.headers?.['x-forwarded-proto']} x-forwarded-host=${ctx.headers?.['x-forwarded-host']} x-forwarded-for=${ctx.headers?.['x-forwarded-for']}`
-    );
-    
+
     try {
       await next();
-
       const duration = Date.now() - startTime;
-      
-      // Log response status
-      console.log(`🔍 [ERROR-LOGGER] Response: ${ctx.status} for ${ctx.method} ${ctx.url} (${duration}ms)`);
 
-      // Log ALL requests in production for debugging
-      const logData = {
-        method: ctx.method,
-        url: ctx.url,
-        path: ctx.path,
-        status: ctx.status,
-        ip: ctx.ip,
-        userAgent: ctx.headers['user-agent'],
-        duration,
-        nodeEnv: process.env.NODE_ENV,
-        trustProxyEnv: process.env.TRUST_PROXY,
-        protocol: ctx.protocol,
-        secure: ctx.secure,
-        requestSecure: ctx.request?.secure,
-        appProxy: ctx.app?.proxy,
-        forwardedProto: ctx.headers?.['x-forwarded-proto'],
-        forwardedHost: ctx.headers?.['x-forwarded-host'],
-        forwardedFor: ctx.headers?.['x-forwarded-for'],
-      };
-
-      // Always log in production
-      if (process.env.NODE_ENV === 'production') {
-        strapi.log.info(`[HTTP ${ctx.status}] ${ctx.method} ${ctx.url}`, logData);
+      // Verbose per-request logging only in debug mode.
+      if (isDebug()) {
+        strapi.log.debug(`[HTTP ${ctx.status}] ${ctx.method} ${ctx.url} (${duration}ms)`);
       }
 
-      // Log 4xx and 5xx responses
+      // Log 4xx and 5xx responses.
       if (ctx.status >= 400) {
-        const errorLogData = {
-          ...logData,
-          body: redactDeep(ctx.request.body),
-          response: ctx.body,
-          headers: sanitizeHeaders(ctx.headers),
+        const baseLogData = {
+          method: ctx.method,
+          url: ctx.url,
+          path: ctx.path,
+          status: ctx.status,
+          ip: maskIp(ctx.ip),
+          userAgent: ctx.headers['user-agent'],
+          duration,
         };
 
-        console.error(`❌❌❌ [ERROR-LOGGER] HTTP ${ctx.status}:`, JSON.stringify(errorLogData, null, 2));
-
-        if (ctx.status >= 500) {
-          strapi.log.error('[HTTP 500] Server Error', errorLogData);
+        // Only include body/headers when explicitly debugging (PII risk).
+        if (isDebug()) {
+          const errorLogData = {
+            ...baseLogData,
+            body: maskEmailsDeep(redactDeep(ctx.request.body)),
+            response: maskEmailsDeep(ctx.body),
+            headers: sanitizeHeaders(ctx.headers),
+          };
+          if (ctx.status >= 500) {
+            strapi.log.error(`[HTTP ${ctx.status}] Server Error`, errorLogData);
+          } else {
+            strapi.log.warn(`[HTTP ${ctx.status}] Client Error`, errorLogData);
+          }
         } else {
-          strapi.log.warn(`[HTTP ${ctx.status}] Client Error`, errorLogData);
+          if (ctx.status >= 500) {
+            strapi.log.error(`[HTTP ${ctx.status}] Server Error`, baseLogData);
+          } else {
+            strapi.log.warn(`[HTTP ${ctx.status}] Client Error`, baseLogData);
+          }
         }
       }
     } catch (err: any) {
       const duration = Date.now() - startTime;
-      
+
       const errorData = {
         method: ctx.method,
         url: ctx.url,
         path: ctx.path,
         status: ctx.status || 500,
-        ip: ctx.ip,
+        ip: maskIp(ctx.ip),
         userAgent: ctx.headers['user-agent'],
         duration,
-        nodeEnv: process.env.NODE_ENV,
-        trustProxyEnv: process.env.TRUST_PROXY,
-        protocol: ctx.protocol,
-        secure: ctx.secure,
-        requestSecure: ctx.request?.secure,
-        appProxy: ctx.app?.proxy,
-        forwardedProto: ctx.headers?.['x-forwarded-proto'],
-        forwardedHost: ctx.headers?.['x-forwarded-host'],
-        forwardedFor: ctx.headers?.['x-forwarded-for'],
         error: err?.message || 'Unknown error',
         stack: err?.stack,
-        body: redactDeep(ctx.request.body),
-        headers: sanitizeHeaders(ctx.headers),
+        ...(isDebug()
+          ? { body: maskEmailsDeep(redactDeep(ctx.request.body)), headers: sanitizeHeaders(ctx.headers) }
+          : {}),
       };
 
-      console.error('❌❌❌ [ERROR-LOGGER] EXCEPTION:', JSON.stringify(errorData, null, 2));
       strapi.log.error('[HTTP Exception]', errorData);
-      
       throw err; // Re-throw to let Strapi handle it
     }
   };

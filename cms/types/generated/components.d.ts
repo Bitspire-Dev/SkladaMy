@@ -81,9 +81,7 @@ export interface SharedSeo extends Struct.ComponentSchema {
     ogType: Schema.Attribute.Enumeration<['website', 'article', 'product']> &
       Schema.Attribute.DefaultTo<'article'>;
     structuredData: Schema.Attribute.JSON;
-    twitterCard: Schema.Attribute.Enumeration<
-      ['summary', 'summary_large_image']
-    > &
+    twitterCard: Schema.Attribute.Enumeration<['summary', 'summary_large_image']> &
       Schema.Attribute.DefaultTo<'summary_large_image'>;
   };
 }

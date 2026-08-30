@@ -2,33 +2,37 @@
 
 ## 📖 Spis Treści
 
-1. **[OPTIMIZATION_SUMMARY.md](OPTIMIZATION_SUMMARY.md)** - Implementacja 15 optymalizacji SEO i performance
-2. **[QUICK_START_CHECKLIST.md](QUICK_START_CHECKLIST.md)** - Checklist do uruchomienia po optymalizacjach
-3. **[CLEANUP_SUMMARY.md](CLEANUP_SUMMARY.md)** - Usunięcie niepotrzebnych plików (.tmp, .npmrc)
-4. **[ARCHITECTURE.md](ARCHITECTURE.md)** - Architektura i deployment guide
+1. **Konfiguracja** - Environment variables i ustawienia
+2. **Struktura projektu** - Opis folderów i plików
+3. **Klucowe Features** - Lifecycle hooks, backup, health check
+4. **Security & Performance** - Cache, CORS, indeksy DB
 
 ---
 
 ## 🚀 Quick Start
 
 ### Development
+
 ```bash
 npm run develop
 # http://localhost:1337/admin
 ```
 
 ### Production
+
 ```bash
 npm run build
 npm start
 ```
 
 ### Backup Database
+
 ```bash
 npm run backup
 ```
 
 ### Health Check
+
 ```bash
 curl http://localhost:1337/_health
 ```
@@ -38,17 +42,20 @@ curl http://localhost:1337/_health
 ## 📊 Stan Projektu (28.12.2025)
 
 ### ✅ Zoptymalizowane (15/15 zadań)
+
 - SEO: structured data, breadcrumbs, alt text validation
-- Performance: cache headers, database pool, upload breakpoints  
+- Performance: cache headers, database pool, upload breakpoints
 - Developer Experience: auto-calculation, backups, monitoring
 - Maintenance: backup script, enhanced healthz, TypeScript types
 
 ### 🧹 Oczyszczone
+
 - Usunięto: `.tmp/` (SQLite), `.npmrc` (preferencje npm)
 - Dodano do .gitignore: `.tmp/`, `backups/`
 - Zmieniono default DB client: `sqlite` → `mysql2`
 
 ### 🎯 Gotowe do produkcji
+
 - ✅ TypeScript kompiluje bez błędów
 - ✅ Wszystkie lifecycle hooks działają
 - ✅ Cache headers skonfigurowane
@@ -60,6 +67,7 @@ curl http://localhost:1337/_health
 ## 🔧 Konfiguracja
 
 ### Environment Variables (.env)
+
 ```env
 # Database
 DATABASE_CLIENT=mysql2
@@ -73,7 +81,7 @@ DATABASE_PASSWORD=your_password
 NODE_ENV=production
 HOST=0.0.0.0
 PORT=1337
-PUBLIC_URL=https://cms.skladamy.com.pl
+PUBLIC_URL=https://cms.skladamy.com
 
 # Security Keys (generate with: node generate-keys.js)
 APP_KEYS=...
@@ -130,11 +138,10 @@ cms/
 ├── types/
 │   └── generated/       # Auto-generated TypeScript types
 │
-├── OPTIMIZATION_SUMMARY.md     # Dokumentacja optymalizacji
-├── QUICK_START_CHECKLIST.md   # Checklist uruchomieniowy
-├── CLEANUP_SUMMARY.md          # Dokumentacja cleanup
-├── ARCHITECTURE.md             # Architecture guide
-└── package.json
+├── config/                     # Konfiguracja Strapi
+├── src/                        # Kod źródłowy
+├── scripts/                    # Skrypty pomocnicze
+└── package.json                # Zależności i skrypty
 ```
 
 ---
@@ -142,9 +149,11 @@ cms/
 ## 🎯 Kluczowe Features
 
 ### 🤖 Lifecycle Hooks (Auto-generation)
+
 **Plik:** `src/api/blog-post/content-types/blog-post/lifecycles.ts`
 
 Auto-generuje przy tworzeniu/edycji posta:
+
 - ✅ `readTime` - wylicza z contentu (200 słów/min)
 - ✅ `excerpt` - pierwsze 300 znaków
 - ✅ `breadcrumbs` - Schema.org BreadcrumbList
@@ -152,6 +161,7 @@ Auto-generuje przy tworzeniu/edycji posta:
 - ✅ `lastmod` - data modyfikacji dla SEO
 
 ### 💾 Database Backup
+
 **Plik:** `scripts/backup-database.js`
 
 ```bash
@@ -163,6 +173,7 @@ npm run backup
 - Ready dla cron/Task Scheduler
 
 ### 🏥 Enhanced Health Check
+
 **Endpoint:** `http://localhost:1337/_health`
 
 ```json
@@ -178,21 +189,15 @@ npm run backup
 ```
 
 ### ⚡ Cache Headers
+
 **Plik:** `src/middlewares/security-headers/index.ts`
 
-- Blog posts: 5 min browser, 10 min CDN
+- Blog posts: 5 min browser, 10 min CDN (tylko GET bez auth)
 - Static files: 1 dzień browser, 7 dni CDN
-- API: 1h cache z stale-while-revalidate
-
-### 🔍 Alt Text Validation
-**Plik:** `src/api/blog-post/controllers/blog-post.ts`
-
-Wymusza alt text na featured image:
-```
-Error: "Featured image must have alternative text for SEO"
-```
+- Inne API: brak domyślnego cache (bezpieczeństwo)
 
 ### ❓ FAQ Component
+
 **Plik:** `src/components/blog/faq-item.json`
 
 Repeatable component do tworzenia FAQ w postach.
@@ -220,6 +225,7 @@ CREATE INDEX idx_tag_slug ON tags(slug);
 ## 🔐 Security
 
 ### Security Headers
+
 - X-Content-Type-Options: nosniff
 - X-Frame-Options: SAMEORIGIN
 - X-XSS-Protection: 1; mode=block
@@ -227,12 +233,15 @@ CREATE INDEX idx_tag_slug ON tags(slug);
 - Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 ### CORS
+
 Production whitelist:
-- https://skladamy.pl
-- https://www.skladamy.pl
+
+- https://skladamy.com
+- https://www.skladamy.com
 - Configurable via CORS_ORIGIN env var
 
 ### Database
+
 - Pool: min 1, max 5 (optimized)
 - SSL support (optional)
 - Secure credential management
@@ -242,14 +251,17 @@ Production whitelist:
 ## 📈 Performance
 
 ### Cache Strategy
+
 - **Blog posts:** 5min/10min (browser/CDN)
 - **Static files:** 1d/7d (browser/CDN)
 - **API:** 1h with stale-while-revalidate
 
 ### Upload Optimization
+
 Breakpoints: 1200, 800, 400, 150 (optimized for blog)
 
 ### Database Pool
+
 - min: 1 (było 2) → -30% RAM
 - max: 5 (było 10) → sufficient for blog
 
@@ -258,22 +270,26 @@ Breakpoints: 1200, 800, 400, 150 (optimized for blog)
 ## 🧪 Testing
 
 ### TypeScript Check
+
 ```bash
 npx tsc --noEmit
 ```
 
 ### Health Check
+
 ```bash
 curl http://localhost:1337/_health
 ```
 
 ### Backup Test
+
 ```bash
 npm run backup
 ls -la backups/
 ```
 
 ### Lifecycle Test
+
 1. Create blog post bez excerpt/readTime
 2. Save
 3. Sprawdź czy auto-wygenerowane
@@ -283,25 +299,31 @@ ls -la backups/
 ## 🚨 Troubleshooting
 
 ### Strapi nie startuje
+
 ```bash
 npm run build
 npm run develop
 ```
 
 ### TypeScript errors
+
 ```bash
 npx tsc --noEmit
 # Sprawdź output
 ```
 
 ### Database connection failed
+
 Sprawdź:
+
 - `.env` credentials
 - MySQL server running
 - Firewall rules
 
 ### Backup fails
+
 Sprawdź:
+
 - mysqldump installed
 - Database credentials correct
 - Write permissions on backups/
@@ -311,12 +333,11 @@ Sprawdź:
 ## 📞 Support
 
 **Dokumentacja:**
-- [OPTIMIZATION_SUMMARY.md](OPTIMIZATION_SUMMARY.md) - szczegóły techniczne
-- [QUICK_START_CHECKLIST.md](QUICK_START_CHECKLIST.md) - checklist
-- [CLEANUP_SUMMARY.md](CLEANUP_SUMMARY.md) - usunięte pliki
-- [ARCHITECTURE.md](ARCHITECTURE.md) - deployment guide
+
+- Ten plik README zawiera pełną dokumentację projektu
 
 **Health Check:**
+
 - Endpoint: `/_health`
 - Shows: status, uptime, DB connection, memory
 

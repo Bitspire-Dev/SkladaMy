@@ -1,5 +1,6 @@
 // @ts-check
 import eslint from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
 import tseslint from 'typescript-eslint';
 
 export default tseslint.config(
@@ -14,8 +15,7 @@ export default tseslint.config(
       '**/database/**',
       '**/.env*',
       '**/types/generated/**', // Generated Strapi types
-      '**/*.js', // Ignore compiled JS files, lint only TS source files
-    ]
+    ],
   },
   eslint.configs.recommended,
   {
@@ -28,11 +28,14 @@ export default tseslint.config(
       },
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['error', { 
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true
-      }],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-non-null-assertion': 'warn',
       '@typescript-eslint/ban-ts-comment': 'error',
@@ -46,7 +49,7 @@ export default tseslint.config(
       '@typescript-eslint/no-useless-constructor': 'error',
       '@typescript-eslint/prefer-for-of': 'warn',
       '@typescript-eslint/no-array-constructor': 'error',
-    }
+    },
   },
   {
     files: ['**/*.js', '**/*.mjs'],
@@ -73,12 +76,15 @@ export default tseslint.config(
       'no-debugger': 'error',
       'prefer-const': 'error',
       'no-var': 'error',
-      'no-unused-vars': ['error', { 
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true
-      }],
-      'eqeqeq': ['error', 'always', { null: 'ignore' }],
+      'no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+      eqeqeq: ['error', 'always', { null: 'ignore' }],
       'no-param-reassign': ['error', { props: false }],
       'prefer-template': 'warn',
       'no-throw-literal': 'error',
@@ -87,9 +93,10 @@ export default tseslint.config(
       'no-useless-return': 'error',
       'no-else-return': ['warn', { allowElseIf: false }],
       'object-shorthand': ['warn', 'always'],
-      'yoda': 'error',
-      'complexity': ['warn', { max: 20 }],
+      yoda: 'error',
+      complexity: ['warn', { max: 20 }],
       'max-depth': ['warn', { max: 4 }],
-    }
-  }
+    },
+  },
+  prettierConfig,
 );

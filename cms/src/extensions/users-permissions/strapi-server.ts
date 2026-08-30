@@ -1,34 +1,30 @@
 /**
  * Extension for users-permissions plugin
  * Fixes route reading issue in admin panel (#25084)
- * 
+ *
  * Problem: getRoutes() fails when route.info is undefined
  * Solution: Override getRoutes method with safe version
  */
 
 import _ from 'lodash';
+import { sanitizeRoutesMapForSerialization } from '@strapi/utils';
 import urlJoin from 'url-join';
 
 export default (plugin) => {
-  console.log('🔧 [Extension] users-permissions extension loading...');
-  
   // Store original service factory
   const originalServiceFactory = plugin.services['users-permissions'];
-  
+
   // Replace service factory with wrapper that patches getRoutes
   plugin.services['users-permissions'] = ({ strapi }) => {
     // Call original factory to get service instance
     const service = originalServiceFactory({ strapi });
-    
-    // Store original getRoutes
-    const originalGetRoutes = service.getRoutes;
-    
-    // Override getRoutes with safe version
-    service.getRoutes = async function() {
-      console.log('🔧 [Extension] Custom getRoutes called!');
-      const routesMap = {};
-      const { sanitizeRoutesMapForSerialization } = require('@strapi/utils');
 
+    // Store original getRoutes
+    const _originalGetRoutes = service.getRoutes;
+
+    // Override getRoutes with safe version
+    service.getRoutes = async function () {
+      const routesMap = {};
       // Process API routes
       _.forEach(strapi.apis, (api, apiName) => {
         const routes = _.flatMap(api.routes, (route) => {
@@ -76,13 +72,11 @@ export default (plugin) => {
       });
 
       const sanitizedRoutesMap = sanitizeRoutesMapForSerialization(routesMap);
-      console.log('✅ [Extension] getRoutes completed successfully');
       return sanitizedRoutesMap;
     };
-    
+
     return service;
   };
 
-  console.log('✅ [Extension] users-permissions service patched');
   return plugin;
 };

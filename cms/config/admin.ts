@@ -1,8 +1,10 @@
 import path from 'path';
 
 export default ({ env }) => ({
-  // Jawnie ustaw ścieżkę do buildu
-  buildPath: path.join(__dirname, '..', 'build'),
+  // Build admina trafia do dist/build — spójne z distDir: './dist' w server.js
+  // i outDir: 'dist' w tsconfig.json. Po `npm run build && npm start` admin
+  // jest dostępny pod /admin.
+  buildPath: path.join(__dirname, '..', 'dist', 'build'),
   auth: {
     secret: env('ADMIN_JWT_SECRET'),
     // Session configuration for persistent login
@@ -10,23 +12,26 @@ export default ({ env }) => ({
       keys: env.array('APP_KEYS'),
       maxAge: 86400000, // 24 hours
     },
-    // Cookie configuration for production behind reverse proxy/Cloudflare
+    // Cookie configuration. sameSite:'none' requires secure:true (HTTPS) and
+    // is only needed for cross-origin admin. Default to 'lax' which works in
+    // most setups; set COOKIE_SAMESITE=none + SECURE_COOKIES=true only when the
+    // admin is served from a different origin than the API over HTTPS.
     cookie: {
-      secure: env('NODE_ENV') === 'production', // true in production with HTTPS
-      sameSite: env('NODE_ENV') === 'production' ? 'none' : 'lax', // 'none' for cross-origin in production
+      secure: env.bool('SECURE_COOKIES', env('NODE_ENV') === 'production'),
+      sameSite: env('COOKIE_SAMESITE', env('NODE_ENV') === 'production' ? 'lax' : 'lax'),
       httpOnly: true,
       maxAge: 86400000, // 24 hours
       domain: undefined, // Let browser determine domain
       // Ważne: gdy za reverse proxy, Strapi musi ufać X-Forwarded-Proto
-      secureProxy: env('NODE_ENV') === 'production' && env.bool('TRUST_PROXY', false),
+      secureProxy: env.bool('TRUST_PROXY', false),
     },
     // Events handlers for authentication
     events: {
-      onConnectionSuccess(e, provider) {
+      onConnectionSuccess(e, _provider) {
         // e = { user, provider }
         console.log('✅ Admin login successful:', e?.user?.email || 'unknown user');
       },
-      onConnectionError(e, error, provider) {
+      onConnectionError(_e, error, _provider) {
         console.error('❌ Admin login failed:', error?.message || error);
       },
     },

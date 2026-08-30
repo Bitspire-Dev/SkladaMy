@@ -6,17 +6,12 @@ export default (config: UserConfig) => {
       alias: {
         '@': '/src',
         // React 18 + Zod 4 compatibility
-        'react': 'react',
+        react: 'react',
         'react-dom': 'react-dom',
       },
     },
     optimizeDeps: {
-      include: [
-        'react',
-        'react-dom',
-        '@radix-ui/react-tooltip',
-        'zod',
-      ],
+      include: ['react', 'react-dom', '@radix-ui/react-tooltip', 'zod'],
     },
     ssr: {
       noExternal: ['zod', '@radix-ui/react-tooltip'],
