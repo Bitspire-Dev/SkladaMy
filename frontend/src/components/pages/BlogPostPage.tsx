@@ -7,6 +7,7 @@ import { BlogPostContent } from "@/components/sections/blog/BlogPostContent";
 import { getMediaURL } from "@/lib/cms/client";
 import { getBlogPost, getBlogPosts } from "@/lib/cms/api";
 import { getSiteUrl } from "@/lib/config";
+import { extractPlainText } from "@/lib/content/processors/html";
 
 interface BlogPostPageProps {
   slug: string;
@@ -23,13 +24,17 @@ export async function generateBlogPostMetadata(slug: string): Promise<Metadata> 
     if (!post) {
       return {
         title: "Artykuł nie znaleziony | SkładaMy",
+        robots: { index: false, follow: false },
       };
     }
 
     // Use SEO component data if available, fallback to post data
     const { seo } = post;
     const title = seo?.metaTitle || `${post.title} | Blog SkładaMy`;
-    const description = seo?.metaDescription || post.excerpt || post.content?.slice(0, 155);
+    const description =
+      seo?.metaDescription ||
+      post.excerpt ||
+      (post.content ? extractPlainText(post.content).slice(0, 155) : undefined);
     const keywords = seo?.keywords || undefined;
     const canonicalUrl = seo?.canonicalUrl || `${siteUrl}/blog/${post.slug}`;
 
@@ -74,6 +79,7 @@ export async function generateBlogPostMetadata(slug: string): Promise<Metadata> 
     console.error("Failed to generate metadata for blog post:", error);
     return {
       title: "Blog | SkładaMy",
+      robots: { index: false, follow: false },
     };
   }
 }

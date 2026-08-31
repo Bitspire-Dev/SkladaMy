@@ -37,19 +37,25 @@ function readConsent(): ConsentState | null {
 function writeConsent(consent: ConsentState) {
   const expires = new Date();
   expires.setDate(expires.getDate() + CONSENT_MAX_AGE_DAYS);
-  document.cookie = `${CONSENT_COOKIE}=${encodeURIComponent(JSON.stringify(consent))}; Path=/; SameSite=Lax; Expires=${expires.toUTCString()}`;
+  // Secure + SameSite=Strict: cookie only over HTTPS, not sent on cross-site
+  // requests. In dev (http://localhost) Secure is omitted so it still works.
+  const isHttps = typeof window !== "undefined" && window.location.protocol === "https:";
+  const secureFlag = isHttps ? "; Secure" : "";
+  document.cookie = `${CONSENT_COOKIE}=${encodeURIComponent(JSON.stringify(consent))}; Path=/; SameSite=Strict${secureFlag}; Expires=${expires.toUTCString()}`;
 }
 
 export default function CookieConsentBanner() {
-  const initialConsent = readConsent();
-  const [open, setOpen] = useState(() => !initialConsent);
-  const [analytics, setAnalytics] = useState(() => initialConsent?.analytics ?? false);
-  const [marketing, setMarketing] = useState(() => initialConsent?.marketing ?? false);
-  const gtmId = "GTM-56KC6N53";
+  // Start closed on both server and client to avoid hydration mismatch.
+  // The banner is shown client-only after checking for an existing consent.
+  const [open, setOpen] = useState(false);
+  const [analytics, setAnalytics] = useState(false);
+  const [marketing, setMarketing] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || "";
   const acceptBtnRef = useRef<HTMLButtonElement | null>(null);
-  const isMounted = useRef(false);
 
   const loadGTM = () => {
+    if (!gtmId) return; // GTM disabled when NEXT_PUBLIC_GTM_ID is unset
     if (document.getElementById("gtm-script-loader")) return; // prevent duplicates
     const s = document.createElement("script");
     s.id = "gtm-script-loader";
@@ -63,21 +69,21 @@ export default function CookieConsentBanner() {
     }
   };
 
-  // Sync open state with actual consent after hydration (runs once)
+  // After hydration: read consent cookie and open banner if no consent yet.
+  // Also load GTM if analytics consent was already granted.
   useEffect(() => {
-    if (!isMounted.current) {
-      isMounted.current = true;
-      const consent = readConsent();
-      setOpen(!consent);
+    const consent = readConsent();
+    setHydrated(true);
+    if (!consent) {
+      setOpen(true);
+    } else {
+      setAnalytics(consent.analytics ?? false);
+      setMarketing(consent.marketing ?? false);
+      if (consent.analytics) {
+        loadGTM();
+      }
     }
   }, []);
-
-  // Load GTM if consent was already granted
-  useEffect(() => {
-    if (initialConsent?.analytics) {
-      loadGTM();
-    }
-  }, [initialConsent?.analytics]);
 
   // Allow external trigger to reopen banner
   useEffect(() => {

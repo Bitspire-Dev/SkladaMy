@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import BackToTop from "@/components/ui/BackToTop";
-import { COMPANY_DATA, getSiteUrl } from "@/lib/config";
+import { COMPANY_CONFIG, getSiteUrl } from "@/lib/config";
 
 const siteUrl = getSiteUrl();
 
@@ -105,25 +105,29 @@ export default function PrivacyPolicyPage() {
       dateModified: new Date().toISOString(),
       author: {
         "@type": "Organization",
-        name: COMPANY_DATA.name,
-        url: COMPANY_DATA.website,
+        name: COMPANY_CONFIG.name,
+        url: COMPANY_CONFIG.website,
         address: {
           "@type": "PostalAddress",
-          addressLocality: COMPANY_DATA.address.city,
+          addressLocality: COMPANY_CONFIG.address.city,
           addressCountry: "PL",
         },
       },
-      publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
+      publisher: {
+        "@type": "Organization",
+        name: COMPANY_CONFIG.name,
+        url: COMPANY_CONFIG.website,
+      },
       about: [
         {
           "@type": "Service",
           name: "Montaż mebli IKEA",
-          provider: { "@type": "Organization", name: COMPANY_DATA.name },
+          provider: { "@type": "Organization", name: COMPANY_CONFIG.name },
         },
         {
           "@type": "Service",
           name: "Montaż szaf PAX",
-          provider: { "@type": "Organization", name: COMPANY_DATA.name },
+          provider: { "@type": "Organization", name: COMPANY_CONFIG.name },
         },
       ],
       legislationApplies:
@@ -148,13 +152,13 @@ export default function PrivacyPolicyPage() {
       url: `${siteUrl}/polityka-prywatnosci#${s.id}`,
     })),
     significantLink: sections.map((section) => `${siteUrl}/polityka-prywatnosci#${section.id}`),
-    publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
+    publisher: { "@type": "Organization", name: COMPANY_CONFIG.name, url: COMPANY_CONFIG.website },
     contactPoint: [
       {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: COMPANY_DATA.email,
-        telephone: COMPANY_DATA.phone,
+        email: COMPANY_CONFIG.email,
+        telephone: COMPANY_CONFIG.phone,
         areaServed: "PL",
         availableLanguage: ["pl"],
       },
@@ -169,7 +173,10 @@ export default function PrivacyPolicyPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(privacyStructuredData) }}
+        dangerouslySetInnerHTML={{
+          // Escape `</` to prevent breaking out of the script element.
+          __html: JSON.stringify(privacyStructuredData).replace(/</g, "\\u003c"),
+        }}
       />
       <Header />
       <main id="top" className="py-16">
@@ -237,31 +244,31 @@ export default function PrivacyPolicyPage() {
                   <div className="grid md:grid-cols-2 gap-4">
                     <ul className="text-muted-foreground text-sm space-y-2">
                       <li>
-                        • <strong>Nazwa firmy:</strong> {COMPANY_DATA.fullName}
+                        • <strong>Nazwa firmy:</strong> {COMPANY_CONFIG.fullName}
                       </li>
                       <li>
                         • <strong>E-mail RODO:</strong>{" "}
                         <a
-                          href={`mailto:${COMPANY_DATA.email}`}
+                          href={`mailto:${COMPANY_CONFIG.email}`}
                           className="text-primary hover:underline"
                         >
-                          {COMPANY_DATA.email}
+                          {COMPANY_CONFIG.email}
                         </a>
                       </li>
                       <li>
                         • <strong>Telefon:</strong>{" "}
                         <a
-                          href={`tel:${COMPANY_DATA.phone.replace(/\s/g, "")}`}
+                          href={`tel:${COMPANY_CONFIG.phone.replace(/\s/g, "")}`}
                           className="text-primary hover:underline"
                         >
-                          {COMPANY_DATA.phone}
+                          {COMPANY_CONFIG.phone}
                         </a>{" "}
                         (pn-nd 8:00-20:00)
                       </li>
                       <li>
                         • <strong>Strona WWW:</strong>{" "}
-                        <a href={COMPANY_DATA.website} className="text-primary hover:underline">
-                          {COMPANY_DATA.website}
+                        <a href={COMPANY_CONFIG.website} className="text-primary hover:underline">
+                          {COMPANY_CONFIG.website}
                         </a>
                       </li>
                     </ul>
@@ -462,10 +469,10 @@ export default function PrivacyPolicyPage() {
                   <p>
                     <strong>Jak złożyć wniosek?</strong> Wyślij e‑mail na:{" "}
                     <a
-                      href={`mailto:${COMPANY_DATA.email}`}
+                      href={`mailto:${COMPANY_CONFIG.email}`}
                       className="text-primary hover:underline"
                     >
-                      {COMPANY_DATA.email}
+                      {COMPANY_CONFIG.email}
                     </a>
                     . Odpowiadamy maksymalnie w 30 dni.
                   </p>
@@ -599,15 +606,18 @@ export default function PrivacyPolicyPage() {
               <CardContent className="space-y-4 text-sm text-muted-foreground">
                 <p>
                   <strong>1. Kontakt podstawowy:</strong> e‑mail:{" "}
-                  <a href={`mailto:${COMPANY_DATA.email}`} className="text-primary hover:underline">
-                    {COMPANY_DATA.email}
+                  <a
+                    href={`mailto:${COMPANY_CONFIG.email}`}
+                    className="text-primary hover:underline"
+                  >
+                    {COMPANY_CONFIG.email}
                   </a>
                   , tel.:{" "}
                   <a
-                    href={`tel:${COMPANY_DATA.phone.replace(/\s/g, "")}`}
+                    href={`tel:${COMPANY_CONFIG.phone.replace(/\s/g, "")}`}
                     className="text-primary hover:underline"
                   >
-                    {COMPANY_DATA.phone}
+                    {COMPANY_CONFIG.phone}
                   </a>
                   .
                 </p>

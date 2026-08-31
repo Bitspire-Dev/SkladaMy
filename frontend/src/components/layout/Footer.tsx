@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Phone, Mail, MapPin } from "lucide-react";
-import { COMPANY_DATA, formatPhoneForDisplay, formatPhoneForTel } from "@/lib/config";
+import { COMPANY_CONFIG, formatPhoneForDisplay, formatPhoneForTel } from "@/lib/config";
 
 const footerSections = [
   {
@@ -36,6 +36,9 @@ const footerSections = [
 ];
 
 export default function Footer() {
+  // Render the year directly. suppressHydrationWarning on the <p> below
+  // silences the rare mismatch when server and client render across a year
+  // boundary (e.g. New Year's Eve) — the client value wins and is correct.
   return (
     <footer className="bg-linear-to-b from-muted to-neutral-100 mt-auto border-t border-neutral-200">
       <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-10">
@@ -70,8 +73,8 @@ export default function Footer() {
               </div>
               <div className="flex items-center space-x-3 text-muted-foreground hover:text-[#FFC400] transition-colors">
                 <Mail className="h-5 w-5" />
-                <a href={`mailto:${COMPANY_DATA.email}`} className="text-base">
-                  {COMPANY_DATA.email}
+                <a href={`mailto:${COMPANY_CONFIG.email}`} className="text-base">
+                  {COMPANY_CONFIG.email}
                 </a>
               </div>
             </div>
@@ -102,7 +105,7 @@ export default function Footer() {
         {/* Bottom footer */}
         <div className="mt-16 border-t-2 border-neutral-300 pt-10">
           <div className="flex flex-col lg:flex-row justify-between items-center gap-6">
-            <p className="text-muted-foreground text-base font-medium">
+            <p className="text-muted-foreground text-base font-medium" suppressHydrationWarning>
               © {new Date().getFullYear()} SkładaMy. Wszystkie prawa zastrzeżone.
             </p>
             <div className="flex flex-wrap justify-center items-center gap-6">
@@ -133,7 +136,7 @@ export default function Footer() {
               <button
                 type="button"
                 onClick={() => window.openCookiePreferences?.()}
-                className="text-muted-foreground hover:text-[#FFC400] text-base underline decoration-dotted transition-colors font-medium"
+                className="text-muted-foreground hover:text-[#FFC400] text-base underline decoration-dotted transition-colors font-medium rounded focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 aria-label="Otwórz ustawienia cookies"
               >
                 Preferencje cookies

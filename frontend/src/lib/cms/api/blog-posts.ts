@@ -27,6 +27,10 @@ export const getBlogPosts = async (
     });
   }
 
+  if (filters?.featured !== undefined) {
+    queryParams["filters[featured][$eq]"] = filters.featured ? "true" : "false";
+  }
+
   const pageSize = filters?.limit || filters?.pageSize;
   if (filters?.page) {
     queryParams["pagination[page]"] = filters.page.toString();
@@ -111,10 +115,10 @@ export const getBlogPost = async (slug: string): Promise<SingleResponse<BlogPost
 };
 
 /**
- * Fetch featured blog posts (most recent)
+ * Fetch featured blog posts (posts with featured=true flag, most recent first).
  */
 export const getFeaturedBlogPosts = async (
   limit: number = 3
 ): Promise<CollectionResponse<BlogPost>> => {
-  return getBlogPosts({ pageSize: limit });
+  return getBlogPosts({ pageSize: limit, featured: true });
 };

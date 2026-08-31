@@ -59,11 +59,11 @@ export function GalleryContent({
     return sourceImages.map((image) => ({
       id: image.id.toString(),
       src: getMediaURL({ url: image.url }),
-      alt: image.alternativeText || `Zdjęcie ${image.id}`,
-      title: image.caption || `Zdjęcie ${image.id}`,
+      alt: image.alternativeText || `Realizacja SkładaMy`,
+      title: image.caption || image.alternativeText || `Realizacja SkładaMy`,
       item: {
         id: image.id,
-        title: `Zdjęcie ${image.id}`,
+        title: image.caption || image.alternativeText || `Realizacja SkładaMy`,
         featured: false,
         images: [image],
         createdAt: "",

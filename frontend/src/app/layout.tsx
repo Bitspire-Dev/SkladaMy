@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StructuredData from "@/components/StructuredData";
+import CookieConsentBanner from "@/components/layout/CookieConsentBanner";
 import Script from "next/script";
 import { getSiteUrl } from "@/lib/config";
 import "./globals.css";
@@ -49,19 +50,19 @@ export const metadata: Metadata = {
       "⭐ Montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni ✓ Dojazd w 24h ✓ Bezpłatna wycena",
     images: [
       {
-        url: `${siteUrl}/skladamy.svg`,
-        width: 160,
-        height: 40,
+        url: `${siteUrl}/layout/skladamy-og.png`,
+        width: 1200,
+        height: 630,
         alt: "SkładaMy - Montaż mebli Słupsk",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    site: "@skladamy_pl",
+    site: "@skladamy_com",
     title: "SkładaMy - Profesjonalny montaż mebli w Słupsku",
     description: "⭐ Montaż mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Gwarancja 30 dni",
-    images: [`${siteUrl}/layout/skladamy.svg`],
+    images: [`${siteUrl}/layout/skladamy-og.png`],
   },
   robots: {
     index: true,
@@ -139,16 +140,14 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={`${inter.className} antialiased`}>
-        {/* Google Tag Manager (noscript) - wyświetli się dopiero gdy gtm.js zostanie doładowany po zgodzie */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-56KC6N53"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          ></iframe>
-        </noscript>
+        {/* GTM <noscript> iframe removed: it loaded tracking unconditionally,
+            bypassing cookie consent. The real gtm.js is injected client-side
+            by CookieConsentBanner only after the user grants analytics. */}
         <div className="min-h-screen bg-background">{children}</div>
+        {/* Cookie consent banner: sole entry point for GTM/analytics scripts.
+            Mounted here so it appears on every page and the Footer
+            "Preferencje cookies" button (window.openCookiePreferences) works. */}
+        <CookieConsentBanner />
       </body>
     </html>
   );

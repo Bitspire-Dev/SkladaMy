@@ -51,7 +51,7 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
             Blog
           </Link>
           <ChevronRight className="h-4 w-4" />
-          <span className="text-foreground truncate max-w-50">{post.title}</span>
+          <span className="text-foreground truncate max-w-[50%]">{post.title}</span>
         </nav>
 
         {/* Back button */}

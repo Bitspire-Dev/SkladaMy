@@ -7,7 +7,7 @@ export const createMockAuthor = (overrides?: Partial<Author>): Author => ({
   name: "Jan Kowalski",
   role: "Montażysta mebli",
   bio: "Ekspert od mebli IKEA z 10-letnim doświadczeniem",
-  email: "jan@skladamy.pl",
+  email: "jan@skladamy.com",
   ...overrides,
 });
 

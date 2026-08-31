@@ -1,4 +1,4 @@
-import { COMPANY_DATA, getSiteUrl } from "@/lib/config";
+import { COMPANY_CONFIG, getSiteUrl } from "@/lib/config";
 
 export default function StructuredData() {
   const siteUrl = getSiteUrl();
@@ -6,31 +6,33 @@ export default function StructuredData() {
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    name: COMPANY_DATA.name,
-    image: `${siteUrl}/layout/skladamy.svg`,
+    name: COMPANY_CONFIG.name,
+    // 1200x630 PNG — Google rich results require a raster image (SVG not
+    // supported). Generated from skladamy.svg via sharp.
+    image: `${siteUrl}/layout/skladamy-og.png`,
     description:
       "Profesjonalny montaż mebli IKEA w Słupsku. Szafy PAX, kuchnie, wieszanie szafek. Gwarancja 30 dni, dojazd w 24h.",
     address: {
       "@type": "PostalAddress",
-      addressLocality: COMPANY_DATA.address.city,
-      addressRegion: COMPANY_DATA.address.region,
+      addressLocality: COMPANY_CONFIG.address.city,
+      addressRegion: COMPANY_CONFIG.address.region,
       addressCountry: "PL",
     },
     geo: {
       "@type": "GeoCoordinates",
-      latitude: COMPANY_DATA.address.coordinates.latitude,
-      longitude: COMPANY_DATA.address.coordinates.longitude,
+      latitude: COMPANY_CONFIG.address.coordinates.latitude,
+      longitude: COMPANY_CONFIG.address.coordinates.longitude,
     },
     url: siteUrl,
-    telephone: COMPANY_DATA.phone,
-    email: COMPANY_DATA.email,
+    telephone: COMPANY_CONFIG.phone,
+    email: COMPANY_CONFIG.email,
     priceRange: "$$",
     serviceArea: {
       "@type": "GeoCircle",
       geoMidpoint: {
         "@type": "GeoCoordinates",
-        latitude: COMPANY_DATA.address.coordinates.latitude,
-        longitude: COMPANY_DATA.address.coordinates.longitude,
+        latitude: COMPANY_CONFIG.address.coordinates.latitude,
+        longitude: COMPANY_CONFIG.address.coordinates.longitude,
       },
       geoRadius: "50000",
     },
@@ -115,13 +117,13 @@ export default function StructuredData() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organizationSchema),
+          __html: JSON.stringify(organizationSchema).replace(/</g, "\\u003c"),
         }}
       />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(serviceSchema),
+          __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c"),
         }}
       />
     </>

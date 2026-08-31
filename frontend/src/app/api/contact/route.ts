@@ -1,55 +1,160 @@
 import { type NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { z } from "zod";
+import { LRUCache } from "lru-cache";
 
 export const runtime = "nodejs";
 
-interface ContactFormData {
-  name: string;
-  email: string;
-  phone: string;
-  subject: string;
-  message: string;
+// ---------------------------------------------------------------------------
+// Validation schema (shared intent with the client form in ContactForm.tsx).
+// Server-side validation is mandatory — the client can always be bypassed.
+// ---------------------------------------------------------------------------
+const contactSchema = z.object({
+  name: z.string().trim().min(2, "Imię i nazwisko musi mieć przynajmniej 2 znaki").max(120),
+  phone: z
+    .string()
+    .trim()
+    .min(9, "Podaj prawidłowy numer telefonu")
+    .max(30)
+    .regex(/^[+0-9\s().-]+$/, "Nieprawidłowy numer telefonu"),
+  email: z.string().trim().email("Podaj prawidłowy adres e-mail").max(254),
+  subject: z.string().trim().min(1, "Wybierz typ usługi").max(200),
+  message: z.string().trim().min(10, "Opis musi mieć przynajmniej 10 znaków").max(5000),
+  // Honeypot: must be empty for legitimate submissions. Spambots tend to fill
+  // every field, so we reject any non-empty value server-side.
+  company_website: z.string().max(0, "Spam detected").optional().default(""),
+});
+
+type ContactFormData = z.infer<typeof contactSchema>;
+
+// ---------------------------------------------------------------------------
+// Rate limiting: per-IP token bucket via lru-cache. Prevents SMTP spam/DoS.
+// Default: 3 submissions per 10 minutes per IP. Tunable via env.
+// ---------------------------------------------------------------------------
+const RATE_LIMIT_MAX = Number(process.env.CONTACT_RATE_LIMIT_MAX) || 3;
+const RATE_LIMIT_WINDOW_MS = Number(process.env.CONTACT_RATE_LIMIT_WINDOW_MS) || 10 * 60 * 1000;
+
+const rateLimiter = new LRUCache<string, number>({
+  max: 10_000,
+  ttl: RATE_LIMIT_WINDOW_MS,
+});
+
+function getClientIp(request: NextRequest): string {
+  // Trust X-Forwarded-For only behind a known proxy; first hop is the client.
+  const xff = request.headers.get("x-forwarded-for");
+  if (xff) {
+    return xff.split(",")[0].trim();
+  }
+  return request.headers.get("x-real-ip") || "unknown";
 }
 
-/* eslint-disable max-lines-per-function */
-export async function POST(request: NextRequest) {
-  try {
-    const contentType = request.headers.get("content-type") || "";
+function checkRateLimit(ip: string): boolean {
+  const count = rateLimiter.get(ip) ?? 0;
+  if (count >= RATE_LIMIT_MAX) {
+    return false;
+  }
+  rateLimiter.set(ip, count + 1);
+  return true;
+}
 
-    let body: ContactFormData;
-    let attachments: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
+// ---------------------------------------------------------------------------
+// Attachment validation: MIME allow-list + size cap. Server-side only — the
+// client check can be bypassed.
+// ---------------------------------------------------------------------------
+const MAX_ATTACHMENTS = 5;
+const MAX_ATTACHMENT_BYTES = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_ATTACHMENT_TYPES = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
+
+// ---------------------------------------------------------------------------
+// HTML escaping for user-supplied fields interpolated into the email body.
+// Prevents HTML/JS injection in the company mailbox client.
+// ---------------------------------------------------------------------------
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function escapeHtmlMultiline(value: string): string {
+  return escapeHtml(value).replace(/\n/g, "<br>");
+}
+
+// Generic error response — never leak infrastructure details to the client.
+const GENERIC_ERROR = NextResponse.json(
+  { error: "Wystąpił błąd podczas wysyłania wiadomości. Spróbuj ponownie później." },
+  { status: 500 }
+);
+
+export async function POST(request: NextRequest) {
+  const clientIp = getClientIp(request);
+
+  // 1. Rate limit
+  if (!checkRateLimit(clientIp)) {
+    return NextResponse.json(
+      { error: "Zbyt wiele zgłoszeń. Spróbuj ponownie za kilka minut." },
+      { status: 429 }
+    );
+  }
+
+  try {
+    // 2. Parse body (JSON or multipart)
+    let rawData: Record<string, unknown> = {};
+    const attachments: Array<{ filename: string; content: Buffer; contentType?: string }> = [];
+
+    const contentType = request.headers.get("content-type") || "";
 
     if (contentType.includes("multipart/form-data")) {
       const form = await request.formData();
-      body = {
+      rawData = {
         name: String(form.get("name") || ""),
         email: String(form.get("email") || ""),
         phone: String(form.get("phone") || ""),
         subject: String(form.get("subject") || ""),
         message: String(form.get("message") || ""),
+        company_website: String(form.get("company_website") || ""),
       };
 
       const files = form.getAll("files").filter((v): v is File => v instanceof File);
-      attachments = await Promise.all(
-        files.slice(0, 5).map(async (file) => {
-          const arrayBuffer = await file.arrayBuffer();
-          return {
-            filename: file.name || "zalacznik",
-            content: Buffer.from(arrayBuffer),
-            contentType: file.type || undefined,
-          };
-        })
-      );
+      for (const file of files.slice(0, MAX_ATTACHMENTS)) {
+        // Server-side MIME + size validation (client can be bypassed).
+        if (file.size > MAX_ATTACHMENT_BYTES) {
+          return NextResponse.json(
+            { error: `Załącznik "${file.name}" przekracza maksymalny rozmiar 5 MB.` },
+            { status: 400 }
+          );
+        }
+        if (file.type && !ALLOWED_ATTACHMENT_TYPES.has(file.type)) {
+          return NextResponse.json(
+            { error: `Niedozwolony typ pliku: ${file.type}. Dozwolone: JPG, PNG, WebP, GIF.` },
+            { status: 400 }
+          );
+        }
+        const arrayBuffer = await file.arrayBuffer();
+        attachments.push({
+          filename: file.name || "zalacznik",
+          content: Buffer.from(arrayBuffer),
+          contentType: file.type || undefined,
+        });
+      }
     } else {
-      body = (await request.json()) as ContactFormData;
+      rawData = (await request.json()) as Record<string, unknown>;
     }
 
-    // Validate required fields
-    if (!body.name || !body.email || !body.message || !body.subject) {
-      return NextResponse.json({ error: "Brak wymaganych pól" }, { status: 400 });
+    // 3. Validate with Zod (honeypot included — non-empty => 400)
+    const parsed = contactSchema.safeParse(rawData);
+    if (!parsed.success) {
+      const firstError = parsed.error.issues[0];
+      return NextResponse.json(
+        { error: firstError?.message || "Nieprawidłowe dane formularza." },
+        { status: 400 }
+      );
     }
+    const body: ContactFormData = parsed.data;
 
-    // Create transporter
+    // 4. Build transporter
     const transporter = nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: Number(process.env.SMTP_PORT),
@@ -60,12 +165,15 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    // Email to company
+    // 5. Email to company — all user fields HTML-escaped.
+    // No auto-reply to the customer's address: that would let anyone use this
+    // endpoint as an open SMTP relay / for email bombing. The company replies
+    // manually from their inbox.
     const mailToCompany = {
       from: `"Formularz Kontaktowy SkładaMy" <${process.env.SMTP_FROM}>`,
       to: process.env.SMTP_FROM,
       replyTo: body.email,
-      subject: `🔔 Nowe zapytanie: ${body.subject}`,
+      subject: `Nowe zapytanie: ${escapeHtml(body.subject)}`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -84,32 +192,32 @@ export async function POST(request: NextRequest) {
         <body>
           <div class="container">
             <div class="header">
-              <h1>📧 Nowe zapytanie z formularza</h1>
+              <h1>Nowe zapytanie z formularza</h1>
             </div>
             <div class="content">
               <div class="field">
-                <div class="label">👤 Imię i nazwisko:</div>
-                <div class="value">${body.name}</div>
+                <div class="label">Imię i nazwisko:</div>
+                <div class="value">${escapeHtml(body.name)}</div>
               </div>
 
               <div class="field">
-                <div class="label">📧 Email:</div>
-                <div class="value"><a href="mailto:${body.email}">${body.email}</a></div>
+                <div class="label">Email:</div>
+                <div class="value"><a href="mailto:${escapeHtml(body.email)}">${escapeHtml(body.email)}</a></div>
               </div>
 
               <div class="field">
-                <div class="label">📱 Telefon:</div>
-                <div class="value"><a href="tel:${body.phone}">${body.phone}</a></div>
+                <div class="label">Telefon:</div>
+                <div class="value"><a href="tel:${escapeHtml(body.phone.replace(/\s/g, ""))}">${escapeHtml(body.phone)}</a></div>
               </div>
 
               <div class="field">
-                <div class="label">🛠️ Typ usługi:</div>
-                <div class="value">${body.subject}</div>
+                <div class="label">Typ usługi:</div>
+                <div class="value">${escapeHtml(body.subject)}</div>
               </div>
 
               <div class="field">
-                <div class="label">💬 Wiadomość:</div>
-                <div class="value">${body.message.replace(/\n/g, "<br>")}</div>
+                <div class="label">Wiadomość:</div>
+                <div class="value">${escapeHtmlMultiline(body.message)}</div>
               </div>
 
               <div class="footer">
@@ -138,93 +246,12 @@ Data: ${new Date().toLocaleString("pl-PL")}
       attachments: attachments.length > 0 ? attachments : undefined,
     };
 
-    // Confirmation email to customer
-    const mailToCustomer = {
-      from: `"SkładaMy - Montaż Mebli" <${process.env.SMTP_FROM}>`,
-      to: body.email,
-      subject: "✅ Potwierdzenie otrzymania wiadomości - SkładaMy",
-      html: `
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <style>
-            body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-            .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-            .header { background: #FFC400; color: #000; padding: 20px; text-align: center; border-radius: 8px 8px 0 0; }
-            .content { background: #fff; padding: 30px; border: 1px solid #ddd; border-radius: 0 0 8px 8px; }
-            .highlight { background: #fff9e6; padding: 15px; border-left: 4px solid #FFC400; margin: 20px 0; }
-            .footer { text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px solid #ddd; color: #666; font-size: 12px; }
-            a { color: #6a4a00; text-decoration: none; }
-          </style>
-        </head>
-        <body>
-          <div class="container">
-            <div class="header">
-              <h1>✅ Dziękujemy za kontakt!</h1>
-            </div>
-            <div class="content">
-              <p>Witaj <strong>${body.name}</strong>,</p>
-
-              <p>Otrzymaliśmy Twoją wiadomość dotyczącą: <strong>${body.subject}</strong></p>
-
-              <div class="highlight">
-                <p><strong>📞 Odpowiemy do Ciebie w ciągu 24 godzin</strong></p>
-                <p>W pilnych sprawach zadzwoń: <a href="tel:+48780926993">+48 780 926 993</a></p>
-              </div>
-
-              <p><strong>Treść Twojej wiadomości:</strong></p>
-              <p style="background: #f9f9f9; padding: 15px; border-radius: 5px;">${body.message.replace(/\n/g, "<br>")}</p>
-
-              <p>Pozdrawiamy,<br>
-              <strong>Zespół SkładaMy</strong><br>
-              Profesjonalny montaż mebli IKEA w Słupsku</p>
-
-              <div class="footer">
-                <p>
-                  📧 <a href="mailto:kontakt@skladamy.com.pl">kontakt@skladamy.com.pl</a> |
-                  📱 <a href="tel:+48780926993">+48 780 926 993</a><br>
-                  🌐 <a href="https://skladamy.com.pl">www.skladamy.com.pl</a>
-                </p>
-              </div>
-            </div>
-          </div>
-        </body>
-        </html>
-      `,
-      text: `
-Witaj ${body.name},
-
-Otrzymaliśmy Twoją wiadomość dotyczącą: ${body.subject}
-
-📞 Odpowiemy do Ciebie w ciągu 24 godzin
-W pilnych sprawach zadzwoń: +48 780 926 993
-
-Treść Twojej wiadomości:
-${body.message}
-
-Pozdrawiamy,
-Zespół SkładaMy
-Profesjonalny montaż mebli IKEA w Słupsku
-
-📧 kontakt@skladamy.com.pl
-📱 +48 780 926 993
-🌐 www.skladamy.com.pl
-      `,
-    };
-
-    // Send both emails
     await transporter.sendMail(mailToCompany);
-    await transporter.sendMail(mailToCustomer);
 
     return NextResponse.json({ message: "Email wysłany pomyślnie" }, { status: 200 });
   } catch (error) {
-    console.error("Email error:", error);
-    return NextResponse.json(
-      {
-        error: "Błąd wysyłania emaila",
-        details: error instanceof Error ? error.message : "Unknown error",
-      },
-      { status: 500 }
-    );
+    // Log details server-side only; return a generic message to the client.
+    console.error("[contact] Submission failed:", error);
+    return GENERIC_ERROR;
   }
 }

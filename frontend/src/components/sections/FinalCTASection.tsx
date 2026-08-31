@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/Button";
 import { Phone, Mail, Clock, MapPin } from "lucide-react";
 import Link from "next/link";
 import { memo } from "react";
-import { formatPhoneForTel } from "@/lib/config";
+import { COMPANY_CONFIG, formatPhoneForTel } from "@/lib/config";
 
 const FinalCTASection = memo(() => {
   return (
@@ -28,10 +28,10 @@ const FinalCTASection = memo(() => {
           >
             <a
               href={`tel:${formatPhoneForTel()}`}
-              aria-label={`Zadzwoń teraz pod numer ${formatPhoneForTel()}`}
+              aria-label={`Zadzwoń teraz pod numer ${COMPANY_CONFIG.phone}`}
             >
               <Phone className="mr-2 h-5 w-5 text-neutral-900" aria-hidden="true" />
-              Zadzwoń: 780 926 993
+              Zadzwoń: {COMPANY_CONFIG.phone}
             </a>
           </Button>
           <Button

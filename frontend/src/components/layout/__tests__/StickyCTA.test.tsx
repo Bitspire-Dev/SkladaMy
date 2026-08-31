@@ -9,8 +9,9 @@ type TestWindow = {
 
 describe("StickyCTA", () => {
   beforeEach(() => {
-    // Reset scroll position
-    Object.defineProperty(window, "pageYOffset", { value: 0, writable: true });
+    // Reset scroll position. Component uses window.scrollY (pageYOffset is
+    // deprecated).
+    Object.defineProperty(window, "scrollY", { value: 0, writable: true });
   });
 
   afterEach(() => {
@@ -19,13 +20,13 @@ describe("StickyCTA", () => {
 
   it("should not render initially when scroll is at top", () => {
     render(<StickyCTA />);
-    // Component uses pageYOffset > 300 to show
+    // Component uses scrollY > 300 to show
     expect(screen.queryByRole("link", { name: /zadzwoń/i })).not.toBeInTheDocument();
   });
 
   it("should render call button with correct phone link after scroll", async () => {
     // Mock scroll position
-    Object.defineProperty(window, "pageYOffset", { value: 400, writable: true });
+    Object.defineProperty(window, "scrollY", { value: 400, writable: true });
 
     render(<StickyCTA />);
 
@@ -44,7 +45,7 @@ describe("StickyCTA", () => {
   });
 
   it("should have mobile-only classes", async () => {
-    Object.defineProperty(window, "pageYOffset", { value: 400, writable: true });
+    Object.defineProperty(window, "scrollY", { value: 400, writable: true });
     render(<StickyCTA />);
     act(() => {
       window.dispatchEvent(new Event("scroll"));
@@ -60,7 +61,7 @@ describe("StickyCTA", () => {
 
   it("should hide call button when scrolling back to top", async () => {
     // 1. Scroll down to show button
-    Object.defineProperty(window, "pageYOffset", { value: 400, writable: true });
+    Object.defineProperty(window, "scrollY", { value: 400, writable: true });
     render(<StickyCTA />);
 
     act(() => {
@@ -72,7 +73,7 @@ describe("StickyCTA", () => {
     });
 
     // 2. Scroll back up to hide button
-    Object.defineProperty(window, "pageYOffset", { value: 100, writable: true });
+    Object.defineProperty(window, "scrollY", { value: 100, writable: true });
     act(() => {
       window.dispatchEvent(new Event("scroll"));
     });
@@ -89,7 +90,7 @@ describe("StickyCTA", () => {
     // Mock global gtag
     (window as TestWindow).gtag = mockGtag;
 
-    Object.defineProperty(window, "pageYOffset", { value: 400, writable: true });
+    Object.defineProperty(window, "scrollY", { value: 400, writable: true });
     render(<StickyCTA />);
 
     act(() => {

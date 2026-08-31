@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import ContactForm from "@/components/sections/ContactForm";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
-import { COMPANY_DATA } from "@/lib/config";
+import { COMPANY_CONFIG } from "@/lib/config";
 
 export const metadata: Metadata = {
   title: "Kontakt - SkładaMy",
@@ -50,10 +50,10 @@ export default function KontaktPage() {
                     <div className="font-semibold text-neutral-900">Telefon</div>
                     <div className="text-neutral-700">
                       <a
-                        href={`tel:${COMPANY_DATA.phone.replace(/\s/g, "")}`}
+                        href={`tel:${COMPANY_CONFIG.phone.replace(/\s/g, "")}`}
                         className="hover:underline"
                       >
-                        {COMPANY_DATA.phone}
+                        {COMPANY_CONFIG.phone}
                       </a>
                     </div>
                     <div className="text-sm text-neutral-600 mt-1">
@@ -69,8 +69,8 @@ export default function KontaktPage() {
                   <div>
                     <div className="font-semibold text-neutral-900">E-mail</div>
                     <div className="text-neutral-700">
-                      <a href={`mailto:${COMPANY_DATA.email}`} className="hover:underline">
-                        {COMPANY_DATA.email}
+                      <a href={`mailto:${COMPANY_CONFIG.email}`} className="hover:underline">
+                        {COMPANY_CONFIG.email}
                       </a>
                     </div>
                     <div className="text-sm text-neutral-600 mt-1">

@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { List } from "lucide-react";
 import { cn } from "@/lib/styles";
+import { processBlogContent } from "@/lib/content/processors/html";
 
 interface TOCItem {
   id: string;
@@ -17,21 +18,38 @@ interface TableOfContentsProps {
 export default function TableOfContents({ content }: TableOfContentsProps) {
   const [activeId, setActiveId] = useState<string>("");
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const tocItems = useMemo(() => {
-    const items: TOCItem[] = [];
-    const headingRegex = /<h([23])[^>]*>([\s\S]*?)<\/h\1>/gi;
-    let match: RegExpExecArray | null;
-    let index = 0;
 
-    while ((match = headingRegex.exec(content)) !== null) {
+  // Build TOC from the SAME processed output that BlogPostContent renders,
+  // so the IDs we scroll to match the IDs in the DOM. processBlogContent
+  // preserves existing CMS IDs and only generates new ones for headings
+  // without an id.
+  const tocItems = useMemo(() => {
+    const processed = processBlogContent(content);
+    const items: TOCItem[] = [];
+    // Match h2/h3 with optional attributes (including id).
+    const headingRegex = /<h([23])([^>]*)>([\s\S]*?)<\/h\1>/gi;
+    let match: RegExpExecArray | null;
+
+    while ((match = headingRegex.exec(processed)) !== null) {
       const level = Number.parseInt(match[1], 10);
-      const text = match[2].replace(/<[^>]*>/g, "").trim();
+      const attrs = match[2] || "";
+      const text = match[3].replace(/<[^>]*>/g, "").trim();
 
       if (!text) {
         continue;
       }
 
-      items.push({ id: `heading-${index++}`, text, level });
+      // Extract the id attribute that processBlogContent assigned (or that
+      // the CMS already had). Fall back to a slugified text if missing.
+      const idMatch = attrs.match(/\sid\s*=\s*["']([^"']*)["']/i);
+      const id = idMatch
+        ? idMatch[1]
+        : text
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, "-")
+            .replace(/^-|-$/g, "");
+
+      items.push({ id, text, level });
     }
 
     return items;
@@ -73,7 +91,7 @@ export default function TableOfContents({ content }: TableOfContentsProps) {
     if (element) {
       const offset = 80; // Height of fixed header
       const elementPosition = element.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      const offsetPosition = elementPosition + window.scrollY - offset;
 
       window.scrollTo({
         top: offsetPosition,

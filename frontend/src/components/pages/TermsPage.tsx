@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import BackToTop from "@/components/ui/BackToTop";
-import { COMPANY_DATA, getSiteUrl } from "@/lib/config";
+import { COMPANY_CONFIG, getSiteUrl } from "@/lib/config";
 
 const siteUrl = getSiteUrl();
 
@@ -93,7 +93,7 @@ export default function TermsPage() {
     url: `${siteUrl}/regulamin`,
     inLanguage: "pl-PL",
     dateModified: new Date().toISOString(),
-    isPartOf: { "@type": "WebSite", name: COMPANY_DATA.name, url: siteUrl },
+    isPartOf: { "@type": "WebSite", name: COMPANY_CONFIG.name, url: siteUrl },
     mainEntity: {
       "@type": "LegalDocument",
       name: "Regulamin świadczenia usług montażu mebli SkładaMy",
@@ -102,30 +102,34 @@ export default function TermsPage() {
       dateModified: new Date().toISOString(),
       author: {
         "@type": "Organization",
-        name: COMPANY_DATA.name,
-        url: COMPANY_DATA.website,
+        name: COMPANY_CONFIG.name,
+        url: COMPANY_CONFIG.website,
         address: {
           "@type": "PostalAddress",
-          addressLocality: COMPANY_DATA.address.city,
+          addressLocality: COMPANY_CONFIG.address.city,
           addressCountry: "PL",
         },
       },
-      publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
+      publisher: {
+        "@type": "Organization",
+        name: COMPANY_CONFIG.name,
+        url: COMPANY_CONFIG.website,
+      },
       about: [
         {
           "@type": "Service",
           name: "Montaż mebli IKEA",
-          provider: { "@type": "Organization", name: COMPANY_DATA.name },
+          provider: { "@type": "Organization", name: COMPANY_CONFIG.name },
         },
         {
           "@type": "Service",
           name: "Montaż szaf PAX",
-          provider: { "@type": "Organization", name: COMPANY_DATA.name },
+          provider: { "@type": "Organization", name: COMPANY_CONFIG.name },
         },
         {
           "@type": "Service",
           name: "Montaż kuchni IKEA",
-          provider: { "@type": "Organization", name: COMPANY_DATA.name },
+          provider: { "@type": "Organization", name: COMPANY_CONFIG.name },
         },
       ],
       legislationApplies:
@@ -149,13 +153,13 @@ export default function TermsPage() {
       {
         "@type": "ContactPoint",
         contactType: "customer support",
-        email: COMPANY_DATA.email,
-        telephone: COMPANY_DATA.phone,
+        email: COMPANY_CONFIG.email,
+        telephone: COMPANY_CONFIG.phone,
         areaServed: "PL",
         availableLanguage: ["pl"],
       },
     ],
-    publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
+    publisher: { "@type": "Organization", name: COMPANY_CONFIG.name, url: COMPANY_CONFIG.website },
     keywords: (Array.isArray(metadata.keywords)
       ? metadata.keywords
       : metadata.keywords || ""
@@ -166,7 +170,9 @@ export default function TermsPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(regulaminStructuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(regulaminStructuredData).replace(/</g, "\\u003c"),
+        }}
       />
       <Header />
       <main id="top" className="py-16">
@@ -233,13 +239,13 @@ export default function TermsPage() {
                 </p>
                 <ul className="text-muted-foreground text-sm space-y-1 ml-4">
                   <li>
-                    • <strong>E-mail:</strong> {COMPANY_DATA.email}
+                    • <strong>E-mail:</strong> {COMPANY_CONFIG.email}
                   </li>
                   <li>
-                    • <strong>Telefon:</strong> {COMPANY_DATA.phone} (codziennie 8:00-20:00)
+                    • <strong>Telefon:</strong> {COMPANY_CONFIG.phone} (codziennie 8:00-20:00)
                   </li>
                   <li>
-                    • <strong>Formularz kontaktowy:</strong> {COMPANY_DATA.website}
+                    • <strong>Formularz kontaktowy:</strong> {COMPANY_CONFIG.website}
                   </li>
                   <li>
                     • <strong>Obszar działania:</strong> Słupsk i okolice (promień 50 km)
@@ -344,14 +350,14 @@ export default function TermsPage() {
                 </p>
                 <ul className="text-muted-foreground text-sm space-y-1 ml-4">
                   <li>
-                    • <strong>Telefonicznie:</strong> {COMPANY_DATA.phone} (8:00-20:00, 7 dni w
+                    • <strong>Telefonicznie:</strong> {COMPANY_CONFIG.phone} (8:00-20:00, 7 dni w
                     tygodniu)
                   </li>
                   <li>
-                    • <strong>Online:</strong> formularz kontaktowy na {COMPANY_DATA.website}
+                    • <strong>Online:</strong> formularz kontaktowy na {COMPANY_CONFIG.website}
                   </li>
                   <li>
-                    • <strong>E-mail:</strong> {COMPANY_DATA.email} (odpowiedź do 24h)
+                    • <strong>E-mail:</strong> {COMPANY_CONFIG.email} (odpowiedź do 24h)
                   </li>
                   <li>
                     • <strong>Wizyta w domu:</strong> wycena na miejscu (Słupsk i okolice)
@@ -561,8 +567,8 @@ export default function TermsPage() {
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground text-sm">1. Reklamacje można zgłaszać:</p>
                 <ul className="text-muted-foreground text-sm space-y-1 ml-4">
-                  <li>• Telefonicznie: {COMPANY_DATA.phone}</li>
-                  <li>• E-mail: {COMPANY_DATA.email}</li>
+                  <li>• Telefonicznie: {COMPANY_CONFIG.phone}</li>
+                  <li>• E-mail: {COMPANY_CONFIG.email}</li>
                   <li>• Listownie na adres siedziby</li>
                 </ul>
                 <p className="text-muted-foreground text-sm">2. Reklamacja powinna zawierać:</p>
@@ -596,8 +602,8 @@ export default function TermsPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground text-sm">
-                  1. <strong>Administrator danych:</strong> {COMPANY_DATA.fullName}, kontakt:{" "}
-                  {COMPANY_DATA.email}
+                  1. <strong>Administrator danych:</strong> {COMPANY_CONFIG.fullName}, kontakt:{" "}
+                  {COMPANY_CONFIG.email}
                 </p>
                 <p className="text-muted-foreground text-sm">
                   2. <strong>Cel przetwarzania:</strong> realizacja usług montażu mebli, kontakt z
@@ -652,7 +658,8 @@ export default function TermsPage() {
                 </p>
                 <p className="text-muted-foreground text-sm">
                   3. <strong>Zmiany regulaminu:</strong> Usługodawca może zmieniać regulamin z
-                  14-dniowym wyprzedzeniem. Zmiany publikowane są na stronie {COMPANY_DATA.website}.
+                  14-dniowym wyprzedzeniem. Zmiany publikowane są na stronie{" "}
+                  {COMPANY_CONFIG.website}.
                 </p>
                 <p className="text-muted-foreground text-sm">
                   4. <strong>Klauzula salvatoria:</strong> w przypadku nieważności któregokolwiek z
@@ -685,13 +692,13 @@ export default function TermsPage() {
                   </p>
                   <ul className="text-muted-foreground text-sm space-y-1">
                     <li>
-                      • <strong>Telefon:</strong> {COMPANY_DATA.phone}
+                      • <strong>Telefon:</strong> {COMPANY_CONFIG.phone}
                     </li>
                     <li>
-                      • <strong>E-mail:</strong> {COMPANY_DATA.email}
+                      • <strong>E-mail:</strong> {COMPANY_CONFIG.email}
                     </li>
                     <li>
-                      • <strong>Strona WWW:</strong> {COMPANY_DATA.website}
+                      • <strong>Strona WWW:</strong> {COMPANY_CONFIG.website}
                     </li>
                     <li>
                       • <strong>Obszar działania:</strong> Słupsk i okolice

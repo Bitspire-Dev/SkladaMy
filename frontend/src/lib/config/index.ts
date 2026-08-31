@@ -7,6 +7,3 @@ export { COMPANY_CONFIG, formatPhoneForDisplay, formatPhoneForTel } from "./comp
 export type { COMPANY_CONFIG as CompanyConfigType } from "./company";
 
 export { getSiteUrl, getStrapiUrl, isBrowser, getCurrentUrl } from "./environment";
-
-// Backward compatibility
-export { COMPANY_CONFIG as COMPANY_DATA } from "./company";

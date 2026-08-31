@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { MapPin, Clock, Star, Phone, Mail, CheckCircle, Users, Award, Shield } from "lucide-react";
 import Link from "next/link";
-import { formatPhoneForTel, getSiteUrl } from "@/lib/config";
+import { COMPANY_CONFIG, formatPhoneForTel, getSiteUrl } from "@/lib/config";
 import LazyComponent from "@/components/ui/LazyComponent";
 import Image from "next/image";
 
@@ -167,7 +167,7 @@ export default function SlupskPage() {
                   className="border-neutral-300 bg-white text-neutral-900 hover:bg-neutral-50"
                 >
                   <a href={`tel:${formatPhoneForTel()}`} aria-label="Zadzwoń do nas">
-                    Zadzwoń: 780 926 993
+                    Zadzwoń: {COMPANY_CONFIG.phone}
                   </a>
                 </Button>
               </div>
@@ -431,7 +431,7 @@ export default function SlupskPage() {
                   >
                     <a href={`tel:${formatPhoneForTel()}`} aria-label="Zadzwoń do nas">
                       <Phone className="mr-2 h-5 w-5" />
-                      780 926 993
+                      {COMPANY_CONFIG.phone}
                     </a>
                   </Button>
                 </div>

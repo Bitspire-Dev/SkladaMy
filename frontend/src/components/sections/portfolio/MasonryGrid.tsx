@@ -32,7 +32,12 @@ export function MasonryGrid({ images, onImageClick, className = "" }: MasonryGri
   };
 
   const handleImageLoad = (imageId: string) => {
-    setLoadedImages((prev) => new Set([...prev, imageId]));
+    setLoadedImages((prev) => {
+      if (prev.has(imageId)) return prev;
+      const next = new Set(prev);
+      next.add(imageId);
+      return next;
+    });
   };
 
   return (
@@ -73,7 +78,7 @@ function GalleryImageItem({
   isLoaded,
 }: GalleryImageItemProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLButtonElement>(null);
 
   // Intersection observer for lazy loading animation
   const { hasIntersected: isVisible } = useIntersectionObserver(ref, {
@@ -82,9 +87,10 @@ function GalleryImageItem({
   });
 
   return (
-    <motion.div
+    <motion.button
+      type="button"
       ref={ref}
-      className="mb-4 break-inside-avoid cursor-pointer group"
+      className="mb-4 break-inside-avoid cursor-pointer group block w-full text-left rounded-lg focus-visible:outline focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       initial={{ opacity: 0, y: 20 }}
       animate={{
         opacity: isVisible ? 1 : 0,
@@ -94,6 +100,11 @@ function GalleryImageItem({
       onClick={() => onImageClick(index)}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
+      onFocus={() => setIsHovered(true)}
+      onBlur={() => setIsHovered(false)}
+      aria-label={
+        image.title ? `Powiększ zdjęcie: ${image.title}` : `Powiększ zdjęcie ${index + 1}`
+      }
     >
       <div className="relative overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
         {/* Image */}
@@ -103,6 +114,7 @@ function GalleryImageItem({
             alt={image.alt}
             width={400}
             height={300}
+            sizes="(max-width: 500px) 100vw, (max-width: 700px) 50vw, 25vw"
             className={`
               w-full h-auto object-cover transition-transform duration-300
               ${isHovered ? "scale-105" : "scale-100"}
@@ -147,6 +159,6 @@ function GalleryImageItem({
           </div>
         </motion.div>
       </div>
-    </motion.div>
+    </motion.button>
   );
 }

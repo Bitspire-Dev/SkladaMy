@@ -14,7 +14,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/admin/", "/_next/"],
+      disallow: ["/api/", "/admin/"],
     },
     sitemap: `${baseUrl}/sitemap.xml`,
     // NOTE: Omitting `host` — some validators report unknown directives when `Host:` is present.

@@ -76,13 +76,24 @@ export const COMPANY_CONFIG = {
 
 // Helper functions
 export const formatPhoneForDisplay = (phone: string = COMPANY_CONFIG.phone): string => {
-  return phone.replace("+48", "+48 ").replace(/(\d{3})(\d{3})(\d{3})/, "$1 $2 $3");
-};
-
-export const formatPhoneForTel = (phone: string = COMPANY_CONFIG.phone): string => {
+  // Strip everything but digits, then format as +48 XXX XXX XXX. Handles input
+  // that already contains spaces or other separators.
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 0) return phone;
+  if (digits.startsWith("48") && digits.length === 11) {
+    return `+48 ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8, 11)}`;
+  }
+  if (digits.length === 9) {
+    return `+48 ${digits.slice(0, 3)} ${digits.slice(3, 6)} ${digits.slice(6, 9)}`;
+  }
   return phone;
 };
 
-// Backward compatibility - re-export with old name
-/** @deprecated Use COMPANY_CONFIG instead */
-export const COMPANY_DATA = COMPANY_CONFIG;
+export const formatPhoneForTel = (phone: string = COMPANY_CONFIG.phone): string => {
+  // tel: URIs must contain only digits and an optional leading +. Spaces and
+  // other separators break dialing on most platforms.
+  const digits = phone.replace(/\D/g, "");
+  if (digits.length === 0) return phone;
+  if (digits.startsWith("48")) return `+${digits}`;
+  return `+48${digits}`;
+};

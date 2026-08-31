@@ -17,17 +17,23 @@ import {
   SelectValue,
 } from "@/components/ui/Select";
 import { CheckCircle, AlertCircle } from "lucide-react";
+import { COMPANY_CONFIG, formatPhoneForTel, formatPhoneForDisplay } from "@/lib/config";
 
 const contactSchema = z.object({
   name: z.string().min(2, "Imię i nazwisko musi mieć przynajmniej 2 znaki"),
-  phone: z.string().min(9, "Podaj prawidłowy numer telefonu"),
+  phone: z
+    .string()
+    .min(9, "Podaj prawidłowy numer telefonu")
+    .regex(/^[+]?[\d\s\-()]{9,}$/, "Nieprawidłowy numer telefonu"),
   email: z.string().email("Podaj prawidłowy adres e-mail"),
   subject: z.string().min(1, "Wybierz typ usługi"),
   message: z.string().min(10, "Opis musi mieć przynajmniej 10 znaków"),
   consent: z
     .boolean()
     .refine((val) => val === true, "Musisz wyrazić zgodę na przetwarzanie danych"),
-  honeypot: z.string().optional(), // Anti-spam field
+  // Honeypot: hidden field named like a real one to attract spambots. Must
+  // stay empty; validated server-side too.
+  company_website: z.string().optional(),
 });
 
 type ContactFormData = z.infer<typeof contactSchema>;
@@ -51,11 +57,14 @@ export default memo(function ContactForm() {
     register,
     handleSubmit,
     setValue,
+    watch,
     reset,
     formState: { errors },
   } = useForm<ContactFormData>({
     resolver: zodResolver(contactSchema),
+    defaultValues: { company_website: "" },
   });
+  const selectedSubject = watch("subject");
 
   const handleFileSelect = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(event.target.files || []);
@@ -73,8 +82,8 @@ export default memo(function ContactForm() {
   }, []);
 
   const onSubmit = async (data: ContactFormData) => {
-    // Check honeypot
-    if (data.honeypot) {
+    // Check honeypot (also enforced server-side)
+    if (data.company_website) {
       return; // Likely spam
     }
 
@@ -93,6 +102,7 @@ export default memo(function ContactForm() {
               form.append("phone", data.phone);
               form.append("subject", data.subject);
               form.append("message", data.message);
+              form.append("company_website", data.company_website || "");
               selectedFiles.forEach((file) => form.append("files", file));
               return {
                 method: "POST",
@@ -110,6 +120,7 @@ export default memo(function ContactForm() {
                 phone: data.phone,
                 subject: data.subject,
                 message: data.message,
+                company_website: data.company_website || "",
               }),
             }
       );
@@ -170,13 +181,16 @@ export default memo(function ContactForm() {
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Honeypot field - hidden from users */}
+          {/* Honeypot field - hidden from real users, validated server-side.
+              position:absolute + off-screen is harder for bots to detect than
+              display:none, while still being skipped by screen readers. */}
           <input
             type="text"
-            {...register("honeypot")}
-            style={{ display: "none" }}
+            {...register("company_website")}
+            style={{ position: "absolute", left: "-9999px", opacity: 0, height: 0, width: 0 }}
             tabIndex={-1}
             autoComplete="off"
+            aria-hidden="true"
           />
 
           {/* Name */}
@@ -184,11 +198,17 @@ export default memo(function ContactForm() {
             <Label htmlFor="name">Imię i nazwisko *</Label>
             <Input
               id="name"
+              aria-invalid={!!errors.name}
+              aria-describedby={errors.name ? "name-error" : undefined}
               {...register("name")}
               placeholder="Jan Kowalski"
               className={errors.name ? "border-red-500" : ""}
             />
-            {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>}
+            {errors.name && (
+              <p id="name-error" className="text-sm text-red-500 mt-1">
+                {errors.name.message}
+              </p>
+            )}
           </div>
 
           {/* Phone and Email */}
@@ -198,30 +218,49 @@ export default memo(function ContactForm() {
               <Input
                 id="phone"
                 type="tel"
+                aria-invalid={!!errors.phone}
+                aria-describedby={errors.phone ? "phone-error" : undefined}
                 {...register("phone")}
-                placeholder="+48 123 456 789"
+                placeholder={formatPhoneForDisplay()}
                 className={errors.phone ? "border-red-500" : ""}
               />
-              {errors.phone && <p className="text-sm text-red-500 mt-1">{errors.phone.message}</p>}
+              {errors.phone && (
+                <p id="phone-error" className="text-sm text-red-500 mt-1">
+                  {errors.phone.message}
+                </p>
+              )}
             </div>
             <div>
               <Label htmlFor="email">E-mail *</Label>
               <Input
                 id="email"
                 type="email"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "email-error" : undefined}
                 {...register("email")}
                 placeholder="jan@example.com"
                 className={errors.email ? "border-red-500" : ""}
               />
-              {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>}
+              {errors.email && (
+                <p id="email-error" className="text-sm text-red-500 mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
           </div>
 
           {/* Service Type as Subject */}
           <div>
             <Label htmlFor="subject">Typ usługi *</Label>
-            <Select onValueChange={(value) => setValue("subject", value)}>
-              <SelectTrigger className={errors.subject ? "border-red-500" : ""}>
+            <Select
+              value={selectedSubject}
+              onValueChange={(value) => setValue("subject", value, { shouldValidate: true })}
+            >
+              <SelectTrigger
+                className={errors.subject ? "border-red-500" : ""}
+                aria-invalid={!!errors.subject}
+                aria-describedby={errors.subject ? "subject-error" : undefined}
+              >
                 <SelectValue placeholder="Wybierz typ montażu" />
               </SelectTrigger>
               <SelectContent className="bg-white text-neutral-900 border border-neutral-200">
@@ -233,7 +272,9 @@ export default memo(function ContactForm() {
               </SelectContent>
             </Select>
             {errors.subject && (
-              <p className="text-sm text-red-500 mt-1">{errors.subject.message}</p>
+              <p id="subject-error" className="text-sm text-red-500 mt-1">
+                {errors.subject.message}
+              </p>
             )}
           </div>
 
@@ -242,13 +283,17 @@ export default memo(function ContactForm() {
             <Label htmlFor="message">Opis sytuacji *</Label>
             <Textarea
               id="message"
+              aria-invalid={!!errors.message}
+              aria-describedby={errors.message ? "message-error" : undefined}
               {...register("message")}
               placeholder="Opisz jakie meble chcesz zmontować, stan paczek, preferencje dotyczące terminu..."
               rows={4}
               className={errors.message ? "border-red-500" : ""}
             />
             {errors.message && (
-              <p className="text-sm text-red-500 mt-1">{errors.message.message}</p>
+              <p id="message-error" className="text-sm text-red-500 mt-1">
+                {errors.message.message}
+              </p>
             )}
           </div>
 
@@ -394,8 +439,8 @@ export default memo(function ContactForm() {
 
           <p className="text-xs text-muted-foreground text-center">
             Odpowiadamy w ciągu 24 godzin. W pilnych sprawach dzwoń bezpośrednio:
-            <a href="tel:+48XXXXXXXXX" className="text-primary hover:underline ml-1">
-              +48 XXX XXX XXX
+            <a href={`tel:${formatPhoneForTel()}`} className="text-primary hover:underline ml-1">
+              {COMPANY_CONFIG.phone}
             </a>
           </p>
         </form>

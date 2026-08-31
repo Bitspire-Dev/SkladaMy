@@ -4,7 +4,7 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import BackToTop from "@/components/ui/BackToTop";
-import { COMPANY_DATA, formatPhoneForDisplay, formatPhoneForTel, getSiteUrl } from "@/lib/config";
+import { COMPANY_CONFIG, formatPhoneForDisplay, formatPhoneForTel, getSiteUrl } from "@/lib/config";
 
 const siteUrl = getSiteUrl();
 
@@ -96,13 +96,17 @@ export default function AccessibilityPage() {
         },
       ],
     },
-    publisher: { "@type": "Organization", name: COMPANY_DATA.fullName, url: COMPANY_DATA.website },
+    publisher: {
+      "@type": "Organization",
+      name: COMPANY_CONFIG.fullName,
+      url: COMPANY_CONFIG.website,
+    },
     contactPoint: [
       {
         "@type": "ContactPoint",
         contactType: "accessibility",
-        email: COMPANY_DATA.email,
-        telephone: COMPANY_DATA.phone,
+        email: COMPANY_CONFIG.email,
+        telephone: COMPANY_CONFIG.phone,
         areaServed: "PL",
         availableLanguage: ["pl"],
       },
@@ -116,7 +120,9 @@ export default function AccessibilityPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(a11yStructuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(a11yStructuredData).replace(/</g, "\\u003c"),
+        }}
       />
       <Header />
       <main id="top" className="py-16">
@@ -170,7 +176,7 @@ export default function AccessibilityPage() {
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground text-sm">
                 <p>
-                  Serwis <strong>skladamy.pl</strong> jest częściowo zgodny z wytycznymi{" "}
+                  Serwis <strong>skladamy.com</strong> jest częściowo zgodny z wytycznymi{" "}
                   <strong>WCAG 2.1 na poziomie AA</strong> z powodu wymienionych poniżej
                   niezgodności.
                 </p>
@@ -253,10 +259,10 @@ export default function AccessibilityPage() {
                   <li>
                     📧 E-mail:{" "}
                     <a
-                      href={`mailto:${COMPANY_DATA.email}`}
+                      href={`mailto:${COMPANY_CONFIG.email}`}
                       className="text-primary hover:underline"
                     >
-                      {COMPANY_DATA.email}
+                      {COMPANY_CONFIG.email}
                     </a>
                   </li>
                   <li>
@@ -264,7 +270,7 @@ export default function AccessibilityPage() {
                     <a href={`tel:${formatPhoneForTel()}`} className="text-primary hover:underline">
                       {formatPhoneForDisplay()}
                     </a>{" "}
-                    (pn-nd {COMPANY_DATA.businessHours.weekdays})
+                    (pn-nd {COMPANY_CONFIG.businessHours.weekdays})
                   </li>
                 </ul>
                 <p>
@@ -293,8 +299,8 @@ export default function AccessibilityPage() {
                   <strong>Rzecznikiem Praw Obywatelskich</strong> lub właściwym organem nadzorczym.
                 </p>
                 <p>
-                  Nasze dane: {COMPANY_DATA.fullName}, {COMPANY_DATA.address.city},{" "}
-                  {COMPANY_DATA.address.region}, Polska.
+                  Nasze dane: {COMPANY_CONFIG.fullName}, {COMPANY_CONFIG.address.city},{" "}
+                  {COMPANY_CONFIG.address.region}, Polska.
                 </p>
               </CardContent>
             </Card>
@@ -303,8 +309,8 @@ export default function AccessibilityPage() {
           <BackToTop />
         </div>
       </main>
-      <StickyCTA />
       <Footer />
+      <StickyCTA />
     </>
   );
 }

@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/Card";
 import { ChevronDown, ChevronUp, Phone, Mail } from "lucide-react";
 import { useState, memo, useMemo, useCallback } from "react";
 import { faqItems } from "@/data/data-faq";
+import { COMPANY_CONFIG, formatPhoneForTel } from "@/lib/config";
 
 // Memoized FAQ Item Component
 const FAQItem = memo(
@@ -177,12 +178,12 @@ const FAQSection = memo(() => {
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="tel:+48123456789"
+              href={`tel:${formatPhoneForTel()}`}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-[#FFC400] text-neutral-900 font-bold shadow-lg hover:bg-[#f2b800] hover:shadow-xl transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#FFC400] focus:ring-offset-2 text-lg"
-              aria-label="Zadzwoń pod numer: +48 123 456 789"
+              aria-label={`Zadzwoń pod numer: ${COMPANY_CONFIG.phone}`}
             >
               <Phone className="h-6 w-6" aria-hidden="true" />
-              Zadzwoń: +48 123 456 789
+              Zadzwoń: {COMPANY_CONFIG.phone}
             </a>
             <Link
               href="/kontakt"

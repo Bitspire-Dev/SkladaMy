@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-describe("COMPANY_DATA module load tests", () => {
+describe("COMPANY_CONFIG module load tests", () => {
   const originalEnv = { ...process.env };
 
   beforeEach(() => {
@@ -23,9 +23,12 @@ describe("COMPANY_DATA module load tests", () => {
 
     // Test formatting helpers
     expect(formatPhoneForDisplay("+48780926993")).toBe("+48 780 926 993");
-    expect(formatPhoneForDisplay()).toBe("+48  780 926 993"); // defaults to COMPANY_CONFIG.phone which already has space
+    // formatPhoneForDisplay normalizes the default phone (strips non-digits,
+    // then reformats) so the result has single spaces, not the raw input.
+    expect(formatPhoneForDisplay()).toBe("+48 780 926 993");
     expect(formatPhoneForTel("+48780926993")).toBe("+48780926993");
-    expect(formatPhoneForTel()).toBe("+48 780 926 993"); // defaults to COMPANY_CONFIG.phone
+    // formatPhoneForTel strips spaces — tel: URIs must contain only digits and +
+    expect(formatPhoneForTel()).toBe("+48780926993"); // defaults to COMPANY_CONFIG.phone
   });
 
   it("should throw error if a required environment variable is missing", async () => {

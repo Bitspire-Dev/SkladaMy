@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function HeroSection() {
   return (
-    <section className="relative isolate overflow-hidden bg-neutral-900 min-h-[680px] sm:min-h-[720px] flex items-center">
+    <section className="relative isolate overflow-hidden bg-neutral-900 min-h-170 sm:min-h-180 flex items-center">
       {/* Background image + overlays */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -21,7 +21,7 @@ export default function HeroSection() {
           }}
         />
 
-        <div className="absolute inset-0 bg-gradient-to-br from-white/80 via-white/64 to-white/40" />
+        <div className="absolute inset-0 bg-linear-to-br from-white/80 via-white/64 to-white/40" />
 
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_60%,rgba(0,0,0,0.25)_100%)] mix-blend-multiply pointer-events-none" />
 
@@ -100,29 +100,29 @@ export default function HeroSection() {
 
           {/* Trust indicators */}
           <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-8">
-            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
               <div className="rounded-full bg-[#FFC400]/20 p-3">
                 <div className="h-6 w-6 rounded-full bg-[#FFC400]" />
               </div>
-              <h2 className="mt-3 text-sm font-semibold text-neutral-900">Szybkie terminy</h2>
+              <h3 className="mt-3 text-sm font-semibold text-neutral-900">Szybkie terminy</h3>
               <p className="mt-1 text-sm text-neutral-700">Najczęściej montujemy w ciągu 1–3 dni</p>
             </div>
 
-            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
               <div className="rounded-full bg-[#FFC400]/20 p-3">
                 <div className="h-6 w-6 rounded-full bg-[#FFC400]" />
               </div>
-              <h2 className="mt-3 text-sm font-semibold text-neutral-900">Gwarancja 30 dni</h2>
+              <h3 className="mt-3 text-sm font-semibold text-neutral-900">Gwarancja 30 dni</h3>
               <p className="mt-1 text-sm text-neutral-700">
                 Poprawki w gwarancji bez dodatkowych kosztów
               </p>
             </div>
 
-            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl cursor-pointer">
+            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
               <div className="rounded-full bg-[#FFC400]/20 p-3">
                 <div className="h-6 w-6 rounded-full bg-[#FFC400]" />
               </div>
-              <h2 className="mt-3 text-sm font-semibold text-neutral-900">Porządek po montażu</h2>
+              <h3 className="mt-3 text-sm font-semibold text-neutral-900">Porządek po montażu</h3>
               <p className="mt-1 text-sm text-neutral-700">
                 Sprzątamy po sobie, zabieramy opakowania
               </p>

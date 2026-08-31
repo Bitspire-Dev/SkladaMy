@@ -33,13 +33,13 @@ describe("getCurrentUrl", () => {
   });
 
   it("should return window.location.href when in browser", () => {
-    process.env.NEXT_PUBLIC_SITE_URL = "https://skladamy.pl";
+    process.env.NEXT_PUBLIC_SITE_URL = "https://skladamy.com";
     const result = getCurrentUrl();
     expect(result).toBe(window.location.href);
   });
 
   it("should use window.location.href when in browser (jsdom)", () => {
-    process.env.NEXT_PUBLIC_SITE_URL = "https://skladamy.pl";
+    process.env.NEXT_PUBLIC_SITE_URL = "https://skladamy.com";
     // In jsdom, isBrowser() returns true, so window.location.href is used
     // even with empty path
     const result = getCurrentUrl();
@@ -47,20 +47,20 @@ describe("getCurrentUrl", () => {
   });
 
   it("should return window.location.href ignoring path in browser", () => {
-    process.env.NEXT_PUBLIC_SITE_URL = "https://skladamy.pl";
+    process.env.NEXT_PUBLIC_SITE_URL = "https://skladamy.com";
     const result = getCurrentUrl("kontakt");
     // In browser mode, path is ignored and full window.location.href is returned
     expect(result).toBe(window.location.href);
   });
 
   it("should return fallback URL when window is not available", () => {
-    process.env.NEXT_PUBLIC_SITE_URL = "https://skladamy.pl";
+    process.env.NEXT_PUBLIC_SITE_URL = "https://skladamy.com";
     // Temporarily remove window to test fallback
     // @ts-expect-error Removing window for test
     delete global.window;
 
     const result = getCurrentUrl("/blog");
-    expect(result).toBe("https://skladamy.pl/blog");
+    expect(result).toBe("https://skladamy.com/blog");
   });
 });
 

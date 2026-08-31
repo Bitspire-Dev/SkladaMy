@@ -7,7 +7,7 @@ import BulletList from "@/components/ui/BulletList";
 import { Button } from "@/components/ui/Button";
 import { Shield, Clock, Users, Award, Phone, Mail } from "lucide-react";
 import Link from "next/link";
-import { formatPhoneForTel, getSiteUrl } from "@/lib/config";
+import { COMPANY_CONFIG, formatPhoneForTel, getSiteUrl } from "@/lib/config";
 
 const siteUrl = getSiteUrl();
 
@@ -294,7 +294,7 @@ export default function AboutPage() {
               >
                 <a href={`tel:${formatPhoneForTel()}`} aria-label="Zadzwoń do nas">
                   <Phone className="mr-2 h-5 w-5" />
-                  780 926 993
+                  {COMPANY_CONFIG.phone}
                 </a>
               </Button>
               <Button

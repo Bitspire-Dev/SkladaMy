@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Share2, Twitter, Facebook, Linkedin, Link as LinkIcon, Check } from "lucide-react";
+import { Share2, X, Facebook, Linkedin, Link as LinkIcon, Check } from "lucide-react";
 
 interface ShareButtonsProps {
   url: string;
@@ -45,8 +45,8 @@ export default function ShareButtons({ url, title }: ShareButtonsProps) {
           rel="noopener noreferrer"
           className="flex items-center gap-3 w-full px-4 py-3 rounded-lg border border-border bg-background hover:bg-accent transition-colors group"
         >
-          <Twitter className="h-5 w-5 text-[#1DA1F2] group-hover:scale-110 transition-transform" />
-          <span className="text-sm font-medium text-foreground">Udostępnij na Twitter</span>
+          <X className="h-5 w-5 text-black group-hover:scale-110 transition-transform" />
+          <span className="text-sm font-medium text-foreground">Udostępnij na X</span>
         </a>
 
         {/* Facebook */}

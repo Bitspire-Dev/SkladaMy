@@ -5,7 +5,7 @@ import Footer from "@/components/layout/Footer";
 import StickyCTA from "@/components/layout/StickyCTA";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
 import BackToTop from "@/components/ui/BackToTop";
-import { COMPANY_DATA, getSiteUrl } from "@/lib/config";
+import { COMPANY_CONFIG, getSiteUrl } from "@/lib/config";
 
 const siteUrl = getSiteUrl();
 
@@ -66,7 +66,11 @@ export default function CookiesPolicyPage() {
       name: "Polityka Cookies SkładaMy",
       legislationApplies: "RODO; ePrivacy; Ustawa Prawo telekomunikacyjne",
       dateModified: new Date().toISOString(),
-      publisher: { "@type": "Organization", name: COMPANY_DATA.name, url: COMPANY_DATA.website },
+      publisher: {
+        "@type": "Organization",
+        name: COMPANY_CONFIG.name,
+        url: COMPANY_CONFIG.website,
+      },
     },
     hasPart: sections.map((s, i) => ({
       "@type": "WebPageElement",
@@ -92,7 +96,9 @@ export default function CookiesPolicyPage() {
     <>
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(structuredData).replace(/</g, "\\u003c"),
+        }}
       />
       <Header />
       <main className="py-16" id="top">
@@ -144,7 +150,7 @@ export default function CookiesPolicyPage() {
               <CardContent className="space-y-4 text-sm text-muted-foreground">
                 <p>
                   Dokument określa zasady stosowania plików cookies na stronie{" "}
-                  <strong>skladamy.pl</strong> prowadzonej przez firmę SkładaMy świadczącą usługi
+                  <strong>skladamy.com</strong> prowadzonej przez firmę SkładaMy świadczącą usługi
                   montażu mebli w regionie Słupska.
                 </p>
                 <p>
@@ -278,7 +284,7 @@ export default function CookiesPolicyPage() {
                 </ul>
                 <p>
                   Aby zmienić wybór – wyczyść cookies przeglądarki dla domeny{" "}
-                  <strong>skladamy.pl</strong>; w wersji kolejnej planujemy panel preferencji.
+                  <strong>skladamy.com</strong>; w wersji kolejnej planujemy panel preferencji.
                 </p>
               </CardContent>
             </Card>
@@ -343,12 +349,15 @@ export default function CookiesPolicyPage() {
               <CardContent className="space-y-4 text-sm text-muted-foreground">
                 <p>
                   W sprawach dotyczących cookies lub prywatności:{" "}
-                  <a href={`mailto:${COMPANY_DATA.email}`} className="text-primary hover:underline">
-                    {COMPANY_DATA.email}
+                  <a
+                    href={`mailto:${COMPANY_CONFIG.email}`}
+                    className="text-primary hover:underline"
+                  >
+                    {COMPANY_CONFIG.email}
                   </a>
                   , tel.{" "}
-                  <a href={`tel:${COMPANY_DATA.phone}`} className="text-primary hover:underline">
-                    {COMPANY_DATA.phone}
+                  <a href={`tel:${COMPANY_CONFIG.phone}`} className="text-primary hover:underline">
+                    {COMPANY_CONFIG.phone}
                   </a>
                   .
                 </p>

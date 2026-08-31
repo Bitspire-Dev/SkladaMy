@@ -1,14 +1,31 @@
 "use client";
 
 import Image from "next/image";
-import { Mail, Twitter, Linkedin, Github } from "lucide-react";
+import { Mail, Twitter, Linkedin, Globe } from "lucide-react";
 import type { Author } from "@/types/strapi";
 
 interface AuthorCardProps {
   author: Author;
 }
 
+/**
+ * Validate that a URL is http(s) — prevents javascript:/data: scheme injection
+ * from CMS-managed author fields. Returns the safe href or null if invalid.
+ */
+function safeHttpUrl(value: string | undefined): string | null {
+  if (!value) return null;
+  try {
+    const url = new URL(value);
+    if (url.protocol === "http:" || url.protocol === "https:") return url.href;
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export default function AuthorCard({ author }: AuthorCardProps) {
+  const websiteUrl = safeHttpUrl(author.website);
+  const linkedinUrl = safeHttpUrl(author.linkedin);
   return (
     <div className="bg-card border border-border rounded-lg p-6 space-y-4">
       <h3 className="text-lg font-semibold text-foreground">O autorze</h3>
@@ -34,7 +51,7 @@ export default function AuthorCard({ author }: AuthorCardProps) {
       </div>
 
       {/* Social Links */}
-      {(author.email || author.twitter || author.linkedin || author.website) && (
+      {(author.email || author.twitter || linkedinUrl || websiteUrl) && (
         <div className="flex gap-3 pt-2 border-t border-border">
           {author.email && (
             <a
@@ -51,7 +68,7 @@ export default function AuthorCard({ author }: AuthorCardProps) {
             <a
               href={
                 author.twitter.startsWith("http")
-                  ? author.twitter
+                  ? (safeHttpUrl(author.twitter) ?? "#")
                   : `https://twitter.com/${author.twitter.replace("@", "")}`
               }
               target="_blank"
@@ -64,9 +81,9 @@ export default function AuthorCard({ author }: AuthorCardProps) {
             </a>
           )}
 
-          {author.linkedin && (
+          {linkedinUrl && (
             <a
-              href={author.linkedin}
+              href={linkedinUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
@@ -77,16 +94,16 @@ export default function AuthorCard({ author }: AuthorCardProps) {
             </a>
           )}
 
-          {author.website && (
+          {websiteUrl && (
             <a
-              href={author.website}
+              href={websiteUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
               aria-label="Strona www"
               title="Strona www"
             >
-              <Github className="h-5 w-5" />
+              <Globe className="h-5 w-5" />
             </a>
           )}
         </div>

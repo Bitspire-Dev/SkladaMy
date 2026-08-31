@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Phone, Mail } from "lucide-react";
 import Link from "next/link";
-import { formatPhoneForTel, COMPANY_DATA } from "@/lib/config";
+import { formatPhoneForTel, COMPANY_CONFIG } from "@/lib/config";
 
 interface ContactCTAButtonsProps {
   variant?: "default" | "inverted";
@@ -36,9 +36,9 @@ export function ContactCTAButtons({
               : "bg-[#FFC400] text-neutral-900 hover:bg-[#FFD440] shadow-sm"
           }
         >
-          <a href={`tel:${formatPhoneForTel()}`} aria-label={`ZadzwoL": ${COMPANY_DATA.phone}`}>
+          <a href={`tel:${formatPhoneForTel()}`} aria-label={`Zadzwoń: ${COMPANY_CONFIG.phone}`}>
             <Phone className="mr-2 h-5 w-5" aria-hidden="true" />
-            {COMPANY_DATA.phone}
+            {COMPANY_CONFIG.phone}
           </a>
         </Button>
       )}

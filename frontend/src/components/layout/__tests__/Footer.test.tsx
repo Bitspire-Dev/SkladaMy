@@ -54,8 +54,8 @@ describe("Footer", () => {
 
   it("should render contact email link", () => {
     render(<Footer />);
-    const emailLink = screen.getByRole("link", { name: /kontakt@skladamy.com.pl/ });
-    expect(emailLink).toHaveAttribute("href", "mailto:kontakt@skladamy.com.pl");
+    const emailLink = screen.getByRole("link", { name: /kontakt@skladamy.com/ });
+    expect(emailLink).toHaveAttribute("href", "mailto:kontakt@skladamy.com");
   });
 
   it("should render copyright with current year", () => {

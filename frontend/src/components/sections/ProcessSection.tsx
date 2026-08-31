@@ -4,6 +4,7 @@ import BulletList from "@/components/ui/BulletList";
 import { MessageCircle, Calendar, CheckCircle } from "lucide-react";
 import { memo, useMemo } from "react";
 import Image from "next/image";
+import { formatPhoneForTel } from "@/lib/config";
 
 const steps = [
   {
@@ -54,7 +55,7 @@ const ProcessStepCard = memo(({ step, isLast }: { step: (typeof steps)[0]; isLas
       </div>
     )}
 
-    <Card className="relative z-10 h-full transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl cursor-pointer border-2 hover:border-[#FFC400]/30 bg-white/95 backdrop-blur-sm group">
+    <Card className="relative z-10 h-full transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl border-2 hover:border-[#FFC400]/30 bg-white/95 backdrop-blur-sm group">
       <CardContent className="pt-8 px-8">
         {/* Step number and icon */}
         <div className="flex items-center justify-center mb-8">
@@ -171,7 +172,7 @@ const ProcessSection = memo(() => {
           <p className="text-lg text-muted-foreground mb-4">Gotowy na montaż bez stresu?</p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <a
-              href="tel:+48XXXXXXXXX"
+              href={`tel:${formatPhoneForTel()}`}
               className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-xl text-white bg-primary hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               aria-label="Zadzwoń teraz, aby umówić montaż mebli"
             >

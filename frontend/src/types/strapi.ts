@@ -286,6 +286,7 @@ export interface BlogFilters {
   search?: string;
   category?: string;
   tags?: string[];
+  featured?: boolean;
   page?: number;
   pageSize?: number;
   limit?: number; // Alias for pageSize for backward compatibility

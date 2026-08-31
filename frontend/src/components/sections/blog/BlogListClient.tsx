@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/Badge";
 import { Calendar, Clock, ArrowRight, User } from "lucide-react";
 import { formatDate } from "@/lib/content/formatters/dates";
 import { getMediaURL } from "@/lib/cms/client";
+import { extractPlainText } from "@/lib/content/processors/html";
 import BlogSearch from "@/components/sections/blog/BlogSearch";
 import TagBadges from "@/components/sections/blog/TagBadges";
 import type { BlogPost, Category } from "@/types/strapi";
@@ -24,17 +25,17 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  // Filter posts based on search and category
+  // Filter posts based on search and category. Search against plain text
+  // (HTML stripped from content) so markup doesn't interfere with matching.
   const filteredPosts = useMemo(() => {
+    const q = searchQuery.toLowerCase();
     return allPosts.filter((post) => {
-      // Search filter
       const matchesSearch =
-        !searchQuery ||
-        post.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.excerpt?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        post.content?.toLowerCase().includes(searchQuery.toLowerCase());
+        !q ||
+        post.title.toLowerCase().includes(q) ||
+        post.excerpt?.toLowerCase().includes(q) ||
+        (post.content ? extractPlainText(post.content).toLowerCase().includes(q) : false);
 
-      // Category filter
       const matchesCategory = !selectedCategory || post.category?.slug === selectedCategory;
 
       return matchesSearch && matchesCategory;
@@ -80,7 +81,7 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
           <div className="mb-16">
             <h2 className="text-2xl font-bold text-foreground mb-8">Polecane artykuły</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {featuredPosts.map((post) => (
+              {featuredPosts.map((post, index) => (
                 <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="aspect-video bg-linear-to-br from-primary/20 to-primary/5 relative">
                     {post.featuredImage ? (
@@ -90,7 +91,7 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority
+                        priority={index === 0}
                       />
                     ) : (
                       <div className="absolute inset-0 flex items-center justify-center">

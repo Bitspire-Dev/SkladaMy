@@ -94,7 +94,7 @@ const WhyUsSection = memo(() => {
           aria-label="Korzyści"
         >
           {benefitCards.map((card, idx) => (
-            <li key={idx} role="listitem">
+            <li key={benefits[idx].title} role="listitem">
               {card}
             </li>
           ))}
