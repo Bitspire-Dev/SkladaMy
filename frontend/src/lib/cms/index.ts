@@ -1,7 +1,8 @@
 // ============================================
 // CMS - Content Management System Integration
 // ============================================
-// Strapi CMS integration with typed API methods
+// TinaCMS (git-based) integration with typed API methods.
+// Content lives in `content/` as Markdown/JSON files.
 
 // API Methods
 export {
@@ -23,8 +24,8 @@ export type {
   CollectionResponse,
   SingleResponse,
   BlogFilters,
-  StrapiImage,
-} from "@/types/strapi";
+  CmsImage,
+} from "@/types/cms";
 
 // Backward compatibility aliases
 export {

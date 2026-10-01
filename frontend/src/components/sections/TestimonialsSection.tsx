@@ -1,8 +1,9 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/Card";
 import { Star } from "lucide-react";
-import { testimonials } from "@/data/data-testimonials";
 import Image from "next/image";
+import { tinaField } from "@/lib/tina-field";
+import type { TestimonialItem, TestimonialsBlock } from "@/components/sections/blocks/blocks";
 
 // Memoized StarRating component
 const StarRating = React.memo(function StarRating({ rating }: { rating: number }) {
@@ -23,7 +24,7 @@ const StarRating = React.memo(function StarRating({ rating }: { rating: number }
 const TestimonialCard = React.memo(function TestimonialCard({
   testimonial,
 }: {
-  testimonial: (typeof testimonials)[0];
+  testimonial: TestimonialItem;
 }) {
   return (
     <article>
@@ -31,26 +32,42 @@ const TestimonialCard = React.memo(function TestimonialCard({
         <CardContent className="p-6">
           {/* Rating */}
           <div className="flex items-center justify-between mb-4">
-            <StarRating rating={testimonial.rating} />
-            <span className="text-sm text-muted-foreground">{testimonial.location}</span>
+            <StarRating rating={testimonial.rating ?? 5} />
+            {testimonial.location && (
+              <span
+                {...tinaField(testimonial, "location")}
+                className="text-sm text-muted-foreground"
+              >
+                {testimonial.location}
+              </span>
+            )}
           </div>
 
           {/* Testimonial text */}
           <blockquote className="mb-4">
-            <p className="text-foreground leading-relaxed">&ldquo;{testimonial.content}&rdquo;</p>
+            <p {...tinaField(testimonial, "content")} className="text-foreground leading-relaxed">
+              &ldquo;{testimonial.content}&rdquo;
+            </p>
           </blockquote>
 
           {/* Service info */}
-          <div className="mb-3">
-            <p className="text-sm text-muted-foreground">
-              Usługa: <span className="font-medium">{testimonial.serviceType}</span>
-            </p>
-          </div>
+          {testimonial.service && (
+            <div className="mb-3">
+              <p className="text-sm text-muted-foreground">
+                Usługa:{" "}
+                <span {...tinaField(testimonial, "service")} className="font-medium">
+                  {testimonial.service}
+                </span>
+              </p>
+            </div>
+          )}
 
           {/* Author */}
           <div className="flex items-center">
             <div>
-              <p className="font-semibold text-foreground">{testimonial.clientName}</p>
+              <p {...tinaField(testimonial, "name")} className="font-semibold text-foreground">
+                {testimonial.name}
+              </p>
               {testimonial.verified && (
                 <p className="text-xs text-green-600 font-medium">✓ Zweryfikowana opinia</p>
               )}
@@ -62,9 +79,8 @@ const TestimonialCard = React.memo(function TestimonialCard({
   );
 });
 
-export default React.memo(function TestimonialsSection() {
-  // Use static testimonials data - memoized to prevent recalculation
-  const testimonialsData = React.useMemo(() => testimonials.filter((t) => t.featured), []);
+export default React.memo(function TestimonialsSection({ data }: { data: TestimonialsBlock }) {
+  const items = data.items ?? [];
 
   return (
     <section
@@ -109,14 +125,19 @@ export default React.memo(function TestimonialsSection() {
         <div className="text-center mb-12">
           <h2
             id="testimonials-heading"
+            {...tinaField(data, "heading")}
             className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
           >
-            Co mówią nasi klienci?
+            {data.heading}
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            Zadowoleni klienci to nasza najlepsza rekomendacja. Przeczytaj opinie o naszych usługach
-            montażowych w Słupsku.
-          </p>
+          {data.subtext && (
+            <p
+              {...tinaField(data, "subtext")}
+              className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto"
+            >
+              {data.subtext}
+            </p>
+          )}
         </div>
 
         <ul
@@ -124,37 +145,41 @@ export default React.memo(function TestimonialsSection() {
           role="list"
           aria-label="Opinie klientów"
         >
-          {testimonialsData.map((testimonial) => (
-            <li key={testimonial.id} role="listitem">
+          {items.map((testimonial, index) => (
+            <li key={index} role="listitem" {...tinaField(data, "items", index)}>
               <TestimonialCard testimonial={testimonial} />
             </li>
           ))}
         </ul>
 
         {/* Trust indicators */}
-        <div className="mt-12 text-center">
-          <div className="inline-flex items-center justify-center space-x-8 text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <Star className="h-5 w-5 text-yellow-400 fill-current" aria-hidden="true" />
-              <span className="text-sm font-medium">4.9/5 średnia ocen</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>
-              <span className="text-sm">300+ zadowolonych klientów</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>
-              <span className="text-sm">4 lata doświadczenia</span>
+        {data.footnotes && data.footnotes.length > 0 && (
+          <div className="mt-12 text-center">
+            <div className="inline-flex items-center justify-center space-x-8 text-muted-foreground">
+              {data.footnotes.map((note, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  {index === 0 ? (
+                    <Star className="h-5 w-5 text-yellow-400 fill-current" aria-hidden="true" />
+                  ) : (
+                    <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>
+                  )}
+                  <span {...tinaField(data, "footnotes", index)} className="text-sm font-medium">
+                    {note}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
+        )}
 
         {/* Bottom note */}
-        <div className="mt-8 text-center">
-          <p className="text-sm text-muted-foreground">
-            * Opinie pochodzą od rzeczywistych klientów z terenu Słupska i okolic
-          </p>
-        </div>
+        {data.note && (
+          <div className="mt-8 text-center">
+            <p {...tinaField(data, "note")} className="text-sm text-muted-foreground">
+              {data.note}
+            </p>
+          </div>
+        )}
       </div>
     </section>
   );

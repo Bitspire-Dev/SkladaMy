@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@plugin "@tailwindcss/typography";
+
 @source "./src/**/*.{js,ts,jsx,tsx,mdx}";
 
 /* Usunięto niestandardowe at-rules Tailwind (@custom-variant, @theme) aby uniknąć ostrzeżeń analizatora CSS. */

@@ -38,13 +38,13 @@ export async function generateBlogPostMetadata(slug: string): Promise<Metadata> 
     const keywords = seo?.keywords || undefined;
     const canonicalUrl = seo?.canonicalUrl || `${siteUrl}/blog/${post.slug}`;
 
-    const ogImage =
-      seo?.ogImage || post.featuredImage
-        ? {
-            url: getMediaURL(seo?.ogImage || post.featuredImage),
-            alt: (seo?.ogImage || post.featuredImage)?.alternativeText || post.title,
-          }
-        : undefined;
+    const ogImageSrc = seo?.ogImage || post.featuredImage?.src;
+    const ogImage = ogImageSrc
+      ? {
+          url: getMediaURL(ogImageSrc),
+          alt: post.featuredImage?.alt || post.title,
+        }
+      : undefined;
 
     return {
       title,

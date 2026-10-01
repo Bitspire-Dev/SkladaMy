@@ -1,47 +1,12 @@
 ﻿import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Wrench, Home, Anchor } from "lucide-react";
 import BulletList from "@/components/ui/BulletList";
+import { getIcon } from "@/components/sections/blocks/icons";
+import { renderInlineMarkdown } from "@/lib/content/processors/markdown";
+import { tinaField } from "@/lib/tina-field";
+import type { ServicesBlock } from "@/components/sections/blocks/blocks";
 
-const services = [
-  {
-    icon: Wrench,
-    title: "Montaż mebli IKEA",
-    description: "Profesjonalne składanie wszystkich typów mebli skręcanych",
-    details: [
-      "Szafy PAX i garderoby (BRIMNES, HEMNES, IVAR)",
-      "Komody, stoliki nocne, regały BILLY",
-      "Łóżka z ramami i zagłówkami MALM, HEMNES",
-      "Stoły, krzesła, biurka LINNMON, BEKANT",
-      "Szafki RTV BESTA. i biblioteczki",
-    ],
-  },
-  {
-    icon: Home,
-    title: "Wieszanie szafek kuchennych",
-    description: "Bezpieczny montaż szafek na ścianie z kotwieniem",
-    details: [
-      "Szafki kuchenne KNOXHULT, ENHET górne i dolne",
-      "Szafki łazienkowe GODMORGON z umywalkami",
-      "Regały ścienne LACK i półki BERGSHULT",
-      "Lustra NISSEDAL i elementy dekoracyjne",
-      "Telewizory na wspornikach ściennych",
-    ],
-  },
-  {
-    icon: Anchor,
-    title: "Kotwienie w każdej ścianie",
-    description: "Dobór odpowiednich kotew dla bezpiecznego mocowania",
-    details: [
-      "Ściany z płyt gipsowo-kartonowych (kotwy molly)",
-      "Ściany betonowe i żelbetowe (wiertła i kotwy)",
-      "Ściany ceglane pełne i pustaki ceramiczne",
-      "Poziomowanie laserowe i regulacja wysokości",
-      "Gwarancja bezpieczeństwa mocowania",
-    ],
-  },
-];
-
-export default function ServicesSection() {
+export default function ServicesSection({ data }: { data: ServicesBlock }) {
+  const items = data.items ?? [];
   return (
     <section
       id="uslugi"
@@ -71,44 +36,65 @@ export default function ServicesSection() {
 
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">
-            Zakres naszych usług montażowych
+          <h2
+            {...tinaField(data, "heading")}
+            className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-6"
+          >
+            {data.heading}
           </h2>
-          <p className="mt-6 text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            <strong>Specjalizujemy się w montażu mebli IKEA</strong>, wieszaniu szafek kuchennych i
-            kotwieniu w każdym typie ściany. Pracujemy głównie z meblami IKEA, ale składamy również
-            inne marki.
-          </p>
+          {data.subtext && (
+            <p
+              {...tinaField(data, "subtext")}
+              className="mt-6 text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(data.subtext) }}
+            />
+          )}
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3 lg:gap-10">
-          {services.map((service) => (
-            <article key={service.title} className="h-full">
-              <Card className="h-full transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl cursor-pointer border-2 hover:border-[#FFC400]/30 bg-white/95 backdrop-blur-sm group">
-                <CardHeader className="pb-4">
-                  <div className="w-16 h-16 bg-linear-to-br from-[#FFC400] to-[#f2b800] rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <service.icon
-                      className="h-9 w-9 text-neutral-900"
-                      aria-hidden="true"
-                      strokeWidth={2.5}
-                    />
-                  </div>
-                  <CardTitle className="text-2xl mb-3 group-hover:text-[#FFC400] transition-colors duration-300">
-                    {service.title}
-                  </CardTitle>
-                  <CardDescription className="text-lg leading-relaxed">
-                    {service.description}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <BulletList items={service.details} />
-                </CardContent>
-              </Card>
-            </article>
-          ))}
+          {items.map((service, i) => {
+            const Icon = getIcon(service.icon);
+            return (
+              <article key={service.title} className="h-full" {...tinaField(data, "items", i)}>
+                <Card className="h-full transition-all duration-300 hover:-translate-y-3 hover:shadow-2xl cursor-pointer border-2 hover:border-[#FFC400]/30 bg-white/95 backdrop-blur-sm group">
+                  <CardHeader className="pb-4">
+                    {service.icon && (
+                      <div
+                        {...tinaField(service, "icon")}
+                        className="w-16 h-16 bg-linear-to-br from-[#FFC400] to-[#f2b800] rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300"
+                      >
+                        <Icon
+                          className="h-9 w-9 text-neutral-900"
+                          aria-hidden="true"
+                          strokeWidth={2.5}
+                        />
+                      </div>
+                    )}
+                    <CardTitle
+                      {...tinaField(service, "title")}
+                      className="text-2xl mb-3 group-hover:text-[#FFC400] transition-colors duration-300"
+                    >
+                      {service.title}
+                    </CardTitle>
+                    {service.description && (
+                      <CardDescription
+                        {...tinaField(service, "description")}
+                        className="text-lg leading-relaxed"
+                      >
+                        {service.description}
+                      </CardDescription>
+                    )}
+                  </CardHeader>
+                  {service.details && service.details.length > 0 && (
+                    <CardContent {...tinaField(service, "details")}>
+                      <BulletList items={service.details} />
+                    </CardContent>
+                  )}
+                </Card>
+              </article>
+            );
+          })}
         </div>
-
-        {/* Exclusions */}
       </div>
     </section>
   );

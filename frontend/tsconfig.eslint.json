@@ -4,6 +4,6 @@
     "incremental": false,
     "noEmit": true
   },
-  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "*.ts", "*.tsx"],
-  "exclude": ["node_modules", ".next", "dist", "build"]
+  "include": ["next-env.d.ts", "src/**/*.ts", "src/**/*.tsx", "*.ts", "*.tsx", "tina/**/*.ts"],
+  "exclude": ["node_modules", ".next", "dist", "build", "tina/__generated__"]
 }

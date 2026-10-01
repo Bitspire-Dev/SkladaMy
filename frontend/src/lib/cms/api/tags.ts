@@ -1,19 +1,25 @@
 import "server-only";
 
-import type { Tag, CollectionResponse } from "@/types/strapi";
-import { api } from "../client";
+import type { Tag, CollectionResponse } from "@/types/cms";
+import { loadTags } from "../reader";
 
 /**
  * Fetch all blog tags
  */
 export const getTags = async (): Promise<CollectionResponse<Tag>> => {
   try {
-    const response = await api.get("/tags", {
-      params: {
-        sort: "name:asc",
+    const tags = loadTags();
+    return {
+      data: tags,
+      meta: {
+        pagination: {
+          page: 1,
+          pageSize: tags.length,
+          pageCount: 1,
+          total: tags.length,
+        },
       },
-    });
-    return response.data;
+    };
   } catch {
     return {
       data: [],

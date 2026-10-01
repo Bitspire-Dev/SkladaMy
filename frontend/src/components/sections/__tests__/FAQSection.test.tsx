@@ -2,22 +2,26 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import FAQSection from "../FAQSection";
+import { homeSection } from "@/test/fixtures/page-sections";
+import type { FaqBlock } from "../blocks/blocks";
+
+const data = homeSection<FaqBlock>("faq");
 
 describe("FAQSection", () => {
   it("should render FAQ heading", () => {
-    render(<FAQSection />);
+    render(<FAQSection data={data} />);
     expect(screen.getByText(/Najczęściej zadawane pytania/i)).toBeInTheDocument();
   });
 
   it("should render FAQ items from data", () => {
-    render(<FAQSection />);
+    render(<FAQSection data={data} />);
     // Should have multiple FAQ item buttons
     const faqButtons = screen.getAllByRole("button", { expanded: false });
     expect(faqButtons.length).toBeGreaterThan(0);
   });
 
   it("should render contact CTAs", () => {
-    render(<FAQSection />);
+    render(<FAQSection data={data} />);
     expect(screen.getByText(/Nie znalazłeś odpowiedzi/i)).toBeInTheDocument();
     // Check for tel link and contact link
     const links = screen.getAllByRole("link");
@@ -25,14 +29,14 @@ describe("FAQSection", () => {
   });
 
   it("should have proper section heading hierarchy", () => {
-    render(<FAQSection />);
+    render(<FAQSection data={data} />);
     const heading = screen.getByRole("heading", { level: 2, name: /pytania/i });
     expect(heading).toBeInTheDocument();
   });
 
   it("should expand and collapse an FAQ item when clicked", async () => {
     const user = userEvent.setup();
-    render(<FAQSection />);
+    render(<FAQSection data={data} />);
 
     // Get the first FAQ item button
     const firstButton = screen.getAllByRole("button", { expanded: false })[0];
@@ -51,7 +55,7 @@ describe("FAQSection", () => {
 
   it("should filter FAQ items when a category button is clicked", async () => {
     const user = userEvent.setup();
-    render(<FAQSection />);
+    render(<FAQSection data={data} />);
 
     // Click on "Montaż" category
     const montazButton = screen.getByRole("button", { name: "Montaż" });

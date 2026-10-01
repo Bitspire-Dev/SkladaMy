@@ -1,7 +1,7 @@
 /**
  * Process blog content from the CMS:
  *  1. Sanitize HTML with DOMPurify (server-safe via isomorphic-dompurify) to
- *     prevent stored XSS from Strapi rich-text. Scripts, on* handlers, iframes
+ *     prevent stored XSS from CMS rich-text. Scripts, on* handlers, iframes
  *     and other dangerous markup are stripped.
  *  2. Add stable IDs to h2/h3 headings so the Table of Contents can link to
  *     them. Existing IDs are preserved.
@@ -9,7 +9,7 @@
 import DOMPurify from "isomorphic-dompurify";
 
 // Restrictive allow-list for blog content. No scripts, no event handlers,
-// no iframes, no inline styles (Strapi rich-text doesn't need them).
+// no iframes, no inline styles (CMS rich-text doesn't need them).
 const SANITIZE_CONFIG = {
   ALLOWED_TAGS: [
     "p",

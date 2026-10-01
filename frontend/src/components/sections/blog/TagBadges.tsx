@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { Badge } from "@/components/ui/Badge";
-import type { BlogTag, Tag } from "@/types/strapi";
+import type { BlogTag, Tag } from "@/types/cms";
 
 type TagLike = Pick<BlogTag, "name"> | Pick<Tag, "name">;
 

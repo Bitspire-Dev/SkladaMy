@@ -1,6 +1,5 @@
 // ============================================
-// CMS CLIENT - HTTP Client & Utilities
+// CMS CLIENT - Public helpers (client-safe)
 // ============================================
 
-export { api, getMediaURL } from "./axios-instance";
-export { buildQueryString } from "./query-builder";
+export { getMediaURL } from "../transformers/media-url";

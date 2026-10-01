@@ -1,25 +1,75 @@
 import { Button } from "@/components/ui/Button";
 import { Phone, Mail, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { formatPhoneForTel } from "@/lib/config";
 import Image from "next/image";
+import { renderInlineMarkdown } from "@/lib/content/processors/markdown";
+import { resolveHref } from "@/components/sections/blocks/resolve";
+import { tinaField } from "@/lib/tina-field";
+import type { HeroBlock } from "@/components/sections/blocks/blocks";
 
-export default function HeroSection() {
+type HeroCard = NonNullable<HeroBlock["cards"]>[number];
+
+function HeroTrustCards({ cards, data }: { cards: HeroCard[]; data: HeroBlock }) {
+  if (cards.length === 0) return null;
+  return (
+    <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-8">
+      {cards.map((card, i) => (
+        <div
+          key={card.title}
+          {...tinaField(data, "cards", i)}
+          className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
+        >
+          <div className="rounded-full bg-[#FFC400]/20 p-3">
+            <div className="h-6 w-6 rounded-full bg-[#FFC400]" />
+          </div>
+          <h3 {...tinaField(card, "title")} className="mt-3 text-sm font-semibold text-neutral-900">
+            {card.title}
+          </h3>
+          <p {...tinaField(card, "text")} className="mt-1 text-sm text-neutral-700">
+            {card.text}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function HeroBadges({ badges, data }: { badges: string[]; data: HeroBlock }) {
+  if (badges.length === 0) return null;
+  return (
+    <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-neutral-900">
+      {badges.map((badge, i) => (
+        <span
+          key={badge}
+          {...tinaField(data, "badges", i)}
+          className="flex items-center gap-2 rounded-full bg-white/95 px-3 py-1 shadow-sm"
+          dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(badge) }}
+        />
+      ))}
+    </div>
+  );
+}
+
+export default function HeroSection({ data }: { data: HeroBlock }) {
+  const badges = data.badges ?? [];
+  const cards = data.cards ?? [];
   return (
     <section className="relative isolate overflow-hidden bg-neutral-900 min-h-170 sm:min-h-180 flex items-center">
       {/* Background image + overlays */}
       <div className="absolute inset-0 z-0">
-        <Image
-          src="/layout/osoby-o-niskim-kacie-pracujace-z-wiertlem.png"
-          alt="Montażyści przy pracy z wiertarką - montaż mebli"
-          fill
-          priority
-          sizes="100vw"
-          style={{
-            objectFit: "cover",
-            objectPosition: "center",
-          }}
-        />
+        {data.image && (
+          <Image
+            src={data.image}
+            alt={data.heading}
+            fill
+            priority
+            sizes="100vw"
+            style={{
+              objectFit: "cover",
+              objectPosition: "center",
+            }}
+          />
+        )}
 
         <div className="absolute inset-0 bg-linear-to-br from-white/80 via-white/64 to-white/40" />
 
@@ -42,106 +92,107 @@ export default function HeroSection() {
 
       <div className="mx-auto max-w-7xl px-4 pt-24 pb-20 sm:px-6 lg:px-8 w-full relative z-10">
         <div className="text-center">
+          {data.badge && (
+            <div
+              {...tinaField(data, "badge")}
+              className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs text-neutral-600 mb-4"
+            >
+              <span className="inline-block size-1.5 rounded-full bg-[#FFC400]" />
+              {data.badge}
+            </div>
+          )}
+
           {/* Hero headline */}
           <h1
             id="hero-heading"
+            {...tinaField(data, "heading")}
             className="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight text-neutral-900 sm:text-5xl lg:text-6xl"
           >
-            Montaż mebli w <span className="text-[#FFC400]">Słupsku</span>
-            <br className="hidden sm:block" /> bez stresu i w terminie
+            {data.heading}{" "}
+            {data.headingAccent && (
+              <span {...tinaField(data, "headingAccent")} className="text-[#FFC400]">
+                {data.headingAccent}
+              </span>
+            )}
+            {data.headingSuffix && (
+              <span {...tinaField(data, "headingSuffix")}>
+                <br className="hidden sm:block" /> {data.headingSuffix}
+              </span>
+            )}
           </h1>
 
           {/* Hero subtext */}
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-neutral-900">
-            ⭐ <strong>Profesjonalnie składamy meble IKEA</strong>, wieszamy szafki kuchenne i
-            kotwimy w każdej ścianie. <strong>Gwarancja 30 dni</strong>, porządek po montażu i{" "}
-            <strong>bezpłatna wycena</strong> tego samego dnia.
-          </p>
+          {data.subtext && (
+            <p
+              {...tinaField(data, "subtext")}
+              className="mx-auto mt-6 max-w-2xl text-lg leading-8 text-neutral-900"
+              dangerouslySetInnerHTML={{ __html: renderInlineMarkdown(data.subtext) }}
+            />
+          )}
 
           {/* Trust indicators inline */}
-          <div className="mt-6 flex flex-wrap justify-center gap-4 text-sm text-neutral-900">
-            <span className="flex items-center gap-2 rounded-full bg-white/95 px-3 py-1 shadow-sm">
-              ✓ <strong>300+</strong> zadowolonych klientów
-            </span>
-            <span className="flex items-center gap-2 rounded-full bg-white/95 px-3 py-1 shadow-sm">
-              ✓ <strong>Gwarancja 30 dni</strong>
-            </span>
-            <span className="flex items-center gap-2 rounded-full bg-white/95 px-3 py-1 shadow-sm">
-              ✓ <strong>Dojazd w 24h</strong>
-            </span>
-          </div>
+          <HeroBadges badges={badges} data={data} />
 
           {/* CTA buttons */}
           <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              asChild
-              size="lg"
-              className="text-lg px-8 shadow-md bg-[#FFC400] hover:bg-[#f2b800] text-neutral-900"
-            >
-              <a href={`tel:${formatPhoneForTel()}`} aria-label="Zadzwoń i umów bezpłatną wycenę">
-                <Phone className="mr-2 h-5 w-5 text-neutral-900" />
-                Zadzwoń - bezpłatna wycena
-              </a>
-            </Button>
+            {data.primaryCta && (
+              <Button
+                asChild
+                size="lg"
+                className="text-lg px-8 shadow-md bg-[#FFC400] hover:bg-[#f2b800] text-neutral-900"
+              >
+                <Link
+                  href={resolveHref(data.primaryCta.href)}
+                  aria-label={data.primaryCta.label}
+                  {...tinaField(data, "primaryCta")}
+                >
+                  <Phone className="mr-2 h-5 w-5 text-neutral-900" />
+                  {data.primaryCta.label}
+                </Link>
+              </Button>
+            )}
 
             {/* Simplified solid white pill for immediate readability */}
-            <Button
-              asChild
-              variant="outline"
-              size="lg"
-              className="text-lg px-8 bg-white/95 text-neutral-900 border-transparent shadow-sm"
-            >
-              <Link href="/kontakt" aria-label="Wyślij zapytanie przez formularz kontaktowy">
-                <Mail className="mr-2 h-5 w-5 text-neutral-900" />
-                Wyślij zapytanie
-              </Link>
-            </Button>
+            {data.secondaryCta && (
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="text-lg px-8 bg-white/95 text-neutral-900 border-transparent shadow-sm"
+              >
+                <Link
+                  href={resolveHref(data.secondaryCta.href)}
+                  aria-label={data.secondaryCta.label}
+                  {...tinaField(data, "secondaryCta")}
+                >
+                  <Mail className="mr-2 h-5 w-5 text-neutral-900" />
+                  {data.secondaryCta.label}
+                </Link>
+              </Button>
+            )}
           </div>
 
-          {/* Trust indicators */}
-          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-3 lg:gap-8">
-            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-              <div className="rounded-full bg-[#FFC400]/20 p-3">
-                <div className="h-6 w-6 rounded-full bg-[#FFC400]" />
-              </div>
-              <h3 className="mt-3 text-sm font-semibold text-neutral-900">Szybkie terminy</h3>
-              <p className="mt-1 text-sm text-neutral-700">Najczęściej montujemy w ciągu 1–3 dni</p>
-            </div>
-
-            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-              <div className="rounded-full bg-[#FFC400]/20 p-3">
-                <div className="h-6 w-6 rounded-full bg-[#FFC400]" />
-              </div>
-              <h3 className="mt-3 text-sm font-semibold text-neutral-900">Gwarancja 30 dni</h3>
-              <p className="mt-1 text-sm text-neutral-700">
-                Poprawki w gwarancji bez dodatkowych kosztów
-              </p>
-            </div>
-
-            <div className="flex flex-col items-center rounded-lg bg-white/95 px-6 py-5 ring-1 ring-black/5 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
-              <div className="rounded-full bg-[#FFC400]/20 p-3">
-                <div className="h-6 w-6 rounded-full bg-[#FFC400]" />
-              </div>
-              <h3 className="mt-3 text-sm font-semibold text-neutral-900">Porządek po montażu</h3>
-              <p className="mt-1 text-sm text-neutral-700">
-                Sprzątamy po sobie, zabieramy opakowania
-              </p>
-            </div>
-          </div>
+          {/* Trust indicator cards */}
+          <HeroTrustCards cards={cards} data={data} />
 
           {/* Service area indicator */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-neutral-900">
-              Obsługujemy Słupsk i okolice
-              <Link
-                href="/slupsk"
-                className="ml-2 inline-flex items-center font-medium text-[#FFC400] hover:underline"
-              >
-                Zobacz szczegóły
-                <ArrowRight className="ml-1 h-4 w-4" />
-              </Link>
-            </p>
-          </div>
+          {data.areaText && (
+            <div className="mt-8 text-center">
+              <p {...tinaField(data, "areaText")} className="text-sm text-neutral-900">
+                {data.areaText}
+                {data.areaLinkHref && (
+                  <Link
+                    href={data.areaLinkHref}
+                    {...tinaField(data, "areaLinkLabel")}
+                    className="ml-2 inline-flex items-center font-medium text-[#FFC400] hover:underline"
+                  >
+                    {data.areaLinkLabel}
+                    <ArrowRight className="ml-1 h-4 w-4" />
+                  </Link>
+                )}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </section>

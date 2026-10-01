@@ -1,21 +1,16 @@
 // ============================================
 // MEDIA URL TRANSFORMER - Client-safe helper
 // ============================================
+// TinaCMS stores media as paths rooted at `public/` (e.g. `/uploads/x.avif`)
+// or as absolute URLs — both are returned unchanged.
 
-export const getMediaURL = (
-  media: { url?: string; attributes?: { url?: string } } | null | undefined
-): string => {
+import type { CmsImage } from "@/types/cms";
+
+type MediaLike = CmsImage | { src?: string; url?: string } | string | null | undefined;
+
+export const getMediaURL = (media: MediaLike): string => {
   if (!media) return "";
-
-  const url = media.url || media.attributes?.url;
-  if (!url) return "";
-
-  const strapiUrl = process.env.NEXT_PUBLIC_STRAPI_URL;
-
-  if (url.startsWith("/")) {
-    if (!strapiUrl) return url;
-    return `${strapiUrl}${url}`;
-  }
-
-  return url;
+  if (typeof media === "string") return media;
+  if ("src" in media && media.src) return media.src;
+  return "url" in media ? (media.url ?? "") : "";
 };

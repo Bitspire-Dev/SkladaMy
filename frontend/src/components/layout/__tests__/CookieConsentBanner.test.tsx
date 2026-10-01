@@ -26,9 +26,17 @@ describe("CookieConsentBanner", () => {
     // because GTM loader uses document.getElementsByTagName("script")[0]
     initialScript = document.createElement("script");
     document.head.appendChild(initialScript);
+
+    // The banner defers its consent check with rAF; run it synchronously in tests
+    vi.stubGlobal("requestAnimationFrame", (cb: FrameRequestCallback) => {
+      cb(0);
+      return 0;
+    });
+    vi.stubGlobal("cancelAnimationFrame", () => {});
   });
 
   afterEach(() => {
+    vi.unstubAllGlobals();
     vi.restoreAllMocks();
     initialScript.remove();
     document.querySelectorAll("#gtm-script-loader").forEach((el) => el.remove());

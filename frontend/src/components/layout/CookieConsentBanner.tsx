@@ -44,45 +44,48 @@ function writeConsent(consent: ConsentState) {
   document.cookie = `${CONSENT_COOKIE}=${encodeURIComponent(JSON.stringify(consent))}; Path=/; SameSite=Strict${secureFlag}; Expires=${expires.toUTCString()}`;
 }
 
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "";
+
+function loadGTM() {
+  if (!GTM_ID) return; // GTM disabled when NEXT_PUBLIC_GTM_ID is unset
+  if (document.getElementById("gtm-script-loader")) return; // prevent duplicates
+  const s = document.createElement("script");
+  s.id = "gtm-script-loader";
+  s.async = true;
+  s.src = `https://www.googletagmanager.com/gtm.js?id=${GTM_ID}`;
+  const first = document.getElementsByTagName("script")[0];
+  if (first && first.parentNode) {
+    first.parentNode.insertBefore(s, first);
+  } else {
+    document.head.appendChild(s);
+  }
+}
+
 export default function CookieConsentBanner() {
   // Start closed on both server and client to avoid hydration mismatch.
   // The banner is shown client-only after checking for an existing consent.
   const [open, setOpen] = useState(false);
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
-  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || "";
   const acceptBtnRef = useRef<HTMLButtonElement | null>(null);
-
-  const loadGTM = () => {
-    if (!gtmId) return; // GTM disabled when NEXT_PUBLIC_GTM_ID is unset
-    if (document.getElementById("gtm-script-loader")) return; // prevent duplicates
-    const s = document.createElement("script");
-    s.id = "gtm-script-loader";
-    s.async = true;
-    s.src = `https://www.googletagmanager.com/gtm.js?id=${gtmId}`;
-    const first = document.getElementsByTagName("script")[0];
-    if (first && first.parentNode) {
-      first.parentNode.insertBefore(s, first);
-    } else {
-      document.head.appendChild(s);
-    }
-  };
 
   // After hydration: read consent cookie and open banner if no consent yet.
   // Also load GTM if analytics consent was already granted.
+  // Deferred via rAF so state updates aren't synchronous in the effect body.
   useEffect(() => {
-    const consent = readConsent();
-    setHydrated(true);
-    if (!consent) {
-      setOpen(true);
-    } else {
-      setAnalytics(consent.analytics ?? false);
-      setMarketing(consent.marketing ?? false);
-      if (consent.analytics) {
-        loadGTM();
+    const frame = requestAnimationFrame(() => {
+      const consent = readConsent();
+      if (!consent) {
+        setOpen(true);
+      } else {
+        setAnalytics(consent.analytics ?? false);
+        setMarketing(consent.marketing ?? false);
+        if (consent.analytics) {
+          loadGTM();
+        }
       }
-    }
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   // Allow external trigger to reopen banner

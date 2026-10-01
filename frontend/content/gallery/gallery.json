@@ -1,0 +1,111 @@
+{
+  "images": [
+    {
+      "src": "/uploads/portfolio_pokoj_1_6ac17264f6.avif",
+      "alt": "Montaż mebli w pokoju - realizacja SkładaMy",
+      "caption": "Montaż mebli pokojowych"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_2_efa0527c27.avif",
+      "alt": "Zmontowane meble pokojowe - realizacja SkładaMy",
+      "caption": "Realizacja w pokoju"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_3_ca8f964aeb.avif",
+      "alt": "Montaż szafy w pokoju - realizacja SkładaMy",
+      "caption": "Montaż szafy"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_4_9b1c542baf.avif",
+      "alt": "Zmontowana szafa w pokoju - realizacja SkładaMy",
+      "caption": "Szafa po montażu"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_5_9453c512eb.avif",
+      "alt": "Montaż mebli w sypialni - realizacja SkładaMy",
+      "caption": "Realizacja w sypialni"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_6_df1d851fcf.avif",
+      "alt": "Zmontowane meble w sypialni - realizacja SkładaMy",
+      "caption": "Sypialnia po montażu"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_7_d104ce91b7.avif",
+      "alt": "Montaż mebli IKEA - realizacja SkładaMy",
+      "caption": "Montaż mebli IKEA"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_8_d3660d3bf7.avif",
+      "alt": "Zmontowana garderoba - realizacja SkładaMy",
+      "caption": "Garderoba po montażu"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_9_d6550ca02b.avif",
+      "alt": "Montaż mebli pokojowych - realizacja SkładaMy",
+      "caption": "Meble pokojowe"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_10_43b804d407.avif",
+      "alt": "Zmontowane meble w pokoju - realizacja SkładaMy",
+      "caption": "Pokój po montażu"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_11_f28cdb2617.avif",
+      "alt": "Realizacja montażu mebli - SkładaMy",
+      "caption": "Realizacja SkładaMy"
+    },
+    {
+      "src": "/uploads/szafki_w_kuchni_4f79247ccc.avif",
+      "alt": "Montaż szafek kuchennych - realizacja SkładaMy",
+      "caption": "Szafki kuchenne"
+    },
+    {
+      "src": "/uploads/biuro_e47899cbf4.avif",
+      "alt": "Montaż mebli biurowych - realizacja SkładaMy",
+      "caption": "Meble biurowe"
+    },
+    {
+      "src": "/uploads/led_976686570d.avif",
+      "alt": "Montaż oświetlenia LED w meblach - realizacja SkładaMy",
+      "caption": "Oświetlenie LED"
+    },
+    {
+      "src": "/uploads/warsztat_6bf302ea1e.avif",
+      "alt": "Warsztat montażowy - SkładaMy",
+      "caption": "Warsztat"
+    },
+    {
+      "src": "/uploads/narzedzia_ea73bb52e6.avif",
+      "alt": "Profesjonalne narzędzia do montażu mebli - SkładaMy",
+      "caption": "Narzędzia montażowe"
+    },
+    {
+      "src": "/uploads/problemy_przy_montazu_3d9fec1fbd.avif",
+      "alt": "Rozwiązywanie problemów przy montażu mebli - SkładaMy",
+      "caption": "Montaż mebli"
+    }
+  ],
+  "featuredImages": [
+    {
+      "src": "/uploads/portfolio_pokoj_1_6ac17264f6.avif",
+      "alt": "Montaż mebli w pokoju - realizacja SkładaMy",
+      "caption": "Montaż mebli pokojowych"
+    },
+    {
+      "src": "/uploads/szafki_w_kuchni_4f79247ccc.avif",
+      "alt": "Montaż szafek kuchennych - realizacja SkładaMy",
+      "caption": "Szafki kuchenne"
+    },
+    {
+      "src": "/uploads/portfolio_pokoj_5_9453c512eb.avif",
+      "alt": "Montaż mebli w sypialni - realizacja SkładaMy",
+      "caption": "Realizacja w sypialni"
+    },
+    {
+      "src": "/uploads/biuro_e47899cbf4.avif",
+      "alt": "Montaż mebli biurowych - realizacja SkładaMy",
+      "caption": "Meble biurowe"
+    }
+  ]
+}

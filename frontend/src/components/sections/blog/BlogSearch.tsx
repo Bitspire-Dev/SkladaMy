@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Search, X } from "lucide-react";
-import type { Category } from "@/types/strapi";
+import type { Category } from "@/types/cms";
 import { cn } from "@/lib/styles";
 
 interface BlogSearchProps {

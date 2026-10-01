@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { isBrowser, getCurrentUrl, getSiteUrl, getStrapiUrl } from "../config/environment";
+import { isBrowser, getCurrentUrl, getSiteUrl } from "../config/environment";
 
 describe("isBrowser", () => {
   afterEach(() => {
@@ -84,28 +84,5 @@ describe("getSiteUrl", () => {
   it("should throw an error when NEXT_PUBLIC_SITE_URL is not defined", () => {
     delete process.env.NEXT_PUBLIC_SITE_URL;
     expect(() => getSiteUrl()).toThrow("NEXT_PUBLIC_SITE_URL must be set in .env file!");
-  });
-});
-
-describe("getStrapiUrl", () => {
-  const originalEnv = process.env;
-
-  beforeEach(() => {
-    vi.resetModules();
-    process.env = { ...originalEnv };
-  });
-
-  afterEach(() => {
-    process.env = originalEnv;
-  });
-
-  it("should return NEXT_PUBLIC_STRAPI_URL when defined", () => {
-    process.env.NEXT_PUBLIC_STRAPI_URL = "http://strapi.example.com";
-    expect(getStrapiUrl()).toBe("http://strapi.example.com");
-  });
-
-  it("should throw an error when NEXT_PUBLIC_STRAPI_URL is not defined", () => {
-    delete process.env.NEXT_PUBLIC_STRAPI_URL;
-    expect(() => getStrapiUrl()).toThrow("NEXT_PUBLIC_STRAPI_URL must be set in .env file!");
   });
 });

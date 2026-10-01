@@ -23,7 +23,7 @@ import AuthorCard from "@/components/sections/blog/AuthorCard";
 import ShareButtons from "@/components/sections/blog/ShareButtons";
 import TableOfContents from "@/components/sections/blog/TableOfContents";
 import TagBadges from "@/components/sections/blog/TagBadges";
-import type { BlogPost } from "@/types/strapi";
+import type { BlogPost } from "@/types/cms";
 import { usePathname } from "next/navigation";
 import { getCurrentUrl } from "@/lib/config";
 
@@ -132,7 +132,7 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
               <div className="aspect-video bg-linear-to-br from-primary/20 to-primary/5 rounded-lg mb-8 relative overflow-hidden">
                 <Image
                   src={getMediaURL(post.featuredImage)}
-                  alt={post.featuredImage.alternativeText || post.title}
+                  alt={post.featuredImage.alt || post.title}
                   fill
                   className="object-cover"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 70vw"
@@ -166,13 +166,13 @@ export function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
                   {(post.relatedPosts || relatedPosts).slice(0, 3).map((relatedPost: BlogPost) => (
                     <Card
                       key={relatedPost.id}
-                      className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
+                      className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col pt-0 gap-0"
                     >
                       <div className="aspect-video bg-linear-to-br from-muted to-muted/50 relative">
                         {relatedPost.featuredImage ? (
                           <Image
                             src={getMediaURL(relatedPost.featuredImage)}
-                            alt={relatedPost.featuredImage.alternativeText || relatedPost.title}
+                            alt={relatedPost.featuredImage.alt || relatedPost.title}
                             fill
                             className="object-cover"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

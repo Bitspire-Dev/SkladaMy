@@ -1,4 +1,4 @@
-import type { BlogTag } from "@/types/strapi";
+import type { BlogTag } from "@/types/cms";
 
 /**
  * Limit number of tags to display

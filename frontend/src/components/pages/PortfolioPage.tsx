@@ -1,49 +1,15 @@
-import type { Metadata } from "next";
 import { GalleryContent } from "@/components/sections/portfolio/GalleryContent";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import PageContent from "@/components/pages/PageContent";
 import { getGallery } from "@/lib/cms/api";
-import type { StrapiImage } from "@/types/strapi";
-import { getSiteUrl } from "@/lib/config";
+import type { PageQueryResult } from "@/lib/cms/pages";
+import type { CmsImage } from "@/types/cms";
 
-const siteUrl = getSiteUrl();
-
-export const metadata: Metadata = {
-  title: "Portfolio montażu mebli IKEA Słupsk | SkładaMy",
-  description:
-    "⭐ Galeria zdjęć montażu mebli IKEA w Słupsku ✓ Szafy PAX ✓ Kuchnie KNOXHULT ✓ 300+ zadowolonych klientów ✓ Zobacz nasze realizacje przed i po",
-  keywords: [
-    "portfolio montaż mebli Słupsk",
-    "galeria montaż IKEA Słupsk",
-    "zdjęcia szafy PAX Słupsk",
-    "realizacje montaż kuchni",
-    "przed i po montaż mebli",
-    "portfolio monterzy Słupsk",
-  ],
-  alternates: {
-    canonical: `${siteUrl}/portfolio`,
-  },
-  openGraph: {
-    title: "Portfolio montażu mebli IKEA Słupsk | SkładaMy",
-    description:
-      "⭐ Zobacz nasze realizacje montażu mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów ✓ Szafy PAX ✓ Kuchnie",
-    url: `${siteUrl}/portfolio`,
-    siteName: "SkładaMy",
-    locale: "pl_PL",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Portfolio montażu mebli IKEA Słupsk | SkładaMy",
-    description:
-      "⭐ Zobacz nasze realizacje montażu mebli IKEA w Słupsku ✓ 300+ zadowolonych klientów",
-  },
-};
-
-export default async function PortfolioPage() {
+export default async function PortfolioPage({ live }: { live?: PageQueryResult | null }) {
   // Fetch gallery data on the server during build
-  let images: StrapiImage[] = [];
-  let featuredImages: StrapiImage[] | undefined = undefined;
+  let images: CmsImage[] = [];
+  let featuredImages: CmsImage[] | undefined = undefined;
 
   try {
     const galleryResponse = await getGallery();
@@ -59,26 +25,10 @@ export default async function PortfolioPage() {
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header />
-      {/* Hero Section */}
-      <section className="bg-white py-16 border-b">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Portfolio Montażu Mebli IKEA Słupsk
-            </h1>
-            <p className="text-xl text-gray-700 mb-8">
-              ⭐ <strong>300+ zrealizowanych projektów</strong> - Zobacz nasze najlepsze realizacje
-              montażu mebli IKEA w Słupsku. Szafy PAX, kuchnie KNOXHULT, garderoby i więcej.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-700">
-              <span>✓ Szafy PAX</span>
-              <span>✓ Kuchnie IKEA</span>
-              <span>✓ Garderoby</span>
-              <span>✓ Regały BILLY</span>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section — content comes from the Tina `page` document */}
+      {live?.data.page ? (
+        <PageContent data={live.data} query={live.query} variables={live.variables} lazyFrom={1} />
+      ) : null}
 
       {/* Gallery Section */}
       <section className="py-16">

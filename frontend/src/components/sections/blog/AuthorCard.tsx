@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Mail, Twitter, Linkedin, Globe } from "lucide-react";
-import type { Author } from "@/types/strapi";
+import type { Author } from "@/types/cms";
 
 interface AuthorCardProps {
   author: Author;
@@ -34,8 +34,8 @@ export default function AuthorCard({ author }: AuthorCardProps) {
         {author.avatar && (
           <div className="relative w-16 h-16 rounded-full overflow-hidden shrink-0 ring-2 ring-border">
             <Image
-              src={author.avatar.url}
-              alt={author.avatar.alternativeText || author.name}
+              src={author.avatar.src}
+              alt={author.avatar.alt || author.name}
               fill
               className="object-cover"
             />

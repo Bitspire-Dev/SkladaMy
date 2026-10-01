@@ -1,36 +1,9 @@
 import type { NextConfig } from "next";
 
-// Wyciągamy bezpiecznie samą nazwę hosta
-const strapiHost = process.env.NEXT_PUBLIC_STRAPI_URL
-  ? process.env.NEXT_PUBLIC_STRAPI_URL.replace(/^https?:\/\//, "").split("/")[0]
-  : null;
-
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1", "localhost"],
   images: {
-    remotePatterns: [
-      // Dev-only: localhost Strapi
-      ...(process.env.NODE_ENV === "development"
-        ? [
-            {
-              protocol: "http" as const,
-              hostname: "localhost",
-              port: "1337",
-              pathname: "/uploads/**",
-            },
-          ]
-        : []),
-      // Jeśli zmienna istnieje, dodaj ją do remotePatterns
-      ...(strapiHost
-        ? [
-            {
-              protocol: "https" as const,
-              hostname: strapiHost,
-              pathname: "/uploads/**",
-            },
-          ]
-        : []),
-    ],
+    // All CMS media lives in `public/uploads` (managed by TinaCMS media library)
     formats: ["image/avif", "image/webp"],
     minimumCacheTTL: 60,
     dangerouslyAllowSVG: false,
@@ -50,13 +23,24 @@ const nextConfig: NextConfig = {
   async generateBuildId() {
     return `${new Date().getTime()}`;
   },
+  async redirects() {
+    // TinaCMS admin is a static SPA in public/admin; turbopack dev doesn't
+    // resolve the directory index at /admin, so redirect explicitly.
+    return [{ source: "/admin", destination: "/admin/index.html", permanent: false }];
+  },
   async headers() {
     return [
       {
         source: "/(.*)",
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
+          // SAMEORIGIN (not DENY) so the TinaCMS admin iframe can embed the
+          // site; CSP additionally allows the local Tina server on :4001.
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          {
+            key: "Content-Security-Policy",
+            value: "frame-ancestors 'self' http://localhost:4001",
+          },
           { key: "X-XSS-Protection", value: "1; mode=block" },
           { key: "Referrer-Policy", value: "origin-when-cross-origin" },
         ],

@@ -5,11 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getMediaURL } from "@/lib/cms/client";
 import { MasonryGrid } from "./MasonryGrid";
 import { Lightbox } from "./Lightbox";
-import type { StrapiImage } from "@/types/strapi";
+import type { CmsImage } from "@/types/cms";
 
 interface GalleryContentProps {
-  images: StrapiImage[];
-  featuredImages?: StrapiImage[];
+  images: CmsImage[];
+  featuredImages?: CmsImage[];
   featuredOnly?: boolean;
   limit?: number;
   className?: string;
@@ -20,15 +20,6 @@ interface GalleryImage {
   src: string;
   alt: string;
   title?: string;
-  item: {
-    id: number;
-    title: string;
-    featured: boolean;
-    images: StrapiImage[];
-    createdAt: string;
-    updatedAt: string;
-    publishedAt: string;
-  };
 }
 
 export function GalleryContent({
@@ -43,7 +34,7 @@ export function GalleryContent({
 
   // Process gallery items
   const galleryItems = useMemo(() => {
-    let sourceImages: StrapiImage[] = [];
+    let sourceImages: CmsImage[] = [];
 
     if (featuredOnly && featuredImages) {
       sourceImages = featuredImages;
@@ -57,19 +48,10 @@ export function GalleryContent({
     }
 
     return sourceImages.map((image) => ({
-      id: image.id.toString(),
-      src: getMediaURL({ url: image.url }),
-      alt: image.alternativeText || `Realizacja SkładaMy`,
-      title: image.caption || image.alternativeText || `Realizacja SkładaMy`,
-      item: {
-        id: image.id,
-        title: image.caption || image.alternativeText || `Realizacja SkładaMy`,
-        featured: false,
-        images: [image],
-        createdAt: "",
-        updatedAt: "",
-        publishedAt: "",
-      },
+      id: image.src,
+      src: getMediaURL(image),
+      alt: image.alt || `Realizacja SkładaMy`,
+      title: image.caption || image.alt || `Realizacja SkładaMy`,
     }));
   }, [images, featuredImages, featuredOnly, limit]);
 

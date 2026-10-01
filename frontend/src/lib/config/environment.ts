@@ -15,17 +15,6 @@ export function getSiteUrl(): string {
 }
 
 /**
- * Get required NEXT_PUBLIC_STRAPI_URL
- * Throws error if not set - NO FALLBACK!
- */
-export function getStrapiUrl(): string {
-  if (!process.env.NEXT_PUBLIC_STRAPI_URL) {
-    throw new Error("NEXT_PUBLIC_STRAPI_URL must be set in .env file!");
-  }
-  return process.env.NEXT_PUBLIC_STRAPI_URL;
-}
-
-/**
  * Check if we're in browser environment
  */
 export function isBrowser(): boolean {

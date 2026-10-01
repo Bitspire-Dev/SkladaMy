@@ -1,56 +1,44 @@
 ﻿import { Card, CardContent } from "@/components/ui/Card";
-import { Clock, Shield, Sparkles, Wrench } from "lucide-react";
-import { memo, useMemo } from "react";
+import { memo } from "react";
 import Image from "next/image";
+import { getIcon } from "@/components/sections/blocks/icons";
+import { tinaField } from "@/lib/tina-field";
+import type { FeaturesBlock } from "@/components/sections/blocks/blocks";
 
-const benefits = [
-  {
-    icon: Clock,
-    title: "Szybkie terminy realizacji",
-    description:
-      "Większość montaży wykonujemy w ciągu 1-3 dni od kontaktu. Nie czekasz tygodniami jak u konkurencji.",
-  },
-  {
-    icon: Shield,
-    title: "30 dni gwarancji",
-    description:
-      "Każdy montaż objęty jest gwarancją. Jeśli coś się rozłączy przy normalnym użytkowaniu - poprawiamy za darmo.",
-  },
-  {
-    icon: Sparkles,
-    title: "Porządek po montażu",
-    description:
-      "Sprzątamy po sobie, zabieramy opakowania i śmieci. Twoje mieszkanie pozostaje czyste.",
-  },
-  {
-    icon: Wrench,
-    title: "Doświadczenie z IKEA/PAX",
-    description:
-      "Znamy na pamięć instrukcje IKEA. Szafy PAX, kuchnie METOD, garderoby - to nasza codzienność.",
-  },
-];
+type Benefit = NonNullable<FeaturesBlock["items"]>[number];
 
 // Memoized benefit card component
-const BenefitCard = memo(({ benefit }: { benefit: (typeof benefits)[0] }) => (
-  <Card className="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm text-center h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
-    <CardContent className="px-6 pt-6">
-      <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-        <benefit.icon className="h-8 w-8 text-primary" aria-hidden="true" />
-      </div>
-      <h3 className="text-lg font-semibold text-foreground mb-3">{benefit.title}</h3>
-      <p className="text-muted-foreground text-sm leading-relaxed">{benefit.description}</p>
-    </CardContent>
-  </Card>
-));
+const BenefitCard = memo(({ benefit }: { benefit: Benefit }) => {
+  const Icon = getIcon(benefit.icon);
+  return (
+    <Card className="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border py-6 shadow-sm text-center h-full transition-all duration-300 hover:-translate-y-1 hover:shadow-lg cursor-pointer">
+      <CardContent className="px-6 pt-6">
+        <div
+          {...tinaField(benefit, "icon")}
+          className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4"
+        >
+          <Icon className="h-8 w-8 text-primary" aria-hidden="true" />
+        </div>
+        <h3 {...tinaField(benefit, "title")} className="text-lg font-semibold text-foreground mb-3">
+          {benefit.title}
+        </h3>
+        {benefit.description && (
+          <p
+            {...tinaField(benefit, "description")}
+            className="text-muted-foreground text-sm leading-relaxed"
+          >
+            {benefit.description}
+          </p>
+        )}
+      </CardContent>
+    </Card>
+  );
+});
 
 BenefitCard.displayName = "BenefitCard";
 
-const WhyUsSection = memo(() => {
-  const benefitCards = useMemo(
-    () => benefits.map((benefit) => <BenefitCard key={benefit.title} benefit={benefit} />),
-    []
-  );
-
+const WhyUsSection = memo(({ data }: { data: FeaturesBlock }) => {
+  const items = data.items ?? [];
   return (
     <section className="relative py-16 bg-white overflow-hidden" aria-labelledby="benefits-heading">
       {/* Industrial dotted + grid background */}
@@ -78,14 +66,19 @@ const WhyUsSection = memo(() => {
         <header className="text-center mb-12">
           <h2
             id="benefits-heading"
+            {...tinaField(data, "heading")}
             className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl"
           >
-            Dlaczego warto nas wybrać?
+            {data.heading}
           </h2>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-            W Słupsku działa wielu monterów, ale my stawiamy na jakość, terminowość i spokój
-            klienta.
-          </p>
+          {data.subtext && (
+            <p
+              {...tinaField(data, "subtext")}
+              className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto"
+            >
+              {data.subtext}
+            </p>
+          )}
         </header>
 
         <ul
@@ -93,30 +86,28 @@ const WhyUsSection = memo(() => {
           role="list"
           aria-label="Korzyści"
         >
-          {benefitCards.map((card, idx) => (
-            <li key={benefits[idx].title} role="listitem">
-              {card}
+          {items.map((benefit, i) => (
+            <li key={benefit.title} role="listitem" {...tinaField(data, "items", i)}>
+              <BenefitCard benefit={benefit} />
             </li>
           ))}
         </ul>
 
         {/* Additional trust signals */}
-        <footer className="mt-12 text-center">
-          <div className="inline-flex items-center justify-center space-x-8 text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>
-              <span className="text-sm">Doświadczenie od 2020</span>
+        {data.footerNotes && data.footerNotes.length > 0 && (
+          <footer className="mt-12 text-center">
+            <div className="inline-flex items-center justify-center space-x-8 text-muted-foreground">
+              {data.footerNotes.map((note, i) => (
+                <div key={note} className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>
+                  <span {...tinaField(data, "footerNotes", i)} className="text-sm">
+                    {note}
+                  </span>
+                </div>
+              ))}
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>
-              <span className="text-sm">Ubezpieczenie OC</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full" aria-hidden="true"></div>
-              <span className="text-sm">Własne narzędzia</span>
-            </div>
-          </div>
-        </footer>
+          </footer>
+        )}
       </div>
     </section>
   );

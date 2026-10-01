@@ -6,4 +6,4 @@
 export { COMPANY_CONFIG, formatPhoneForDisplay, formatPhoneForTel } from "./company";
 export type { COMPANY_CONFIG as CompanyConfigType } from "./company";
 
-export { getSiteUrl, getStrapiUrl, isBrowser, getCurrentUrl } from "./environment";
+export { getSiteUrl, isBrowser, getCurrentUrl } from "./environment";

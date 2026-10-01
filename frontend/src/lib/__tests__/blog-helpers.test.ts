@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { formatDate, limitTags, processBlogContent, extractPlainText } from "../content";
-import type { BlogTag } from "@/types/strapi";
+import type { BlogTag } from "@/types/cms";
 
 describe("formatDate", () => {
   it("should format valid date string to Polish format", () => {
@@ -26,10 +26,10 @@ describe("formatDate", () => {
 
 describe("limitTags", () => {
   const mockTags: BlogTag[] = [
-    { id: 1, name: "React", slug: "react" },
-    { id: 2, name: "TypeScript", slug: "typescript" },
-    { id: 3, name: "Next.js", slug: "nextjs" },
-    { id: 4, name: "Node.js", slug: "nodejs" },
+    { id: "react", name: "React", slug: "react" },
+    { id: "typescript", name: "TypeScript", slug: "typescript" },
+    { id: "nextjs", name: "Next.js", slug: "nextjs" },
+    { id: "nodejs", name: "Node.js", slug: "nodejs" },
   ];
 
   it("should return all tags when no limit specified", () => {

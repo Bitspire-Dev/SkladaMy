@@ -1,2 +1,7 @@
-export { metadata } from "@/components/pages/AboutPage";
-export { default } from "@/components/pages/AboutPage";
+import CmsPage, { generateCmsMetadata } from "@/components/pages/CmsPage";
+
+export const generateMetadata = () => generateCmsMetadata("o-nas");
+
+export default function Page() {
+  return <CmsPage slug="o-nas" />;
+}

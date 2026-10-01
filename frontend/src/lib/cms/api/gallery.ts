@@ -1,29 +1,21 @@
 import "server-only";
 
-import type { Gallery, SingleResponse } from "@/types/strapi";
-import { api } from "../client";
+import type { Gallery, SingleResponse } from "@/types/cms";
+import { loadGallery } from "../reader";
 
 /**
  * Fetch gallery data
  */
 export const getGallery = async (): Promise<SingleResponse<Gallery>> => {
   try {
-    const response = await api.get("/gallery", {
-      params: {
-        populate: "*",
-      },
-    });
-    return response.data;
+    const gallery = loadGallery();
+    return {
+      data: gallery ?? { images: [], featuredImages: [] },
+      meta: {},
+    };
   } catch {
     return {
-      data: {
-        id: 0,
-        images: [],
-        featuredImages: [],
-        createdAt: "",
-        updatedAt: "",
-        publishedAt: "",
-      },
+      data: { images: [], featuredImages: [] },
       meta: {},
     };
   }

@@ -22,6 +22,7 @@ const customIgnores = [
   "**/public/**",
   "**/.env*",
   "**/server.js",
+  "**/tina/__generated__/**",
 ];
 
 const baseIgnores = Array.isArray(nextIgnores.ignores) ? nextIgnores.ignores : [];

@@ -12,7 +12,7 @@ import { getMediaURL } from "@/lib/cms/client";
 import { extractPlainText } from "@/lib/content/processors/html";
 import BlogSearch from "@/components/sections/blog/BlogSearch";
 import TagBadges from "@/components/sections/blog/TagBadges";
-import type { BlogPost, Category } from "@/types/strapi";
+import type { BlogPost, Category } from "@/types/cms";
 
 interface BlogListClientProps {
   allPosts: BlogPost[];
@@ -53,16 +53,7 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
   return (
     <main className="py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl mb-6">
-            Blog SkładaMy
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Praktyczne porady, inspiracje aranżacyjne i wszystko co musisz wiedzieć o montażu mebli.
-            Dzielimy się naszym doświadczeniem z ponad 300 realizacji.
-          </p>
-        </div>
+        {/* Hero Section — rendered from the Tina `page` document above this list */}
 
         {/* Search and Filters */}
         <div className="max-w-4xl mx-auto mb-12">
@@ -82,12 +73,15 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
             <h2 className="text-2xl font-bold text-foreground mb-8">Polecane artykuły</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {featuredPosts.map((post, index) => (
-                <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                <Card
+                  key={post.id}
+                  className="overflow-hidden hover:shadow-lg transition-shadow pt-0 gap-0"
+                >
                   <div className="aspect-video bg-linear-to-br from-primary/20 to-primary/5 relative">
                     {post.featuredImage ? (
                       <Image
                         src={getMediaURL(post.featuredImage)}
-                        alt={post.featuredImage.alternativeText || post.title}
+                        alt={post.featuredImage.alt || post.title}
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -160,13 +154,13 @@ export function BlogListClient({ allPosts, featuredPosts, categories }: BlogList
             {filteredPosts.map((post) => (
               <Card
                 key={post.id}
-                className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
+                className="overflow-hidden hover:shadow-lg transition-shadow flex flex-col pt-0 gap-0"
               >
                 <div className="aspect-video bg-linear-to-br from-muted to-muted/50 relative">
                   {post.featuredImage ? (
                     <Image
                       src={getMediaURL(post.featuredImage)}
-                      alt={post.featuredImage.alternativeText || post.title}
+                      alt={post.featuredImage.alt || post.title}
                       fill
                       className="object-cover"
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
