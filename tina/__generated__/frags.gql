@@ -1,0 +1,536 @@
+fragment PostParts on Post {
+  __typename
+  title
+  slug
+  excerpt
+  publishDate
+  readTime
+  views
+  featured
+  featuredImage {
+    __typename
+    src
+    alt
+    caption
+  }
+  gallery {
+    __typename
+    src
+    alt
+    caption
+  }
+  category {
+    ... on Category {
+      __typename
+      name
+      slug
+      description
+      color
+      icon
+      order
+      seo {
+        __typename
+        metaTitle
+        metaDescription
+        keywords
+        canonicalUrl
+        ogTitle
+        ogDescription
+        ogImage
+        ogType
+        twitterCard
+        noindex
+        nofollow
+        structuredData
+        lastmod
+      }
+    }
+    ... on Document {
+      _sys {
+        filename
+        basename
+        hasReferences
+        breadcrumbs
+        path
+        relativePath
+        extension
+      }
+      id
+    }
+  }
+  tags
+  author {
+    __typename
+    name
+    role
+    bio
+    avatar
+    email
+    website
+    linkedin
+    twitter
+  }
+  relatedPosts {
+    __typename
+    post {
+      ... on Post {
+        __typename
+        title
+        slug
+        excerpt
+        publishDate
+        readTime
+        views
+        featured
+        featuredImage {
+          __typename
+          src
+          alt
+          caption
+        }
+        gallery {
+          __typename
+          src
+          alt
+          caption
+        }
+        category {
+          ... on Category {
+            __typename
+            name
+            slug
+            description
+            color
+            icon
+            order
+            seo {
+              __typename
+              metaTitle
+              metaDescription
+              keywords
+              canonicalUrl
+              ogTitle
+              ogDescription
+              ogImage
+              ogType
+              twitterCard
+              noindex
+              nofollow
+              structuredData
+              lastmod
+            }
+          }
+          ... on Document {
+            _sys {
+              filename
+              basename
+              hasReferences
+              breadcrumbs
+              path
+              relativePath
+              extension
+            }
+            id
+          }
+        }
+        tags
+        author {
+          __typename
+          name
+          role
+          bio
+          avatar
+          email
+          website
+          linkedin
+          twitter
+        }
+        relatedPosts {
+          __typename
+          post {
+            ... on Post {
+              __typename
+              title
+              slug
+              excerpt
+              publishDate
+              readTime
+              views
+              featured
+              featuredImage {
+                __typename
+                src
+                alt
+                caption
+              }
+              gallery {
+                __typename
+                src
+                alt
+                caption
+              }
+              tags
+              author {
+                __typename
+                name
+                role
+                bio
+                avatar
+                email
+                website
+                linkedin
+                twitter
+              }
+              relatedPosts {
+                __typename
+              }
+              faq {
+                __typename
+                question
+                answer
+              }
+              seo {
+                __typename
+                metaTitle
+                metaDescription
+                keywords
+                canonicalUrl
+                ogTitle
+                ogDescription
+                ogImage
+                ogType
+                twitterCard
+                noindex
+                nofollow
+                structuredData
+                lastmod
+              }
+              body
+            }
+            ... on Document {
+              _sys {
+                filename
+                basename
+                hasReferences
+                breadcrumbs
+                path
+                relativePath
+                extension
+              }
+              id
+            }
+          }
+        }
+        faq {
+          __typename
+          question
+          answer
+        }
+        seo {
+          __typename
+          metaTitle
+          metaDescription
+          keywords
+          canonicalUrl
+          ogTitle
+          ogDescription
+          ogImage
+          ogType
+          twitterCard
+          noindex
+          nofollow
+          structuredData
+          lastmod
+        }
+        body
+      }
+      ... on Document {
+        _sys {
+          filename
+          basename
+          hasReferences
+          breadcrumbs
+          path
+          relativePath
+          extension
+        }
+        id
+      }
+    }
+  }
+  faq {
+    __typename
+    question
+    answer
+  }
+  seo {
+    __typename
+    metaTitle
+    metaDescription
+    keywords
+    canonicalUrl
+    ogTitle
+    ogDescription
+    ogImage
+    ogType
+    twitterCard
+    noindex
+    nofollow
+    structuredData
+    lastmod
+  }
+  body
+}
+
+fragment CategoryParts on Category {
+  __typename
+  name
+  slug
+  description
+  color
+  icon
+  order
+  seo {
+    __typename
+    metaTitle
+    metaDescription
+    keywords
+    canonicalUrl
+    ogTitle
+    ogDescription
+    ogImage
+    ogType
+    twitterCard
+    noindex
+    nofollow
+    structuredData
+    lastmod
+  }
+}
+
+fragment TagParts on Tag {
+  __typename
+  name
+  slug
+  color
+}
+
+fragment GalleryParts on Gallery {
+  __typename
+  images {
+    __typename
+    src
+    alt
+    caption
+  }
+  featuredImages {
+    __typename
+    src
+    alt
+    caption
+  }
+}
+
+fragment PageParts on Page {
+  __typename
+  title
+  route
+  sections {
+    __typename
+    ... on PageSectionsPageHeader {
+      badge
+      title
+      subtitle
+      badges
+      bare
+    }
+    ... on PageSectionsHero {
+      badge
+      image
+      heading
+      headingAccent
+      headingSuffix
+      subtext
+      badges
+      cards {
+        __typename
+        title
+        text
+      }
+      primaryCta {
+        __typename
+        label
+        href
+      }
+      secondaryCta {
+        __typename
+        label
+        href
+      }
+      areaText
+      areaLinkLabel
+      areaLinkHref
+    }
+    ... on PageSectionsServices {
+      heading
+      subtext
+      items {
+        __typename
+        icon
+        title
+        description
+        details
+      }
+    }
+    ... on PageSectionsFeatures {
+      heading
+      subtext
+      items {
+        __typename
+        icon
+        title
+        description
+        details
+      }
+      footerNotes
+    }
+    ... on PageSectionsProcess {
+      heading
+      subtext
+      steps {
+        __typename
+        icon
+        title
+        description
+        details
+      }
+      ctaText
+      ctaPrimary {
+        __typename
+        label
+        href
+      }
+      ctaSecondary {
+        __typename
+        label
+        href
+      }
+    }
+    ... on PageSectionsTestimonials {
+      heading
+      subtext
+      items {
+        __typename
+        name
+        content
+        rating
+        location
+        service
+        date
+        verified
+      }
+      footnotes
+      note
+    }
+    ... on PageSectionsFaq {
+      heading
+      subtext
+      categories {
+        __typename
+        key
+        label
+      }
+      items {
+        __typename
+        question
+        answer
+        category
+        featured
+      }
+      ctaText
+      ctaPrimary {
+        __typename
+        label
+        href
+      }
+      ctaSecondary {
+        __typename
+        label
+        href
+      }
+    }
+    ... on PageSectionsQa {
+      heading
+      items {
+        __typename
+        question
+        answer
+      }
+    }
+    ... on PageSectionsCta {
+      heading
+      text
+      primaryCta {
+        __typename
+        label
+        href
+      }
+      secondaryCta {
+        __typename
+        label
+        href
+      }
+      infoItems
+      trustItems
+    }
+    ... on PageSectionsStats {
+      heading
+      items {
+        __typename
+        value
+        label
+      }
+    }
+    ... on PageSectionsListGrid {
+      heading
+      subtext
+      entries
+      note
+    }
+    ... on PageSectionsRichText {
+      heading
+      content
+    }
+    ... on PageSectionsContactPanel {
+      infoHeading
+      contacts {
+        __typename
+        icon
+        title
+        text
+        note
+        href
+      }
+      prepTitle
+      prepItems
+      formHeading
+    }
+  }
+  seo {
+    __typename
+    metaTitle
+    metaDescription
+    keywords
+    canonicalUrl
+    ogTitle
+    ogDescription
+    ogImage
+    ogType
+    twitterCard
+    noindex
+    nofollow
+    structuredData
+    lastmod
+  }
+  body
+}

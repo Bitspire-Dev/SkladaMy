@@ -7,3 +7,4 @@ export { COMPANY_CONFIG, formatPhoneForDisplay, formatPhoneForTel } from "./comp
 export type { COMPANY_CONFIG as CompanyConfigType } from "./company";
 
 export { getSiteUrl, isBrowser, getCurrentUrl } from "./environment";
+export { SITE_CONFIG, ogImageUrl } from "./site";

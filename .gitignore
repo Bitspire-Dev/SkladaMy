@@ -41,5 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 # tinacms
-/tina/__generated__/
+# tina/__generated__/ is COMMITTED on purpose: `next build` (e.g. on Vercel)
+# imports the generated client without running tinacms. It is regenerated
+# locally by `tinacms dev` — commit it together with tina/config.ts changes.
 /public/admin/

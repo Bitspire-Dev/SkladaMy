@@ -1,48 +1,36 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect } from "vitest";
+import { COMPANY_CONFIG, formatPhoneForDisplay, formatPhoneForTel } from "../config/company";
 
-describe("COMPANY_CONFIG module load tests", () => {
-  const originalEnv = { ...process.env };
-
-  beforeEach(() => {
-    vi.resetModules();
-    // Restore clean environment for each test
-    process.env = { ...originalEnv };
-  });
-
-  afterEach(() => {
-    process.env = originalEnv;
-  });
-
-  it("should load successfully when all required environment variables are set", async () => {
-    const { COMPANY_CONFIG, formatPhoneForDisplay, formatPhoneForTel } =
-      await import("../config/company");
+describe("COMPANY_CONFIG", () => {
+  it("should expose company identity constants", () => {
     expect(COMPANY_CONFIG.name).toBe("SkładaMy");
-    expect(COMPANY_CONFIG.fullName).toBe("SkładaMy Sp. z o.o.");
-    expect(COMPANY_CONFIG.address.coordinates.latitude).toBe(54.4641);
-    expect(COMPANY_CONFIG.address.coordinates.longitude).toBe(17.0289);
+    expect(COMPANY_CONFIG.fullName).toBe("SkładaMy - Montaż Mebli Słupsk");
+    expect(COMPANY_CONFIG.address.city).toBe("Słupsk");
+    expect(COMPANY_CONFIG.address.coordinates.latitude).toBeCloseTo(54.464);
+    expect(COMPANY_CONFIG.address.coordinates.longitude).toBeCloseTo(17.029);
+    expect(COMPANY_CONFIG.social.facebook).toContain("facebook.com");
+  });
+});
 
-    // Test formatting helpers
+describe("formatPhoneForDisplay", () => {
+  it("should format a raw number as +48 XXX XXX XXX", () => {
     expect(formatPhoneForDisplay("+48780926993")).toBe("+48 780 926 993");
+  });
+
+  it("should normalize the default phone", () => {
     // formatPhoneForDisplay normalizes the default phone (strips non-digits,
     // then reformats) so the result has single spaces, not the raw input.
     expect(formatPhoneForDisplay()).toBe("+48 780 926 993");
-    expect(formatPhoneForTel("+48780926993")).toBe("+48780926993");
-    // formatPhoneForTel strips spaces — tel: URIs must contain only digits and +
-    expect(formatPhoneForTel()).toBe("+48780926993"); // defaults to COMPANY_CONFIG.phone
+  });
+});
+
+describe("formatPhoneForTel", () => {
+  it("should keep digits and leading + only", () => {
+    expect(formatPhoneForTel("+48 780 926 993")).toBe("+48780926993");
+    expect(formatPhoneForTel("780 926 993")).toBe("+48780926993");
   });
 
-  it("should throw error if a required environment variable is missing", async () => {
-    // Temporarily delete a required env var
-    delete process.env.NEXT_PUBLIC_COMPANY_NAME;
-
-    await expect(import("../config/company")).rejects.toThrow(
-      /Missing required environment variables: NEXT_PUBLIC_COMPANY_NAME/
-    );
-  });
-
-  it("should throw error if coordinates are not numbers", async () => {
-    process.env.NEXT_PUBLIC_COMPANY_LATITUDE = "not-a-number";
-
-    await expect(import("../config/company")).rejects.toThrow(/Invalid company coordinates/);
+  it("should normalize the default phone", () => {
+    expect(formatPhoneForTel()).toBe("+48780926993");
   });
 });

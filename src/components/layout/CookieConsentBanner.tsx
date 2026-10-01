@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { ShieldCheck, LineChart, Megaphone } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/config";
 
 type ConsentState = {
   necessary: true; // always true
@@ -44,10 +45,10 @@ function writeConsent(consent: ConsentState) {
   document.cookie = `${CONSENT_COOKIE}=${encodeURIComponent(JSON.stringify(consent))}; Path=/; SameSite=Strict${secureFlag}; Expires=${expires.toUTCString()}`;
 }
 
-const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "";
+const GTM_ID = SITE_CONFIG.analytics.gtmId;
 
 function loadGTM() {
-  if (!GTM_ID) return; // GTM disabled when NEXT_PUBLIC_GTM_ID is unset
+  if (!GTM_ID) return; // GTM disabled when SITE_CONFIG.analytics.gtmId is empty
   if (document.getElementById("gtm-script-loader")) return; // prevent duplicates
   const s = document.createElement("script");
   s.id = "gtm-script-loader";
